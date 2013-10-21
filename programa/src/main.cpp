@@ -1,3 +1,4 @@
+/*
 #include <unistd.h>
 #include <iostream>
 
@@ -6,19 +7,18 @@
 
 //#include <sfMidi.h>
 
-const int SW = 1920;
-const int SH = 1080;
+const sf::VideoMode VM = sf::VideoMode::getDesktopMode();
+const int SW = VM.width;
+const int SH = VM.height;
 const sf::Color QWHITE = sf::Color(215, 215, 215);
-
 float offset = -100;
-
 const int RH = 30;
 
 #define LOG(x) std::cout << "-> LOG: " << x << std::endl;
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(SW, SH), "MIDI Reader?", sf::Style::Fullscreen);
+	sf::RenderWindow window(sf::VideoMode::getDesktopMode(), "MIDI Reader?", sf::Style::Fullscreen);
 	
 	sf::Vertex line[] = {
 		sf::Vertex(sf::Vector2f(SW/2, 0), QWHITE),
@@ -45,12 +45,13 @@ int main()
 	s.openFromFile("trio.flac");
 	s.play();
 	
-	/*sfmidi::Midi testMidi("GUFSV144.sf2", "symph5mvt1.mid");
-	testMidi.setGain(1.0);
-	testMidi.play();*/
+	//sfmidi::Midi testMidi("GUFSV144.sf2", "symph5mvt1.mid");
+	//testMidi.setGain(1.0);
+	//testMidi.play();
 	
 	LOG("PID: " << getpid());
 	
+
 	sf::Font font;
 	font.loadFromFile("fonts/opensans/OpenSans-Regular.ttf");
 	sf::Text text;
@@ -94,5 +95,17 @@ int main()
 		window.display();
 	}
 
+	LOG("Das ist gud.");
+
+	return 0;
+}
+*/
+
+#include "core.hpp"
+
+int main()
+{
+	core c;	
+	c.init();
 	return 0;
 }
