@@ -19,8 +19,11 @@ public:
 	~display();
 
 	bool run();
+	
+	sf::Clock c;
+	float seconds;
+	int frames;
 
-private:
 	sf::Vertex lineH[2];
 	sf::Vertex lineV[2];
 

@@ -1,6 +1,7 @@
 #include "display.hpp"
 
 display::display()
+	: frames(0)
 {
 	lineH[0] = sf::Vertex(sf::Vector2f(0, SH/2), QWHITE);
 	lineH[1] = sf::Vertex(sf::Vector2f(SW, SH/2), QWHITE);
@@ -14,17 +15,18 @@ display::~display()
 
 bool display::run()
 {
-	w.create(VM, "FSIA Machine Learning Software", sf::Style::Fullscreen);	
-	std::thread t(&display::_renderThread, this);
-	t.join();
+	w.create(VM, "FSIA Machine Learning Software", sf::Style::Fullscreen);
+	_renderThread();
 	return true;
 }
 void display::_renderThread()
 {
 	sf::Event ev;
+	float seconds;
 
 	while(w.isOpen())
 	{
+	
 		while(w.pollEvent(ev))
 		{
 			switch(ev.type)
@@ -43,6 +45,17 @@ void display::_renderThread()
 			}
 		}
 		// LOGIC
+		// --------
+		seconds = c.getElapsedTime().asSeconds();
+		if(seconds >= 1.0f)
+		{
+			LOG(L_INFO, frames << "FPS");
+			c.restart();
+			frames = 0;
+		}
+		else
+			frames++;
+		
 
 		// ------
 		// DRAWING

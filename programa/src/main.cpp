@@ -107,5 +107,6 @@ int main()
 {
 	core c;	
 	c.init();
+	
 	return 0;
 }
