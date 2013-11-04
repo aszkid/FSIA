@@ -1,13 +1,13 @@
 ### Seccions Treball teòric
-- [ ] Introducció al Software
-- [ ] El Software Privatiu
-- [ ] El Software Lliure
-- [ ] Llicències de Software
-- [ ] Moviments de Software Lliure
-- [ ] Entrevista a R.M. Stallman
-- [ ] Intel·ligència artificial
-- [ ] Història IA
-- [ ] Present i futur
+- [ ] Introducció al Software		- Pol
+- [ ] El Software Privatiu		- Marc
+- [ ] El Software Lliure		- Pol
+- [ ] Llicències de Software		- Oriol
+- [ ] Moviments de Software Lliure	- Gonzalo
+- [ ] Entrevista a R.M. Stallman	- Tots
+- [ ] Intel·ligència artificial		- Marc
+- [ ] Història IA			- Gonzalo
+- [ ] Present i futur			- Oriol
 
 ### Seccions Treball pràctic
 - [ ] Lectura arxius MIDI (estàtic)
