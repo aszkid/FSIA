@@ -1,3 +1,7 @@
+/programa/bin/core/core
+/programa/bin/complete/complete
+/documents/test.pdf
+/documents/.fuse_hidden000147cf00000004
 /programa/bin/symph5mvt1.mid
 /programa/bin/GUFSV144.sf2
 *~
@@ -9,3 +13,4 @@
 *.aux
 *!sync
 *.swp
+documents/test.pdf

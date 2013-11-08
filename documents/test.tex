@@ -2,9 +2,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage[catalan]{babel}
 \usepackage{mathtools}
-\usepackage[ampersand]{easylist}
+\usepackage[catalan]{babel}
 \begin{document}
 
 \title{
@@ -23,25 +22,18 @@
 \tableofcontents
 
 \chapter{Introducció}
-\section{Ambicions}
-Què esperem d'aquest projecte? Quin és el nostre objectiu, i potser més
-important i tot; què esperem de tot això?
+\input{introduccio}
 
+\chapter{El Software Privatiu}
+\input{privatiu}
 
-\begin{easylist}[itemize]
-& Exposar les diferents filosofies que existeixen a l'hora de
-	crear i distribuir \emph{software}.
-& Aprofundir en els conceptes de \emph{llibertat} per part
-	del consumidor de software.
-& Proposar alternatives \emph{lliures} a software privatiu.
-& Introduir conceptes comuns en l'àmbit matemàtic i tècnic
-	de la intel·ligència artificial.
-& Desenvolupar, amb un conjunt total d'eines lliures, una
-	aplicació d'aprenentatge de màquina funcional.
-\end{easylist}
+\chapter{El Software Lliure}
+\input{lliure}
 
-\section{Eines}
-A través del projecte de recerca, hem utilitzat diferents eines.
-Ha prioritzat l'elecció de programari \emph{lliures} i \emph{open-source}.
+\chapter{Llicències de Software}
+Nothing to see here.
+
+\chapter{Moviments de Software Lliure}
+\input{moviments}
 
 \end{document}

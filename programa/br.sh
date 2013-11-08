@@ -14,12 +14,28 @@ then
 fi
 
 make all
-cd ../../bin
-echo $(tput bold)$(tput setaf 1)"----------------------"
-echo "-- RUNNING PROJECT  --"
-echo "----------------------"$(tput sgr0)
-./"$2"
-cd ../
+
+if [ $# == 1 ]
+then
+	exit 0
+fi
+
+if [ "$2" == "core" ]
+then
+	echo $(tput bold)$(tput setaf 1)"----------------------"
+	echo "-- RUNNING CORE  --"
+	echo "----------------------"$(tput sgr0)
+	cd ../../bin/core
+	./core
+elif [ "$2" == "complete" ]
+then
+	echo $(tput bold)$(tput setaf 1)"----------------------"
+	echo "-- RUNNING COMPLETE  --"
+	echo "----------------------"$(tput sgr0)
+	cd ../../bin/complete
+	./complete
+fi
+
 echo $(tput bold)$(tput setaf 1)"----------------------"
 echo $(tput bold)$(tput setaf 5)"--------------------------------------------"
 echo "--------------------------------------------"$(tput sgr0)
