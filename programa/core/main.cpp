@@ -16,10 +16,11 @@ int main()
 	
 	size_t i;
 	
-	float last = .0f;
+	float base = data[0];
+	float last = base;
 	float curr;
 	
-	for(i = 0; i < data.size(); i++)
+	for(i = 1; i < data.size(); i++)
 	{
 		curr = data[i];
 		growths.push_back(curr-last);
