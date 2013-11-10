@@ -31,14 +31,18 @@ public:
 	
 	void setOutVal(double val) { outVal = val; };
 	const double getOutVal() { return outVal };
+	void calcOutputGradients(double targetVal);
+	void calcHiddenGradients(const Layer& nextLayer);
 	
 private:
 	double outVal;
 	vector<Connection> outWeights;
 	uint nIndex;
+	double gradient;
 	
 	static double transferFunc(double x);
 	static double transferFuncDerivative(double x);
+	const double sumDOW(const Layer& nextLayer);
 	
 	
 	static double randWeight() { return rand() / double(RAND_MAX); }
@@ -77,6 +81,22 @@ double Neuron::transferFuncDerivative(double x)
 {
 	// Aproximació a la derivativa de tanh (1-tanh^2x)
 	return 1.0 - x*x;
+}
+void Neuron::calcOutputGradients(double targetVal)
+{
+	double delta = targetVal - outVal;
+	gradient = delta * Neuron::transferFunctionDerivative(outVal);
+}
+void Neuron::calcHiddenGradients(const Layer& nextLayer)
+{
+	double dow = sumDOW(nextLayer);
+	gradient = dow * Neuron::transferFunctionDerivative(outVal);
+}
+const double Neuron::sumDOW(const Layer& nextLayer)
+{
+	double sum = 0.0;
+	
+	for(uint n = 0; n < 
 }
 
 class Net
@@ -175,7 +195,7 @@ void Net::backProp(const vector<double> &targets)
 		
 		for(uint n = 0; n < layer.size() - 1; ++n)
 		{
-			
+			layer[n].updateInputWeights(prevLayer);
 		}
 	}
 	
