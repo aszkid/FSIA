@@ -14,10 +14,6 @@ class Neuron;
 typedef unsigned int uint;
 typedef vector<Neuron> Layer;
 
-double randWeight()
-{
-	return rand() / double(RAND_MAX);
-}
 
 struct Connection
 {
@@ -43,6 +39,9 @@ private:
 	
 	static double transferFunc(double x);
 	static double transferFuncDerivative(double x);
+	
+	
+	static double randWeight() { return rand() / double(RAND_MAX); }
 };
 
 Neuron::Neuron(uint numOuts, uint _nIndex)
@@ -50,7 +49,7 @@ Neuron::Neuron(uint numOuts, uint _nIndex)
 	for(uint c = 0; c < numOuts; ++c)
 	{
 		outWeights.push_back(Connection());
-		outWeights.back().weight = randWeight();
+		outWeights.back().weight = Neuron::randWeight();
 	}
 	
 	nIndex = _nIndex;
@@ -71,10 +70,12 @@ void Neuron::feedForward(const Layer& prevLayer)
 
 double Neuron::transferFunc(double x)
 {
+	// Tangent hiperbòlica
 	return tanh(x);
 }
 double Neuron::transferFuncDerivative(double x)
 {
+	// Aproximació a la derivativa de tanh (1-tanh^2x)
 	return 1.0 - x*x;
 }
 
