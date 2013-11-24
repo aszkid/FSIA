@@ -98,11 +98,14 @@ const char* type_to_text(int type)
 
 int main(int argc, char** argv)
 {
+	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+	
+
 	XMLDocument doc;
-	XMLError e = doc.LoadFile("two_voices_sig.xml");
+	XMLError e = doc.LoadFile("cpt1.xml");
 	if(e != XMLError::XML_SUCCESS)
 	{
-		LOG("Failed to load file");
+		//LOG("Failed to load file");
 		return EXIT_FAILURE;
 	}
 
@@ -122,15 +125,15 @@ int main(int argc, char** argv)
 	int note_c = 0;
 	XML_FOREACH_NODE(measure, part, "measure")
 	{
-		LOG("Measure " << measure->ToElement()->Attribute("number") << "...");
+		//LOG("Measure " << measure->ToElement()->Attribute("number") << "...");
 	
 		if(measure->FirstChildElement("attributes") != NULL)
 		{
-			LOG("Found new attribures in measure " << measure->ToElement()->Attribute("number"));
+			//LOG("Found new attribures in measure " << measure->ToElement()->Attribute("number"));
 			attribs = measure->FirstChildElement("attributes");
 
 			key_e = attribs->FirstChildElement("key");
-			LOG("Key has " << key_e->FirstChildElement("fifths")->GetText() << " fifth/s in " << key_e->FirstChildElement("mode")->GetText() << " mode");
+			//LOG("Key has " << key_e->FirstChildElement("fifths")->GetText() << " fifth/s in " << key_e->FirstChildElement("mode")->GetText() << " mode");
 
 			std::string key_mode_t = key_e->FirstChildElement("mode")->GetText();
 			if(key_mode_t.compare("major") == 0)
@@ -231,6 +234,9 @@ int main(int argc, char** argv)
 			notes.push_back(n);
 		}
 	}
+	
+	std::chrono::high_resolution_clock::duration spent = std::chrono::high_resolution_clock::now() - start;
+	LOG("Spent " << std::chrono::duration_cast<std::chrono::milliseconds>(spent).count() << " milliseconds.");
 	
 	for(int& t : times)
 		LOG(t);
