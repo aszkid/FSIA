@@ -1,9 +1,15 @@
+/documents/data/.Menuet bass.mscz,
+/documents/data/.Menuet.mscz,
 /documents/test.bbl
 /documents/test.blg
 /documents/test.dvi
 /documents/test.out
 /programa/bin/core/core
 /programa/bin/complete/complete
+/programa/bin/core/Debug/*
+/programa/bin/core/Release/*
+/programa/bin/complete/Release/*
+/programa/bin/complete/Debug/*
 /documents/test.pdf
 /documents/.fuse_hidden000147cf00000004
 /programa/bin/symph5mvt1.mid
