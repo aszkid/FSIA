@@ -94,8 +94,6 @@ const char* type_to_text(int type)
 	}
 }
 
-#define TYPE_TOTEXT(note) (note.type == note_s::type_e::EIGHTH ? "Eighth" : (note.type == note_s::type_e::HALF ? "Half" : (note.type == note_s::type_e::QUARTER ? "Quarter" : (note.type == note_s::type_e::SIXTEENTH ? "Sixteenth" : "Whole"))))
-
 int main(int argc, char** argv)
 {
 	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
