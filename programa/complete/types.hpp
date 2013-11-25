@@ -4,6 +4,30 @@
 #include <string>
 #include <sstream>
 
+typedef unsigned int uint;
+
+enum COMPILER {
+	MSVC,
+	GNUC,
+	CLANG,
+	MINGW32,
+	MINGW64
+};
+
+static const int compiler = 
+#ifdef _MSC_VER
+	COMPILER::MSVC
+#elif __GNUC__
+	COMPILER::GNUC
+#elif __clang__
+	COMPILER::CLANG
+#elif __MINGW32__
+	COMPILER::MINGW32
+#elif __MINGW64__
+	COMPILER::MINGW64
+#endif
+;
+
 inline void _LOG(std::string flag, std::string data)
 {
 	std::cout << '[' << flag << "] " << data << std::endl;
@@ -19,7 +43,6 @@ inline void _LOG(std::string flag, std::string data)
 #define L_DEBUG "DEBUG"
 #define LOG(type, data) _LOG(type, STREAM(data))
 
-typedef unsigned int uint;
 
 struct note
 {

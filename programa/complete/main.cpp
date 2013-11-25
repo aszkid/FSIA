@@ -105,8 +105,10 @@ int main()
 
 int main()
 {
+	LOG(L_INFO, "Compiler: " << compiler);
+
 	core c;	
-	c.init();
+	//c.init();
 	
 	return 0;
 }

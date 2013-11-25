@@ -1,224 +1,268 @@
-#include <iostream>
-#include <vector>
-#include <cstdlib>
-#include <cassert>
-#include <cmath>
+#include <ctime>
+#include <chrono>
+#include <thread>
+#include <random>
+#include "neuralNetwork.hpp"
+#include "tinyxml2.h"
 
-using std::cout;
-using std::endl;
+#ifdef _MSC_VER
+	#include "tinyxml2.cpp"
+#endif
+
 using std::vector;
+using tinyxml2::XMLDocument;
+using tinyxml2::XMLNode;
+using tinyxml2::XMLError;
+using tinyxml2::XMLElement;
 
-#define OUT(x) cout << x << endl
+typedef std::mt19937 randEng;
+typedef std::uniform_int_distribution<> D;
 
-class Neuron;
-typedef unsigned int uint;
-typedef vector<Neuron> Layer;
+randEng engine(time(NULL));
 
-
-struct Connection
+int int_rand_range(int low, int up)
 {
-	double weight;
-	double deltaWeight;
+	return D(low, up)(engine);
+}
+
+#define XML_FOREACH_NODE(node, parent, nodeName) for(XMLNode* node = parent->FirstChildElement(nodeName); node; node = node->NextSiblingElement(nodeName))
+
+enum key_mode_e {
+	MAJOR,
+	MINOR
 };
 
-class Neuron
+struct note_s
 {
-public:
-	Neuron(uint numOuts, uint _nIndex);
-	~Neuron();
+	enum accidental_e {
+		SHARP,
+		FLAT,
+		NATURAL,
+		NONE
+	};
+	enum type_e {
+		SIXTEENTH,
+		EIGHTH,
+		QUARTER,
+		HALF,
+		WHOLE
+	};
 	
-	void feedForward(const Layer& prevLayer);
-	
-	void setOutVal(double val) { outVal = val; };
-	const double getOutVal() { return outVal };
-	void calcOutputGradients(double targetVal);
-	void calcHiddenGradients(const Layer& nextLayer);
-	
-private:
-	double outVal;
-	vector<Connection> outWeights;
-	uint nIndex;
-	double gradient;
-	
-	static double transferFunc(double x);
-	static double transferFuncDerivative(double x);
-	const double sumDOW(const Layer& nextLayer);
-	
-	
-	static double randWeight() { return rand() / double(RAND_MAX); }
+	note_s()
+		: duration(0), voice(0), p_step('0'), p_octave(0), accidental(accidental_e::NONE), type(type_e::HALF), rest(false)
+	{}
+
+	int duration;
+	int voice;
+	char p_step;
+	int p_octave;
+	int accidental;
+	int type;
+	bool rest;
 };
 
-Neuron::Neuron(uint numOuts, uint _nIndex)
+const char* accidental_to_text(int accidental)
 {
-	for(uint c = 0; c < numOuts; ++c)
+	switch(accidental)
 	{
-		outWeights.push_back(Connection());
-		outWeights.back().weight = Neuron::randWeight();
+	case note_s::accidental_e::FLAT:
+		return "Flat";
+	case note_s::accidental_e::SHARP:
+		return "Sharp";
+	case note_s::accidental_e::NONE:
+		return "NONE!";
+	default:
+		return "Natural";
 	}
-	
-	nIndex = _nIndex;
 }
-Neuron::~Neuron()
-{}
-void Neuron::feedForward(const Layer& prevLayer)
+const char* type_to_text(int type)
 {
-	double sum = 0.0;
-	
-	for(uint n = 0; n < prevLayer.size(); ++n)
+	switch(type)
 	{
-		sum += prevLayer[n].getOutVal() * prevLayer[n].outWeights[nIndex].weight;
+	case note_s::type_e::EIGHTH:
+		return "Eighth";
+	case note_s::type_e::HALF:
+		return "Half";
+	case note_s::type_e::QUARTER:
+		return "Quarter";
+	case note_s::type_e::WHOLE:
+		return "Whole";
+	case note_s::type_e::SIXTEENTH:
+		return "Sixteenth";
+	default:
+		return "DUNNO!";
 	}
-	
-	outVal = Neuron::transferFunc(sum);
 }
 
-double Neuron::transferFunc(double x)
-{
-	// Tangent hiperbòlica
-	return tanh(x);
-}
-double Neuron::transferFuncDerivative(double x)
-{
-	// Aproximació a la derivativa de tanh (1-tanh^2x)
-	return 1.0 - x*x;
-}
-void Neuron::calcOutputGradients(double targetVal)
-{
-	double delta = targetVal - outVal;
-	gradient = delta * Neuron::transferFunctionDerivative(outVal);
-}
-void Neuron::calcHiddenGradients(const Layer& nextLayer)
-{
-	double dow = sumDOW(nextLayer);
-	gradient = dow * Neuron::transferFunctionDerivative(outVal);
-}
-const double Neuron::sumDOW(const Layer& nextLayer)
-{
-	double sum = 0.0;
-	
-	for(uint n = 0; n < 
-}
+#define TYPE_TOTEXT(note) (note.type == note_s::type_e::EIGHTH ? "Eighth" : (note.type == note_s::type_e::HALF ? "Half" : (note.type == note_s::type_e::QUARTER ? "Quarter" : (note.type == note_s::type_e::SIXTEENTH ? "Sixteenth" : "Whole"))))
 
-class Net
+int main(int argc, char** argv)
 {
-public:
-	Net(const vector<uint> &topology);
-	~Net();
+	std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
 	
-	void feedForward(const vector<double> &inputs);
-	void backProp(const vector<double> &targets);
-	const void getResults(vector<double> &results);
-	
-private:
-	vector<Layer> layers;
-	double error;
-	double recentAverageSmoothingFactor
-	double recentAverageError;
-};
 
-Net::Net(const vector<uint> &topology)
-{
-	uint numLayers = topology.size();
-	
-	for(uint layerNum = 0; layerNum < numLayers; ++layerNum)
+	XMLDocument doc;
+	XMLError e = doc.LoadFile("cpt1.xml");
+	if(e != XMLError::XML_SUCCESS)
 	{
-		layers.push_back(Layer());
-		uint numOuts = (layerNum == numLayers - 1 ? 0 : topology[layerNum + 1]);
-		
-		for(uint neuronNum = 0; neuronNum < topology[layerNum] + 1; ++neuronNum)
+		//LOG("Failed to load file");
+		return EXIT_FAILURE;
+	}
+
+	XMLNode* score = doc.FirstChildElement("score-partwise");
+	XMLNode* part = score->FirstChildElement("part");
+
+	vector<note_s> notes;
+	XMLNode* attribs;
+	XMLElement* key_e;
+	int key_mode = key_mode_e::MAJOR;
+	int key_fifths = 0;
+	const char key_sharps_a[7] = {'F', 'C', 'G', 'D', 'A', 'E', 'B'};
+	const char key_flats_a[7] = {'B', 'D', 'A', 'D', 'G', 'C', 'F'};
+
+	vector<int> times;
+
+	int note_c = 0;
+	XML_FOREACH_NODE(measure, part, "measure")
+	{
+		//LOG("Measure " << measure->ToElement()->Attribute("number") << "...");
+	
+		if(measure->FirstChildElement("attributes") != NULL)
 		{
-			OUT("Creating neuron (" << neuronNum << ")...");
-			layers.back().push_back(Neuron(numOuts, neuronNum));
+			//LOG("Found new attribures in measure " << measure->ToElement()->Attribute("number"));
+			attribs = measure->FirstChildElement("attributes");
+
+			key_e = attribs->FirstChildElement("key");
+			//LOG("Key has " << key_e->FirstChildElement("fifths")->GetText() << " fifth/s in " << key_e->FirstChildElement("mode")->GetText() << " mode");
+
+			std::string key_mode_t = key_e->FirstChildElement("mode")->GetText();
+			if(key_mode_t.compare("major") == 0)
+				key_mode = key_mode_e::MAJOR;
+			else
+				key_mode = key_mode_e::MINOR;
+
+			key_e->FirstChildElement("fifths")->QueryIntText(&key_fifths);
+		}
+	
+		XML_FOREACH_NODE(note, measure, "note")
+		{
+			note_c++;
+		
+			XMLElement* note_e = note->ToElement();
+			bool is_rest = false;
+			note_s n;
+
+			XML_FOREACH_NODE(rest, note, "rest")
+			{
+				is_rest = true;
+				break;
+			}
+			
+			note_e->FirstChildElement("duration")->QueryIntText(&n.duration);
+			note_e->FirstChildElement("voice")->QueryIntText(&n.voice);
+			
+			if(is_rest)
+			{			
+				n.duration *= 2;
+				LOG("Rest (" << n.duration << ") in voice " << n.voice << "...");
+				n.rest = true;
+			}
+			else
+			{
+				XMLElement* pitch_e = note->FirstChildElement("pitch");
+				XMLElement* accid_e = note->FirstChildElement("accidental");
+				XMLElement* type_e = note->FirstChildElement("type");
+
+				if(accid_e != NULL)
+				{
+					std::string accid_t = accid_e->GetText();
+
+					if(accid_t.compare("natural") == 0)
+						n.accidental = note_s::accidental_e::NATURAL;
+					else if(accid_t.compare("sharp") == 0)
+						n.accidental = note_s::accidental_e::SHARP;
+					else if(accid_t.compare("flat") == 0)
+						n.accidental = note_s::accidental_e::FLAT;
+				}
+			
+				n.p_step = pitch_e->FirstChildElement("step")->GetText()[0];
+
+				for(int key_i = 0; key_i < key_fifths; key_i++)
+				{
+					if(key_mode == key_mode_e::MAJOR)
+					{
+						if(n.p_step == key_sharps_a[key_i] && n.accidental != note_s::accidental_e::NATURAL)
+							n.accidental = note_s::accidental_e::SHARP;
+					}
+					else if(key_mode == key_mode_e::MINOR)
+					{
+						if(n.p_step == key_flats_a[key_i] && n.accidental != note_s::accidental_e::NATURAL)
+							n.accidental = note_s::accidental_e::FLAT;
+					}
+				}
+
+				if(n.accidental == note_s::accidental_e::NONE)
+					n.accidental = note_s::accidental_e::NATURAL;
+
+				std::string type_t = type_e->GetText();
+
+				if(type_t.compare("half") == 0)
+					n.type = note_s::type_e::HALF;
+				else if(type_t.compare("quarter") == 0)
+					n.type = note_s::type_e::QUARTER;
+				else if(type_t.compare("eighth") == 0)
+					n.type = note_s::type_e::EIGHTH;
+				else if(type_t.compare("whole") == 0)
+					n.type = note_s::type_e::WHOLE;
+				else if(type_t.compare("16th") == 0)
+					n.type = note_s::type_e::SIXTEENTH;
+
+				pitch_e->FirstChildElement("octave")->QueryIntText(&n.p_octave);
+				
+				LOG(n.p_step << "-" << accidental_to_text(n.accidental) << " " << type_to_text(n.type) << " (" << n.duration << ") at octave " << n.p_octave << " in voice " << n.voice << "...");
+				
+			}
+			
+			if(times.size() < n.voice)
+			{
+				while(times.size() < n.voice)
+					times.push_back(0);
+			}
+			
+			times[n.voice-1] += n.duration;
+			
+			notes.push_back(n);
 		}
 	}
-}
-Net::~Net()
-{}
+	
+	std::chrono::high_resolution_clock::duration spent = std::chrono::high_resolution_clock::now() - start;
+	LOG("Spent " << std::chrono::duration_cast<std::chrono::milliseconds>(spent).count() << " milliseconds.");
+	
+	for(int& t : times)
+		LOG(t);
+	
+	
+	
 
-void Net::feedForward(const vector<double> &inputs)
-{
-	assert(inputs.size() == layers[0].size() - 1);
-	
-	for(uint i = 0; i < inputs.size(); ++i)
+	/*for(int time_i = 0; time_i != -1; time_i++)
 	{
-		layers[0][i].setOutVal(inputs[i]);
-	}
-	
-	for(uint layerNum = 1; layerNum < layers.size(); ++layerNum)
-	{
-		Layer& prevLayer = layers[layerNum - 1];
-		
-		for(uint n = 0; n < layers[layerNum].size() - 1; ++n)
-		{
-			layers[layerNum][n].feedForward(prevLayer);
-		}
-	}
-}
-void Net::backProp(const vector<double> &targets)
-{
-	Layer& outLayer = layers.back();
-	error = 0.0;
-	
-	for(uint n = 0; n < outLayer.size() - 1; ++n)
-	{
-		double delta = targets[n] - outLayer[n].getOutVal();
-		error += delta * delta;
-	}
-	
-	error /= outLayer.size() - 1;
-	error = sqrt(error);
-	
-	recentAverageError = 
-		(recentAverageError * recentAverageSmoothingFactor + error) / 
-		(recentAverageSmoothingFactor + 1.0);
-	
-	for(uint n = 0; n < outLayer.size() - 1; ++n)
-	{
-		outLayer[n].calcOutGradients(targets);
-	}
-	
-	for(uint layerNum = layers.size() - 2; layerNum > 0; --layerNum)
-	{
-		Layer& hiddenLayer = layers[layerNum];
-		Layer& nextLayer = layers[layerNum + 1];
-		
-		for(uint n = 0; n < hiddenLayer.size(); ++n)
-		{
-			hiddenLayer[n].calcHiddenGradients(nextLayer);
-		}
-	}
-	
-	for(uint layerNum = layers.size() - 1; layerNum > 0; --layerNum)
-	{
-		Layer& layer = layers[layerNum];
-		Layer& prevLayer = layers[layerNum - 1];
-		
-		for(uint n = 0; n < layer.size() - 1; ++n)
-		{
-			layer[n].updateInputWeights(prevLayer);
-		}
-	}
-	
-}
-const void Net::getResults(vector<double> &results)
-{
-	
+		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+
+
+
+		// work
+		//std::this_thread::sleep_for(std::chrono::milliseconds(RAND_RANGE(476, 528)));
+		// end work
+
+		std::chrono::high_resolution_clock::duration spent = std::chrono::high_resolution_clock::now() - start;
+		uint todo = 1000 - std::chrono::duration_cast<std::chrono::milliseconds>(spent).count();
+		if(todo > 0)
+			std::this_thread::sleep_for(std::chrono::milliseconds(todo));
+		std::chrono::high_resolution_clock::duration spent_final = std::chrono::high_resolution_clock::now() - start;
+	}*/
+
+	neuralNetwork n(3, 3, 1);
+
+	return EXIT_SUCCESS;
 }
 
-int main()
-{
-	srand(time(NULL));
-
-	vector<uint> topology = {3, 2, 1};
-	Net n(topology);
-	
-	vector<double> inputs;
-	vector<double> targets;
-	vector<double> results;
-	
-	n.feedForward(inputs);
-	n.backProp(targets);
-	n.getResults(results);
-	
-	return 0;
-}
