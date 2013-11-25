@@ -1,6 +1,7 @@
 #include <ctime>
 #include <chrono>
 #include <thread>
+#include <map>
 #include <random>
 #include "neuralNetwork.hpp"
 #include "tinyxml2.h"
@@ -10,6 +11,7 @@
 #endif
 
 using std::vector;
+using std::map;
 using tinyxml2::XMLDocument;
 using tinyxml2::XMLNode;
 using tinyxml2::XMLError;
@@ -93,6 +95,18 @@ const char* type_to_text(int type)
 		return "DUNNO!";
 	}
 }
+const char* key_to_text(int mode)
+{
+	switch(mode)
+	{
+	case key_mode_e::MAJOR:
+		return "Major";
+	case key_mode_e::MINOR:
+		return "Minor";
+	default:
+		return "WATKEY!!";
+	}
+}
 
 int main(int argc, char** argv)
 {
@@ -100,10 +114,10 @@ int main(int argc, char** argv)
 	
 
 	XMLDocument doc;
-	XMLError e = doc.LoadFile("cpt1.xml");
+	XMLError e = doc.LoadFile("wat.xml");
 	if(e != XMLError::XML_SUCCESS)
 	{
-		//LOG("Failed to load file");
+		LOG("Failed to load file");
 		return EXIT_FAILURE;
 	}
 
@@ -119,27 +133,30 @@ int main(int argc, char** argv)
 	const char key_flats_a[7] = {'B', 'D', 'A', 'D', 'G', 'C', 'F'};
 
 	vector<int> times;
+	map<char, int> m_accids;
 
 	int note_c = 0;
 	XML_FOREACH_NODE(measure, part, "measure")
 	{
-		//LOG("Measure " << measure->ToElement()->Attribute("number") << "...");
+		LOG("Measure " << measure->ToElement()->Attribute("number") << "...");
 	
 		if(measure->FirstChildElement("attributes") != NULL)
 		{
-			//LOG("Found new attribures in measure " << measure->ToElement()->Attribute("number"));
+			LOG("Found new attribures in measure " << measure->ToElement()->Attribute("number"));
 			attribs = measure->FirstChildElement("attributes");
 
 			key_e = attribs->FirstChildElement("key");
-			//LOG("Key has " << key_e->FirstChildElement("fifths")->GetText() << " fifth/s in " << key_e->FirstChildElement("mode")->GetText() << " mode");
-
-			std::string key_mode_t = key_e->FirstChildElement("mode")->GetText();
-			if(key_mode_t.compare("major") == 0)
-				key_mode = key_mode_e::MAJOR;
-			else
-				key_mode = key_mode_e::MINOR;
-
 			key_e->FirstChildElement("fifths")->QueryIntText(&key_fifths);
+			
+			if(key_fifths < 0)
+			{
+				key_fifths = key_fifths - key_fifths - key_fifths;
+				key_mode = key_mode_e::MINOR;
+			}
+			else
+				key_mode = key_mode_e::MAJOR;
+			
+			LOG("Key has " << key_fifths << " fifth/s in " << key_to_text(key_mode) << " mode");
 		}
 	
 		XML_FOREACH_NODE(note, measure, "note")
@@ -161,7 +178,7 @@ int main(int argc, char** argv)
 			
 			if(is_rest)
 			{			
-				n.duration *= 2;
+				//n.duration *= 2;
 				LOG("Rest (" << n.duration << ") in voice " << n.voice << "...");
 				n.rest = true;
 			}
@@ -170,20 +187,30 @@ int main(int argc, char** argv)
 				XMLElement* pitch_e = note->FirstChildElement("pitch");
 				XMLElement* accid_e = note->FirstChildElement("accidental");
 				XMLElement* type_e = note->FirstChildElement("type");
+				
+				n.p_step = pitch_e->FirstChildElement("step")->GetText()[0];
+				pitch_e->FirstChildElement("octave")->QueryIntText(&n.p_octave);
 
 				if(accid_e != NULL)
 				{
 					std::string accid_t = accid_e->GetText();
 
 					if(accid_t.compare("natural") == 0)
+					{
 						n.accidental = note_s::accidental_e::NATURAL;
+						m_accids[n.p_step] = note_s::accidental_e::NATURAL;
+					}
 					else if(accid_t.compare("sharp") == 0)
+					{
+						m_accids[n.p_step] = note_s::accidental_e::SHARP;
 						n.accidental = note_s::accidental_e::SHARP;
+					}
 					else if(accid_t.compare("flat") == 0)
+					{
+						m_accids[n.p_step] = note_s::accidental_e::FLAT;
 						n.accidental = note_s::accidental_e::FLAT;
+					}
 				}
-			
-				n.p_step = pitch_e->FirstChildElement("step")->GetText()[0];
 
 				for(int key_i = 0; key_i < key_fifths; key_i++)
 				{
@@ -194,13 +221,24 @@ int main(int argc, char** argv)
 					}
 					else if(key_mode == key_mode_e::MINOR)
 					{
+						LOG("Trying Minor...");
 						if(n.p_step == key_flats_a[key_i] && n.accidental != note_s::accidental_e::NATURAL)
+						{
 							n.accidental = note_s::accidental_e::FLAT;
+							LOG("Yup!!!");
+						}
 					}
 				}
+					
+								
+				/*if((n.accidental == note_s::accidental_e::NONE) && (m_accids.count(n.p_step)))
+				{*/
+					n.accidental = m_accids[n.p_step];
+				//}
 
 				if(n.accidental == note_s::accidental_e::NONE)
 					n.accidental = note_s::accidental_e::NATURAL;
+			
 
 				std::string type_t = type_e->GetText();
 
@@ -215,7 +253,6 @@ int main(int argc, char** argv)
 				else if(type_t.compare("16th") == 0)
 					n.type = note_s::type_e::SIXTEENTH;
 
-				pitch_e->FirstChildElement("octave")->QueryIntText(&n.p_octave);
 				
 				LOG(n.p_step << "-" << accidental_to_text(n.accidental) << " " << type_to_text(n.type) << " (" << n.duration << ") at octave " << n.p_octave << " in voice " << n.voice << "...");
 				
@@ -231,6 +268,9 @@ int main(int argc, char** argv)
 			
 			notes.push_back(n);
 		}
+		
+		LOG("Clearing accidentals...");
+		m_accids.clear();
 	}
 	
 	std::chrono::high_resolution_clock::duration spent = std::chrono::high_resolution_clock::now() - start;
