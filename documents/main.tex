@@ -6,12 +6,15 @@
 \usepackage[catalan]{babel}
 \usepackage{hyperref}
 \usepackage{graphicx}
+\usepackage{acronym}
+\usepackage{pgfplots}
 \begin{document}
+
+% Arxiu per als acrònims
+\input{acronims}
 
 \title{
 	{\bf Filosofia del Software i Intel·ligència Artificial}
-	%\\ \vspace{2 mm}
-	%{\large Un anàlisi del passat, present i futur en el context tecnològic}
 }
 \author{
 	Oriol Ventosa \and
@@ -27,28 +30,31 @@
 \chapter{Introducció}
 \input{introduccio}
 
+\chapter{El Software i la seva Història}
+\input{software}
+
 \chapter{El Software Privatiu}
-\input{privatiu}
+\input{soft_privatiu}
 
 \chapter{El Software Lliure}
-\input{lliure}
+\input{soft_lliure}
 
 \chapter{Llicències de Software}
-\input{tipussoftware}
+\input{soft_llicencies}
 
 \chapter{Moviments de Software Lliure}
-\input{moviments}
+\input{soft_moviments}
 
 \chapter{Intel·ligència Artificial}
 \input{inteligencia}
 
 \chapter{Present i futur IA}
-\input{presentifutur}
+\input{ia_presentifutur}
 
 \chapter{La historia de la IA}
-\input{historiaIA}
+\input{ia_historia}
 
 \bibliographystyle{plain}
-\bibliography{biblios/biblio,biblios/biblio_gonzalo}
+\bibliography{biblios/biblio,biblios/biblio_gonzalo,biblios/soft_privatiu,biblios/soft_lliure}
 
 \end{document}
