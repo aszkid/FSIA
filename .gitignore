@@ -1,18 +1,17 @@
 /programa/bin/core/.accidental test.mscz,
 /documents/data/.Menuet bass.mscz,
 /documents/data/.Menuet.mscz,
-/documents/test.bbl
-/documents/test.blg
-/documents/test.dvi
-/documents/test.out
+*.bbl
+*.blg
+*.dvi
+*.out
 /programa/bin/core/core
 /programa/bin/complete/complete
 /programa/bin/core/Debug/*
 /programa/bin/core/Release/*
 /programa/bin/complete/Release/*
 /programa/bin/complete/Debug/*
-/documents/test.pdf
-/documents/.fuse_hidden000147cf00000004
+/documents/output/test.pdf
 /programa/bin/symph5mvt1.mid
 /programa/bin/GUFSV144.sf2
 *~
@@ -24,4 +23,5 @@
 *.aux
 *!sync
 *.swp
+*.fuse*
 documents/test.pdf
