@@ -1,13 +1,35 @@
 #include "neuralNetwork.hpp"
 
-neuralNetwork::neuralNetwork(size_t nInput, size_t nHidden, size_t nOutput)
-	: lHidden(nHidden), lInput(nInput), lOutput(nOutput)
+randDouble::randDouble(double up, double down)
+	: gen(rd()), dist(up, down)
+{}
+double randDouble::generate()
 {
-	size_t i;
+	return dist(gen);
+}
 
-	for(i = 0; i < lHidden.size(); i++)
+neuralNetwork::neuralNetwork(const array<uint, 3> topology)
+	: rand(0.0, 1.0)
+{
+	lInput = vector<neuron>(topology[0]);
+	lHidden = vector<neuron>(topology[1]);
+	lOutput = vector<neuron>(topology[2]);
+
+	LOGI("TOPOLOGY of the neural network:");
+	LOGI("INPUTS:\t" << lInput.size());
+	LOGI("OUTPUTS:\t" << lOutput.size());
+	LOGI("HIDDEN:\t" << lHidden.size());
+
+	neuron* n;
+	for(size_t i = 0; i < lInput.size(); i++)
 	{
-		
+		n = &lInput[i];
+		LOGD("Initializing input '" << i << "' with random weight " << rand.generate());
+	}
+	for(size_t i = 0; i < lOutput.size(); i++)
+	{
+		n = &lOutput[i];
+		LOGD("Initializing output '" << i << "' with random weight " << rand.generate());
 	}
 }
 neuralNetwork::~neuralNetwork()
