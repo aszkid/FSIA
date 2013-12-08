@@ -11,17 +11,18 @@
 	que ell mateix ha comprat, tant com la prohibició total o parcial de la redistribució del programa.
 	\cite{gnucategories}
 
-	Per a entendre millor el software propietari, posem un exemple pràctic (i desgraciadament, verídic).
-	La nova consola de Sony, la \emph{PlayStation 4}, posseeix un \emph{sistema operatiu} \footnote{Conjunt
-	de programes i funcions que fan funcionar un ordinador.} propietari que es basa alhora en un sistema operatiu
-	anomenat \emph{FreeBSD}, de llicència no-privativa \cite{freebsdlicense}. Aquest sistema operatiu, FreeBSD, té una
-	quantitat d'usuaris i de desenvolupadors molt baixa, el que dificulta el desenvolupament de \emph{drivers}, que
-	permetran el millor funcionament de diferents components d'un ordinador amb el sistema operatiu. La llicència que FreeBSD utilitza, permet
-	la revocació de la llicència per la substitució d'una altra, i això és el que ha aprofitat Sony: realitzarà millores
-	sobre el sistema operatiu, i ningú dins la comunitat d'usuaris de FreeBSD se'n podrà beneficiar, ja que ara és Sony qui
-	fa el que vol amb el producte lliure que ha adquirit i modificat. D'aquesta forma, l'evolució del OS \footnote{Sistema operatiu}
-	FreeBSD és molt més lenta que, per exemple, l'evolució dels sistemes operatius \emph{GNU/Linux}, que utilitzen
-	una llicència diferent. \cite{wowbsd}
+	Per a entendre millor el software propietari, posem un exemple pràctic (i desgraciadament, verídic):
+	en Jaume crea un programa impressionant, amb l'ajut de diferents col·laboradors (que ho fan com a hobby),
+	i distribueix el programa a través d'una llicència permissiva. Amb el temps, més gent col·labora i cada vegada,
+	aquest programa fet amb l'esforç de centenars de voluntaris, adquireix més importància en el món del \emph{software}.
+	En Jaume, però, segueix volent mantenir la filosofia lliure del software que la comunitat ha creat, i per tant
+	manté la llicència permissiva. El programa té diversos errors i punts febles, que són difícils de arreglar.
+	
+	Un dia, una companyia, agafa tot el codi d'en Jaume, arregla aquests problemes, el modifica lleugerament, i
+	el redistribueix amb una llicència propietària. Ara, totes les millores que es podrien haver incorporat
+	al codi d'en Jaume a benefici de la comunitat, estan en mans d'una gran corporació, que no les vol compartir.
+	I degut a la llicència que en Jaume ha fet servir, no té dret a res, i la comunitat que ha treballat durant tot aquest temps,
+	es quedarà sense les millores que la corporació ha desenvolupat, sobre la seva base.
 
 \section{Qui el fa?}
 
@@ -35,13 +36,14 @@
 
 	Aquesta gran extensió del seu ús és degut a l'inversió milionària al màrketing, i a
 	pactes amb productors de sistemes operatius i proveïdors d'Internet, que acorden la
-	prèvia instal·lació de software propietari als ordinadors. La falta d'informació del que 
-	comporta l'ús de programes propietaris.
+	prèvia instal·lació de software propietari als ordinadors. Junt amb la falta d'informació del que 
+	comporta l'ús de programes propietaris, i la falta de preocupació de la integritat dels
+	nostres drets virtuals, son els motius principals de l'expansió del software propietari.
 
 	\begin{figure}[ht!]
 	\centering
 	\includegraphics[width=100mm]{data/web_servers_share.png}
-	\caption{Ús de software propietari/lliure \cite{whyfoss}}
+	\caption{Ús de software en servidors web \cite{whyfoss}}
 	\label{websshare}
 	\end{figure}
 
@@ -100,33 +102,46 @@
 
 	El gràfic \ref{osshare} mostra el market share de \emph{sistemes operatius} que utilitzen els particulars
 	(qualsevol persona). \emph{Microsoft Windows} és el guanyador indiscutible, amb \emph{MacOS} molt per darrere
-	i els sistemes operatius \emph{GNU/Linux} amb menys del 5\% del share.
+	i els sistemes operatius \emph{GNU/Linux} (l'alternativa lliure) amb menys del 5\% del share.
 
-	El gràfic \ref{ossvshare} mostra el market share de sistemes operatius que utilitzen els servidors
-
-
-\section{Avantatges del software propietari}
-
-Ventatges del software propietari: 
-
--Propietat i decissió de l'ús del software per part de la empresa: fer un bon software 
-requereix una important inversió econòmica que, si fos lliure, no serviria de res ja 
-que just quan l'acabéssim, la competència es podria apropiar del mateix.
-
--Solen tenir millor acabat que el software lliure: en el software lliure, degut a que
- el fa molta gent sol tenir diferències de format i no tenen tan bon acabat (tot i que
- molts softwares lliures tenen molt bon acabat).
-
--Les aplicacions actuals amb més èxit al mercat són, en majoria, propietaries.
-
--Més possibilitats en el mercat laboral: en la majoria de les feines d'informàtica la
-feina que es durà a terme serà en el softwafare propietari.
-\cite{gentegeek}
+	El gràfic \ref{ossvshare} mostra el market share de sistemes operatius que utilitzen els servidors i,
+	al igual que en els programes que utilitzen els servidors, el software lliure guanya.
+	
+	D'aquests documents podem extreure una conclusió ben simple; la població general, no especialitzada,
+	utilitza generalment software propietari (que, casualment, els hi ve pre-instal·lat als ordinadors).
+	En canvi, els usuaris especialitzats (mantenidors de servidors, en aquest cas), es passen a les alternatives
+	de software lliure, que amb el temps han demostrat més viabilitat i seguretat per al ús que s'els hi ha de donar.
+	Per tant, el software propietari és majoritari per \emph{conveniència}, no per qualitat.
 
 
+\section{Avantatges i inconvenients del software propietari}
 
+Els avantatges principals del software propietari  són ben simples; solen ser avantatges per part
+de l'empresa creadora, ja que generen beneficis més elevats que el software lliure (que es sol distribuir
+de forma gratuïta).
 
+Per part de l'usuari, en podem extreure alguns:
 
+\begin{itemize}
+\item \emph{Atenció al client}: molt software lliure no ofereix ni garanties, ni atenció al client 'professional'.
+La major part d'empreses de software propietari es veuen obligades a oferir-ne, ja que si no, el seu producte (generalment,
+que comporta un cost econòmic) perd reputació i clientela.
+\item \emph{Fàcil adquisició:} avantatge per a alguns, inconvenient per a uns altres (no volen software pre-instal·lat als seus
+ordinadors).
+\end{itemize}
 
+En quant a inconvenients, en podem trobar bastants:
+\begin{itemize}
+\item \emph{Falta de suport multi-plataforma}: molt software privatiu es centra en les plataformes principals (Windows i MacOS),
+i s'oblida de les minoritàries.
+\item \emph{Impossibilitat de modificació}: un programa propietari té un error amb solució simple, i tu tens coneixements de
+programació? Oblida't d'arreglar-ho, hauràs d'esperar a una actualització oficial.
+\item \emph{Impossibilitat de còpia}: en molts casos, si vols instal·lar un mateix software a diferents ordinadors de la teva
+propietat, hauràs de comprar la mateixa llicència vàries vegades.
+\item \emph{Falta de seguretat personal}: no pots saber si el software recull dades del teu ordinador, ni a qui les comparteix.
+\item \emph{Dependència a l'empresa}: quan compres un programa, quedes subjugat a les decisions que l'empresa faci sobre el mateix.
+\end{itemize}
+
+ \cite{gentegeek}
 
 

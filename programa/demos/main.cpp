@@ -2,10 +2,7 @@
 #include "demo_1.hpp"
 
 #include <vector>
-#include <iostream>
 #include <memory>
-#include <string>
-#include <sstream>
 
 using std::vector;
 
