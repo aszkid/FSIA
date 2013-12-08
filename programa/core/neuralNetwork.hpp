@@ -1,17 +1,12 @@
 #pragma once
 
+#include "helpers.hpp"
+
 #include <iostream>
 #include <vector>
 #include <array>
 #include <cmath>
 #include <random>
-#include <functional>
-
-#define LOG(a, x) std::cout << "[" << a << "] " << x << std::endl
-#define LOGE(x) LOG("ERROR", x)
-#define LOGD(x) LOG("DEBUG", x)
-#define LOGI(x) LOG("INFO", x)
-#define LOGW(x) LOG("WARNING", x)
 
 class randDouble
 {
