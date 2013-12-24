@@ -21,11 +21,24 @@ private:
 	sf::Clock frameClock;
 	float frameTime;
 	
-	std::vector<int> getImage(int n);
-	std::array<sf::RectangleShape, 28*28> board; 
+	void loadFile(int n);
+	void setImage(int n);
+	bool imageCheckIndex(int n);
+	bool fileCheckIndex(int n);
 	
+	const int xoff = 20;
+	const int yoff = 20;
+	const int boxsize = 5;
+	
+	std::array<sf::RectangleShape, 28*28> board;
+	sf::VertexArray surround;
+	int imageindex;
+	int fileindex;
 	std::vector<unsigned char> data;
 	std::ifstream file;
+	
+	sf::Font font;
+	sf::Text imageinfo;
 	
 	FANN::neural_net nn;
 	

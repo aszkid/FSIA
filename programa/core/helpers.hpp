@@ -7,12 +7,18 @@
 
 using std::string;
 using std::istringstream;
+using std::ostringstream;
 
 #define LOG(a, x) std::cout << "[" << a << "] " << x << std::endl
 #define LOGE(x) LOG("ERROR", x)
 #define LOGD(x) LOG("DEBUG", x)
 #define LOGI(x) LOG("INFO", x)
 #define LOGW(x) LOG("WARNING", x)
+
+#define STREAM(ITEMS)                                             \
+  ( ( dynamic_cast<ostringstream &> (                             \
+         ostringstream() . seekp( 0, std::ios_base::cur ) << ITEMS )   \
+    ) . str() )
 
 
 template<typename T, typename... Args>
