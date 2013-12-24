@@ -2,6 +2,8 @@
 
 #include "helpers.hpp"
 
+#include <SFML/System.hpp>
+
 class Demo
 {
 public:

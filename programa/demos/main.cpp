@@ -1,15 +1,15 @@
 #include "base.hpp"
 #include "demo_1.hpp"
+#include "demo_2.hpp"
 
 #include <vector>
 #include <memory>
 
-using std::vector;
-
 int main(int argc, char** argv)
 {
-	vector<std::unique_ptr<Demo>> demos;
+	std::vector<std::unique_ptr<Demo>> demos;
 	demos.push_back(make_unique<Demo_1>());
+	demos.push_back(make_unique<Demo_2>());
 	
 	if(argc < 2)
 	{
@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 		return EXIT_FAILURE;
 	}
 	
-	int demo_n = str_to<int>(argv[1]);
+	size_t demo_n = str_to<int>(argv[1]);
 	if(demo_n < 1 || demo_n > demos.size())
 	{
 		LOGE("Incorrect demo number (" << demo_n << ")!");

@@ -1,0 +1,8 @@
+[ ] Conducció automàtica - el coche ha de conduir amb una velocitat constant,
+	i girar a través de les outputs de una red neuronal.
+[ ] Evolució - conjunt de éssers tenen tres opcions: X, atacar, o reproduir-se.
+	Es generen els pesos aleatòriament, i passen a les següents fases els éssers
+	que millor hagin sobreviscut.
+[ ] Desxifrar números
+[ ] Futbol
+[ ] Pong
