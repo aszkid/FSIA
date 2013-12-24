@@ -57,14 +57,18 @@ void Demo_2::run()
 							
 						case sf::Keyboard::Up:
 							if(imageCheckIndex(imageindex+1))
+							{
 								setImage(++imageindex);
-							updateInfoText();
+								updateInfoText();
+							}
 							break;
 							
 						case sf::Keyboard::Down:
 							if(imageCheckIndex(imageindex-1))
+							{
 								setImage(--imageindex);
-							updateInfoText();
+								updateInfoText();
+							}
 							break;
 							
 						case sf::Keyboard::Right:
@@ -85,6 +89,10 @@ void Demo_2::run()
 							}
 							break;
 							
+						case sf::Keyboard::L:
+							LOGI("Learning!");
+							break;
+						
 						default:
 							break;
 					}

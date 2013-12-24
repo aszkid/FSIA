@@ -21,7 +21,6 @@ void Demo_1::run()
 	{
 		while(win.pollEvent(eve))
 		{
-			
 			switch(eve.type)
 			{
 				case sf::Event::Closed:
