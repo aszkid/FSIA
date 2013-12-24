@@ -18,6 +18,8 @@ bool Demo_2::prepare()
 
 	imageindex = 1;
 	setImage(imageindex);
+	
+	updateInfoText();
 
 	frameTime = 0;
 	win.create(sf::VideoMode::getDesktopMode(), "DEMO 2", sf::Style::Fullscreen);
@@ -56,11 +58,13 @@ void Demo_2::run()
 						case sf::Keyboard::Up:
 							if(imageCheckIndex(imageindex+1))
 								setImage(++imageindex);
+							updateInfoText();
 							break;
 							
 						case sf::Keyboard::Down:
 							if(imageCheckIndex(imageindex-1))
 								setImage(--imageindex);
+							updateInfoText();
 							break;
 							
 						case sf::Keyboard::Right:
@@ -68,6 +72,7 @@ void Demo_2::run()
 							{
 								loadFile(++fileindex);
 								setImage(imageindex);
+								updateInfoText();
 							}
 							break;
 							
@@ -76,6 +81,7 @@ void Demo_2::run()
 							{
 								loadFile(--fileindex);
 								setImage(imageindex);
+								updateInfoText();
 							}
 							break;
 							
@@ -96,7 +102,6 @@ void Demo_2::run()
 			win.draw(box);
 		win.draw(surround);
 		
-		imageinfo.setString(STREAM("Image: " << imageindex << " | File: " << fileindex));
 		win.draw(imageinfo);
 		
 		win.display();
@@ -155,7 +160,7 @@ bool Demo_2::imageCheckIndex(int n)
 {
 	if( (n <= 0) || ((28*28)*(n-1) > data.size()) )
 		return false;
-	return true;
+	return true; 
 }
 	
 bool Demo_2::fileCheckIndex(int n)
@@ -163,4 +168,9 @@ bool Demo_2::fileCheckIndex(int n)
 	if((n > 9) || (n < 0))
 		return false;
 	return true;
+}
+
+void Demo_2::updateInfoText()
+{
+	imageinfo.setString(STREAM("Image: " << imageindex << " | File: " << fileindex));
 }

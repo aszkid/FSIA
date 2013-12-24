@@ -25,6 +25,7 @@ private:
 	void setImage(int n);
 	bool imageCheckIndex(int n);
 	bool fileCheckIndex(int n);
+	void updateInfoText();
 	
 	const int xoff = 20;
 	const int yoff = 20;
