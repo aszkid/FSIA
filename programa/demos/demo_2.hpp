@@ -7,8 +7,8 @@
 #include <array>
 
 #include <SFML/Graphics.hpp>
-#include <fann.h>
-#include <fann_cpp.h>
+/*#include <fann.h>
+#include <fann_cpp.h>*/
 
 class Demo_2 : public Demo {
 public:
@@ -27,9 +27,9 @@ private:
 	bool fileCheckIndex(int n);
 	void updateInfoText();
 	
-	const int xoff = 20;
-	const int yoff = 20;
-	const int boxsize = 5;
+	static const int xoff = 20;
+	static const int yoff = 20;
+	static const int boxsize = 5;
 	
 	std::array<sf::RectangleShape, 28*28> board;
 	sf::VertexArray surround;
@@ -41,6 +41,6 @@ private:
 	sf::Font font;
 	sf::Text imageinfo;
 	
-	FANN::neural_net nn;
+	//FANN::neural_net nn;
 	
 };

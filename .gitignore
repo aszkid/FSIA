@@ -28,3 +28,11 @@
 documents/test.pdf
 documents/output/main.pdf
 programa/bin/demos
+*.synctex.gz
+main.pdf
+*.tps
+programa/bin/Debug/*
+*.dll
+*.exe
+*.ilk
+*.pdb

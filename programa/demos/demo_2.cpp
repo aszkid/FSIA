@@ -2,7 +2,7 @@
 
 bool Demo_2::prepare()
 {
-	if(!font.loadFromFile("./bin/Minecraftia.ttf"))
+	if(!font.loadFromFile(file_rel("Minecraftia.ttf")))
 	{
 		LOGE("Couldn't load font from file!");
 		return false;
@@ -104,7 +104,7 @@ void Demo_2::run()
 		
 		frameTime = frameClock.restart().asSeconds();
 		
-		win.clear(sf::Color::Black);
+		win.clear(sf::Color(20, 20, 20));
 		
 		for(auto& box : board)
 			win.draw(box);
@@ -121,9 +121,6 @@ void Demo_2::setImage(int n)
 	size_t index = 28*28*(n-1);
 	
 	std::vector<int> result(28*28);
-	
-	if((28*28+index > data.size()) || (index > data.size()))
-		throw;
 	
 	for(size_t i = index; i < 28*28 + index; i++)
 	{
@@ -149,7 +146,7 @@ void Demo_2::setImage(int n)
 
 void Demo_2::loadFile(int n)
 {
-	file.open(STREAM("./bin/data" << n), std::ios::binary);
+	file.open(file_rel(STREAM("data" << n)), std::ios::binary);
 	
 	std::streampos filesize;
 	
@@ -157,16 +154,16 @@ void Demo_2::loadFile(int n)
 	filesize = file.tellg();
 	file.seekg(0, std::ios::beg);
 	
-	data = std::vector<unsigned char>(filesize);
+	data.clear();
+	data.resize(filesize);
 	
 	file.read((char*)&data[0], filesize);
-	
 	file.close();
 }
 
 bool Demo_2::imageCheckIndex(int n)
 {
-	if( (n <= 0) || ((28*28)*(n-1) > data.size()) )
+	if( (n <= 0) || ((28*28)*(n-1)+28*28 > data.size()) )
 		return false;
 	return true; 
 }
