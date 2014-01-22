@@ -111,7 +111,7 @@ void Demo_1::run()
 		bool wall = false;
 
 		// collide horizontal
-		if((nextpos.x + ball.shape.getRadius() + 10 >= win.getSize().x) || (nextpos.x <= 0))
+		if((nextpos.x + ball.shape.getRadius() + 15 >= win.getSize().x) || (nextpos.x <= 0))
 		{
 			ball.v.x *= -1;
 			bounce3.play();
@@ -120,7 +120,7 @@ void Demo_1::run()
 			LOGI("Actual position: " << ball.shape.getPosition().x + ballradius);
 		}
 		// collide vertical
-		if((nextpos.y + ball.shape.getRadius() + 10 >= win.getSize().y) || (nextpos.y <= 0))
+		if((nextpos.y + ball.shape.getRadius() + 15 >= win.getSize().y) || (nextpos.y <= 0))
 		{
 			ball.v.y *= -1;
 			bounce2.play();
