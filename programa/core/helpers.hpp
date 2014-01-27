@@ -29,7 +29,7 @@ enum SYSTEM {
 
 #ifdef _WIN32
 	static const unsigned int _SYS = SYSTEM::Windows;
-#elif __linx__
+#elif __linux__
 	static const unsigned int _SYS = SYSTEM::Linux;
 #elif __APPLE__ && __MACH__
 	static const unsigned int _SYS = SYSTEM::MacOS;

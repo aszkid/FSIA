@@ -36,3 +36,4 @@ programa/bin/Debug/*
 *.exe
 *.ilk
 *.pdb
+programa/bin/demos

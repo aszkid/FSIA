@@ -7,9 +7,9 @@ std::string file_rel(std::string file)
 	case SYSTEM::Windows:
 		return file;
 	case SYSTEM::Linux:
-		return "./bin/" + file;
+		return file;
 	case SYSTEM::MacOS:
-		return "./bin/" + file;
+		return file;
 	default:
 		return file;
 	}
