@@ -23,7 +23,7 @@ private:
 	
 	void loadFile(int n);
 	void setImage(int n);
-	bool imageCheckIndex(int n);
+	bool imageCheckIndex(size_t n);
 	bool fileCheckIndex(int n);
 	void updateInfoText();
 	

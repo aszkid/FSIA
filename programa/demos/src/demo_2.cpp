@@ -161,7 +161,7 @@ void Demo_2::loadFile(int n)
 	file.close();
 }
 
-bool Demo_2::imageCheckIndex(int n)
+bool Demo_2::imageCheckIndex(size_t n)
 {
 	if( (n <= 0) || ((28*28)*(n-1)+28*28 > data.size()) )
 		return false;
