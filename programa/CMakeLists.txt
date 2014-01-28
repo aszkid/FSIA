@@ -11,5 +11,13 @@ SET(SFML_ROOT "/sfml/2.1/")
 
 SET(COMPILE_FLAGS "-std=c++11 -g -Wall -Wextra")
 
+IF( CMAKE_SIZEOF_VOID_P EQUAL 8 )
+	SET(EXEC_NAME demos_64)
+	SET(LIB_NAME ailib_64)
+ELSE()
+	SET(EXEC_NAME demos_32)
+	SET(LIB_NAME ailib_32)
+ENDIF()
+
 ADD_SUBDIRECTORY(core)
 ADD_SUBDIRECTORY(demos)
