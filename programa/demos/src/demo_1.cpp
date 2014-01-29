@@ -116,8 +116,6 @@ void Demo_1::run()
 			ball.v.x *= -1;
 			bounce3.play();
 			wall = true;
-
-			LOGI("Actual position: " << ball.shape.getPosition().x + ballradius);
 		}
 		// collide vertical
 		if((nextpos.y + ball.shape.getRadius() + 15 >= win.getSize().y) || (nextpos.y <= 0))
@@ -157,7 +155,6 @@ void Demo_1::run()
 			std::mt19937 gen(rd());
 			std::uniform_int_distribution<> dis(-(int) win.getSize().y / 2, (int) win.getSize().y / 2);
 			
-			LOGI("Next position: " << ball.shape.getPosition().x + ballradius);
 			ball.v = sf::Vector2f(win.getSize().x / 2, dis(gen));
 		}
 		else
