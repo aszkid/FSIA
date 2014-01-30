@@ -8,8 +8,6 @@
 int main(int argc, char** argv)
 {
 	std::vector<std::unique_ptr<Demo>> demos;
-	/*demos.push_back(make_unique<Demo_1>());
-	demos.push_back(make_unique<Demo_2>());*/
 	demos.push_back(std::unique_ptr<Demo>(new Demo_1()));
 	demos.push_back(std::unique_ptr<Demo>(new Demo_2()));
 	
