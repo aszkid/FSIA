@@ -54,10 +54,6 @@ void Demo_3::run()
 			car.shape.setRotation(car.shape.getRotation() -1);
 		}
 		
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			car.shape.getRotation 
-		}
 		win.clear(sf::Color(20, 20, 20));
 		win.draw(car.shape);
 		win.display();
