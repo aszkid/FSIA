@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-
+#include <cmath>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <ctime>
@@ -15,6 +15,8 @@ struct Car {
 	{}
 	
 	sf::RectangleShape shape;
+	
+	
 };
 
 class Demo_3 : public Demo {
