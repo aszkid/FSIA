@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base.hpp"
-
+#include <cmath>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <ctime>
