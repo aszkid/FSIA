@@ -15,8 +15,6 @@ struct Car {
 	{}
 	
 	sf::RectangleShape shape;
-	
-	
 };
 
 class Demo_3 : public Demo {

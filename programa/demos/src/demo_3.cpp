@@ -8,12 +8,11 @@ bool Demo_3::prepare()
 	win.create(sf::VideoMode::getDesktopMode(), "DEMO 1", sf::Style::Fullscreen);
 	win.setFramerateLimit(60);
 	win.setVerticalSyncEnabled(true);
-	
 	sf::FloatRect scoreRect = car.shape.getLocalBounds();
 	car.shape.setOrigin(scoreRect.left + scoreRect.width / 2.f, scoreRect.top + scoreRect.height / 2.f);
 	car.shape.setPosition(100, 100);
 
-	return true;
+    	return true;
 }
 
 void Demo_3::run()
