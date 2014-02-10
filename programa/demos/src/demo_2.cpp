@@ -203,7 +203,7 @@ void Demo_2::convert()
 			{
 				
 			}
-			for(imgind = learning; imgind < testing; imgind++)
+			for(imgind = learning; imgind < testing + learning; imgind++)
 			{
 				
 			}
