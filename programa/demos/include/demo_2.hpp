@@ -15,6 +15,9 @@ public:
 	bool prepare();
 	void run();
 private:
+	void convert();
+	bool converted;
+
 	sf::RenderWindow win;
 	sf::Event eve;
 	

@@ -2,6 +2,8 @@
 
 bool Demo_2::prepare()
 {
+	converted = false;
+
 	if(!font.loadFromFile(file_rel("Minecraftia.ttf")))
 	{
 		LOGE("Couldn't load font from file!");
@@ -92,7 +94,11 @@ void Demo_2::run()
 						case sf::Keyboard::L:
 							LOGI("Learning!");
 							break;
-						
+
+						case sf::Keyboard::C:
+							convert();
+							break;
+
 						default:
 							break;
 					}
@@ -178,4 +184,34 @@ bool Demo_2::fileCheckIndex(int n)
 void Demo_2::updateInfoText()
 {
 	imageinfo.setString(STREAM("Image: " << imageindex << " | File: " << fileindex));
+}
+
+void Demo_2::convert()
+{
+	if(!converted)
+	{
+		size_t imgfile = 0;
+		size_t imgind = 1;
+		const size_t imgamount = data.size() / (28*28);
+
+		static const size_t learning = 850;
+		static const size_t testing = 150;
+		
+		while(fileCheckIndex(imgfile))
+		{
+			for(imgind = 1; imgind < learning; imgind++)
+			{
+				
+			}
+			for(imgind = learning; imgind < testing; imgind++)
+			{
+				
+			}
+
+			imgfile++;
+		}
+
+
+		converted = true;
+	}
 }
