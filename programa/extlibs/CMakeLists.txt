@@ -1,6 +1,8 @@
-FILE(GLOB_RECURSE SRCS "${PROJECT_SOURCE_DIR}/extlibs/*.cpp" "${PROJECT_SOURCE_DIR}/extlibs/*.c")
+SET(SRCS "${PROJECT_SOURCE_DIR}/extlibs/tinyxml2/src/tinyxml2.cpp" "${PROJECT_SOURCE_DIR}/extlibs/fann/src/doublefann.c")
 
 ADD_LIBRARY(${EXTLIB_NAME} ${SRCS})
+
+MESSAGE(${SRCS})
 
 IF(UNIX)
 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${COMPILE_FLAGS}")

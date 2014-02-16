@@ -7,8 +7,7 @@
 #include <array>
 
 #include <SFML/Graphics.hpp>
-/*#include <fann.h>
-#include <fann_cpp.h>*/
+#include "fann.h"
 
 class Demo_2 : public Demo {
 public:
@@ -17,6 +16,9 @@ public:
 private:
 	void convert();
 	bool converted;
+	void learn();
+	bool learned;
+	void test();
 
 	sf::RenderWindow win;
 	sf::Event eve;

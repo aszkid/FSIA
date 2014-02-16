@@ -2,7 +2,7 @@
 
 bool Demo_2::prepare()
 {
-	converted = false;
+	converted = learned = false;
 
 	if(!font.loadFromFile(file_rel("Minecraftia.ttf")))
 	{
@@ -92,11 +92,15 @@ void Demo_2::run()
 							break;
 							
 						case sf::Keyboard::L:
-							LOGI("Learning!");
+							learn();
 							break;
 
 						case sf::Keyboard::C:
 							convert();
+							break;
+
+						case sf::Keyboard::T:
+							test();
 							break;
 
 						default:
@@ -125,6 +129,8 @@ void Demo_2::run()
 void Demo_2::setImage(int n)
 {
 	size_t index = 28*28*(n-1);
+	
+	LOGI("Real starting index " << index);
 	
 	std::vector<int> result(28*28);
 	
@@ -192,7 +198,7 @@ void Demo_2::convert()
 	{
 		size_t imgfile = 0;
 		size_t imgind = 1;
-		const size_t imgamount = data.size() / (28*28);
+		//const size_t imgamount = data.size() / (28*28);
 
 		static const size_t learning = 850;
 		static const size_t testing = 150;
@@ -201,25 +207,37 @@ void Demo_2::convert()
 		
 		std::ofstream fileln, filets;
 		
+		fileln.open("learn");
+		filets.open("test");
+		fileln << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
+		filets << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
+		
 		LOGI("Data size of " << data.size());
 		
 		while(fileCheckIndex(imgfile))
 		{
 			loadFile(imgfile);
 		
-			fileln.open(STREAM("learn" << imgfile));
-			fileln << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
-			filets.open(STREAM("test" << imgfile));
-			filets << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
-		
 			for(imgind = 1; imgind < learning*28*28; imgind++)
 			{
 				if(block >= 28*28)
 				{
 					block = 0;
-					fileln << std::endl << imgfile << std::endl;
+					fileln << std::endl;
+					filets << std::endl;				
+					for(size_t outi = 0; outi < 10; outi++)
+					{
+						if(outi == imgfile)
+							fileln << 1 << ' ';
+						else
+							fileln << 0 << ' ';
+					}
+					fileln << std::endl;
+					filets << std::endl;	
 					continue;
 				}
+
+
 				
 				fileln << static_cast<int>(data.at(imgind-1)) << ' ';
 				
@@ -240,10 +258,17 @@ void Demo_2::convert()
 				block++;
 			}
 			
-			fileln << std::endl << imgfile << std::endl;
-			fileln.close();
-			filets << std::endl << imgfile << std::endl;
-			filets.close();
+			fileln << std::endl;
+			filets << std::endl;				
+			for(size_t outi = 0; outi < 10; outi++)
+			{
+				if(outi == imgfile)
+					fileln << 1 << ' ';
+				else
+					fileln << 0 << ' ';
+			}
+			fileln << std::endl;
+			filets << std::endl;	
 			
 			imgfile++;
 		}
@@ -251,4 +276,37 @@ void Demo_2::convert()
 
 		converted = true;
 	}
+}
+
+void Demo_2::learn()
+{
+	fann* ann = fann_create_standard(3, 28*28, int((28*28)/2), 10);
+	
+	fann_train_on_file(ann, "learn", 850, 50, 0.0001);
+	fann_save(ann, "nn.net");
+	
+	
+	fann_destroy(ann);
+}
+
+void Demo_2::test()
+{
+	fann_type* out;
+	fann_type input[28*28];
+	
+	fann* ann = fann_create_from_file("nn.net");
+	
+	LOGI("Starting index at " << imageindex*28*28);
+	
+	for(size_t i = 0; i < 28*28; i++)
+		input[i] = data.at(i + imageindex*28*28);
+		
+	out = fann_run(ann, input);
+	
+	for(size_t i = 0; i < 10; i++)
+	{
+		LOGI(i << " - " << out[i]);
+	}
+	
+	fann_destroy(ann);
 }
