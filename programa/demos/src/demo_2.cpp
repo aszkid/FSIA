@@ -197,17 +197,54 @@ void Demo_2::convert()
 		static const size_t learning = 850;
 		static const size_t testing = 150;
 		
+		size_t block = 0;
+		
+		std::ofstream fileln, filets;
+		
+		LOGI("Data size of " << data.size());
+		
 		while(fileCheckIndex(imgfile))
 		{
-			for(imgind = 1; imgind < learning; imgind++)
+			loadFile(imgfile);
+		
+			fileln.open(STREAM("learn" << imgfile));
+			fileln << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
+			filets.open(STREAM("test" << imgfile));
+			filets << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
+		
+			for(imgind = 1; imgind < learning*28*28; imgind++)
 			{
+				if(block >= 28*28)
+				{
+					block = 0;
+					fileln << std::endl << imgfile << std::endl;
+					continue;
+				}
 				
+				fileln << static_cast<int>(data.at(imgind-1)) << ' ';
+				
+				block++;
 			}
-			for(imgind = learning; imgind < testing + learning; imgind++)
+			block = 0;
+			for(imgind = learning*28*28; imgind < (testing+learning)*28*28; imgind++)
 			{
+				if(block >= 28*28)
+				{
+					block = 0;
+					filets << std::endl << imgfile << std::endl;
+					continue;
+				}
 				
+				filets << static_cast<int>(data.at(imgind-1)) << ' ';
+				
+				block++;
 			}
-
+			
+			fileln << std::endl << imgfile << std::endl;
+			fileln.close();
+			filets << std::endl << imgfile << std::endl;
+			filets.close();
+			
 			imgfile++;
 		}
 

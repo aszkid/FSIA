@@ -39,3 +39,6 @@ programa/bin/Debug/*
 programa/bin/demos
 programa/bin/demos_32
 programa/bin/demos_64
+learn*
+test*
+conv*
