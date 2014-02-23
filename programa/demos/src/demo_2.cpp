@@ -155,6 +155,24 @@ void Demo_2::setImage(int n)
 		box.setPosition(pos);
 	}
 }
+void Demo_2::setImage(std::vector<int> img)
+{
+	for(size_t i = 0; i < board.size(); i++)
+	{
+		auto& box = board[i];
+		int pixelcolor = img[i];
+		
+		box.setFillColor(sf::Color(pixelcolor, pixelcolor, pixelcolor));
+		box.setSize(sf::Vector2f(boxsize, boxsize));
+		
+		int row = i / 28;
+		int col = i - (row * 28);
+		
+		sf::Vector2f pos(xoff + (col*boxsize), yoff + (row*boxsize));
+		
+		box.setPosition(pos);
+	}
+}
 
 void Demo_2::loadFile(int n)
 {
@@ -293,13 +311,19 @@ void Demo_2::test()
 {
 	fann_type* out;
 	fann_type input[28*28];
+	std::vector<int> input_v(28*28);
 	
 	fann* ann = fann_create_from_file("nn.net");
 	
 	LOGI("Starting index at " << imageindex*28*28);
 	
 	for(size_t i = 0; i < 28*28; i++)
+	{
 		input[i] = data.at(i + imageindex*28*28);
+		input_v[i] = data.at(i + imageindex*28*28);
+	}
+	
+	setImage(input_v);
 		
 	out = fann_run(ann, input);
 	
