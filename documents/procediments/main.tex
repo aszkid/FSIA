@@ -9,7 +9,11 @@
 \usepackage{acronym}
 \usepackage{eurosym}
 \usepackage{pgfplots}
+\usepackage[backend=biber]{biblatex}
 \usepackage[auth-sc]{authblk}
+
+\addbibresource{biblio/main.bib}
+
 \date{}
 \begin{document}
 
@@ -33,7 +37,9 @@
 \chapter{Introducció}
 \input{sections/intro}
 
-\bibliographystyle{plain}
-\bibliography{biblio/main}
+\chapter{Xarxes Neuronals Artificials}
+\input{sections/ann}
+
+\printbibliography
 
 \end{document}

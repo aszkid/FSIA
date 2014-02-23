@@ -1,5 +1,4 @@
-output.pdf: main.tex biblio/main.bib
+output.pdf: main.tex
 	pdflatex -output-directory=out main.tex
-	bibtex out/main.aux
-	pdflatex -output-directory=out main.tex
+	biber out/main
 	pdflatex -output-directory=out main.tex

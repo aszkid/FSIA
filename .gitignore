@@ -42,3 +42,5 @@ programa/bin/demos_64
 learn*
 test*
 conv*
+*.bcf
+*.run.xml
