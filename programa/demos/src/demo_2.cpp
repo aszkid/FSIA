@@ -218,7 +218,7 @@ void Demo_2::convert()
 		size_t imgind = 1;
 		//const size_t imgamount = data.size() / (28*28);
 
-		static const size_t learning = 50;
+		static const size_t learning = 10;
 		static const size_t testing = 150;
 		
 		size_t block = 0;
