@@ -200,19 +200,15 @@ void Demo_2::convert()
 		size_t imgind = 1;
 		//const size_t imgamount = data.size() / (28*28);
 
-		static const size_t learning = 850;
+		static const size_t learning = 50;
 		static const size_t testing = 150;
 		
 		size_t block = 0;
 		
-		std::ofstream fileln, filets;
+		std::ofstream fileln;
 		
-		fileln.open("learn");
-		filets.open("test");
-		fileln << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
-		filets << 28*28 << ' ' << static_cast<int>((28*28)/2) << ' ' << 10 << std::endl << std::endl;
-		
-		LOGI("Data size of " << data.size());
+		fileln.open("learn.dat");
+		fileln << 8500 << ' ' << 28*28 << ' ' << 10 << std::endl << std::endl;
 		
 		while(fileCheckIndex(imgfile))
 		{
@@ -223,8 +219,7 @@ void Demo_2::convert()
 				if(block >= 28*28)
 				{
 					block = 0;
-					fileln << std::endl;
-					filets << std::endl;				
+					fileln << std::endl;				
 					for(size_t outi = 0; outi < 10; outi++)
 					{
 						if(outi == imgfile)
@@ -232,34 +227,16 @@ void Demo_2::convert()
 						else
 							fileln << 0 << ' ';
 					}
-					fileln << std::endl;
-					filets << std::endl;	
+					fileln << std::endl;	
 					continue;
 				}
-
-
 				
 				fileln << static_cast<int>(data.at(imgind-1)) << ' ';
 				
 				block++;
 			}
-			block = 0;
-			for(imgind = learning*28*28; imgind < (testing+learning)*28*28; imgind++)
-			{
-				if(block >= 28*28)
-				{
-					block = 0;
-					filets << std::endl << imgfile << std::endl;
-					continue;
-				}
-				
-				filets << static_cast<int>(data.at(imgind-1)) << ' ';
-				
-				block++;
-			}
-			
-			fileln << std::endl;
-			filets << std::endl;				
+
+			fileln << std::endl;				
 			for(size_t outi = 0; outi < 10; outi++)
 			{
 				if(outi == imgfile)
@@ -268,7 +245,6 @@ void Demo_2::convert()
 					fileln << 0 << ' ';
 			}
 			fileln << std::endl;
-			filets << std::endl;	
 			
 			imgfile++;
 		}
@@ -282,7 +258,7 @@ void Demo_2::learn()
 {
 	fann* ann = fann_create_standard(3, 28*28, int((28*28)/2), 10);
 	
-	fann_train_on_file(ann, "learn", 850, 50, 0.0001);
+	fann_train_on_file(ann, "learn.dat", 10000, 25, 0.0001);
 	fann_save(ann, "nn.net");
 	
 	
