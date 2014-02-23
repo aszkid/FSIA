@@ -28,6 +28,8 @@ private:
 	
 	void loadFile(int n);
 	void setImage(int n);
+	void setImage(std::vector<int> img);
+	
 	bool imageCheckIndex(size_t n);
 	bool fileCheckIndex(int n);
 	void updateInfoText();
