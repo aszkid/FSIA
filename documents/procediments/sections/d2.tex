@@ -2,7 +2,7 @@
 \centering
 \includegraphics[width=35mm]{data/confusing_2.png}
 \caption{4 o 9? La nostra \ac{ann} creu amb un 100\% de certesa que és un 4, i amb un 47\% de certesa que és un 9.}
-\label{simple_ann}
+\label{certesa}
 \end{figure}
 
 Podem visualitzar perfectament el model neuronal que representa un problema de reconeixement de caràcters: la nostra
@@ -27,7 +27,7 @@ extremadament interconnectada i intel·ligent, que sembla utilitzar raonament, e
 \centering
 \includegraphics[width=45mm]{data/extraction-0.png}
 \caption{Exemple d'extracció de característiques. Gràcies a \href{http://clopinet.com/isabelle/Projects/ETH/}{Isabelle Guyon}.}
-\label{simple_ann}
+\label{extracció}
 \end{figure}
 
 Nosaltres hem extret un dataset \href{http://cis.jhu.edu/~sachin/digit/digit.html}{derivat} del majestuós \href{http://yann.lecun.com/exdb/mnist/}{MINST} (derivat al seu torn del NIST)
@@ -48,3 +48,11 @@ estableix el set d'entrenament. Realitza tot aquest procés per cada imatge de l
 com a entrades d'una \ac{ann} creada a partir de l'entrenament anterior. Produeix llavors, la desitjada sortida que estàvem esperant, imprimint a la consola (l'objectiu és dibuixar un gràfic)
 la certesa per cada número de l'1 al 9.
 \end{enumerate}
+
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=65mm]{data/test.png}
+\caption{Sortida de la nostra xarxa neuronal, per a un estrany número 8.}
+\label{output}
+\end{figure}
