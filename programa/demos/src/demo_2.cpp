@@ -221,7 +221,7 @@ void Demo_2::convert()
 		size_t off = 0;
 		const size_t width = 28;
 	
-		size_t perfile = 500;
+		size_t perfile = 750;
 	
 		std::ofstream out("learn2.dat");
 		out << perfile*10 << space << width*width << space << 10 << std::endl << std::endl;
