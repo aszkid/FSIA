@@ -7,7 +7,7 @@
 #include <array>
 
 #include <SFML/Graphics.hpp>
-#include "fann.h"
+#include "doublefann.h"
 
 class Demo_2 : public Demo {
 public:

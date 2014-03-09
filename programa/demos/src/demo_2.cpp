@@ -221,7 +221,7 @@ void Demo_2::convert()
 		size_t off = 0;
 		const size_t width = 28;
 	
-		size_t perfile = 5;
+		size_t perfile = 500;
 	
 		std::ofstream out("learn2.dat");
 		out << perfile*10 << space << width*width << space << 10 << std::endl << std::endl;
@@ -261,7 +261,7 @@ void Demo_2::learn()
 {
 	fann* ann = fann_create_standard(3, 28*28, int((28*28)/2.0), 10);
 	
-	fann_train_on_file(ann, "learn2.dat", 1000, 25, 0.00001);
+	fann_train_on_file(ann, "learn2.dat", 1000, 25, 0.009);
 	fann_save(ann, "nn2.net");
 	
 	fann_destroy(ann);
@@ -273,16 +273,18 @@ void Demo_2::test()
 	fann_type input[28*28];
 	std::vector<int> input_v(28*28);
 	
-	fann* ann = fann_create_from_file("nn.net");
+	fann* ann = fann_create_from_file("nn2.net");
+	
+	LOGI("Testing image #" << imageindex-1 << " of set #" << fileindex);
 	
 	for(size_t i = 0; i < 28*28; i++)
 	{
-		input[i] = data.at(i + imageindex*28*28);
-		input_v[i] = data.at(i + imageindex*28*28);
+		input[i] = static_cast<double>(1.0 * (data.at(i + (imageindex-1)*28*28)) / 255.0);
+		input_v[i] = data.at(i + (imageindex-1)*28*28);
 	}
 	
 	setImage(input_v);
-		
+	
 	out = fann_run(ann, input);
 	
 	for(size_t i = 0; i < 10; i++)
