@@ -24,7 +24,8 @@ bool Demo_2::prepare()
 	updateInfoText();
 
 	frameTime = 0;
-	win.create(sf::VideoMode::getDesktopMode(), "DEMO 2", sf::Style::Fullscreen);
+	//win.create(sf::VideoMode::getDesktopMode(), "DEMO 2", sf::Style::Fullscreen);
+	win.create(sf::VideoMode(1280, 720), "DEMO 2");
 	win.setFramerateLimit(60);
 	
 	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff)));
@@ -130,8 +131,6 @@ void Demo_2::setImage(int n)
 {
 	size_t index = 28*28*(n-1);
 	
-	LOGI("Real starting index " << index);
-	
 	std::vector<int> result(28*28);
 	
 	for(size_t i = index; i < 28*28 + index; i++)
@@ -214,59 +213,45 @@ void Demo_2::convert()
 {
 	if(!converted)
 	{
-		size_t imgfile = 0;
-		size_t imgind = 1;
-		//const size_t imgamount = data.size() / (28*28);
-
-		static const size_t learning = 10;
-		static const size_t testing = 150;
+		static const char space = ' ';
+	
+		size_t file = 0;
+		size_t image = 0;
+		size_t index = 0;
+		size_t off = 0;
+		const size_t width = 28;
+	
+		size_t perfile = 5;
+	
+		std::ofstream out("learn2.dat");
+		out << perfile*10 << space << width*width << space << 10 << std::endl << std::endl;
 		
-		size_t block = 0;
-		
-		std::ofstream fileln;
-		
-		fileln.open("learn.dat");
-		fileln << 8500 << ' ' << 28*28 << ' ' << 10 << std::endl << std::endl;
-		
-		while(fileCheckIndex(imgfile))
+		while(fileCheckIndex(file))
 		{
-			loadFile(imgfile);
+			loadFile(file);
 		
-			for(imgind = 1; imgind < learning*28*28; imgind++)
+			for(image = 0; image < perfile; image++)
 			{
-				if(block >= 28*28)
+				off = image*width*width;
+				
+				for(index = off; index < off+width*width; index++)
 				{
-					block = 0;
-					fileln << std::endl;				
-					for(size_t outi = 0; outi < 10; outi++)
-					{
-						if(outi == imgfile)
-							fileln << 1 << ' ';
-						else
-							fileln << 0 << ' ';
-					}
-					fileln << std::endl;	
-					continue;
+					out << static_cast<double>(1.0 * (data.at(index)) / 255.0) << space;
 				}
+				out << std::endl;
 				
-				fileln << static_cast<int>(data.at(imgind-1)) << ' ';
-				
-				block++;
+				for(size_t outi = 0; outi < 10; outi++)
+				{
+					if(outi == file)
+						out << 1 << space;
+					else
+						out << 0 << space;
+				}
+				out << std::endl;
 			}
-
-			fileln << std::endl;				
-			for(size_t outi = 0; outi < 10; outi++)
-			{
-				if(outi == imgfile)
-					fileln << 1 << ' ';
-				else
-					fileln << 0 << ' ';
-			}
-			fileln << std::endl;
 			
-			imgfile++;
+			file++;
 		}
-
 
 		converted = true;
 	}
@@ -274,11 +259,10 @@ void Demo_2::convert()
 
 void Demo_2::learn()
 {
-	fann* ann = fann_create_standard(3, 28*28, int((28*28)/2), 10);
+	fann* ann = fann_create_standard(3, 28*28, int((28*28)/2.0), 10);
 	
-	fann_train_on_file(ann, "learn.dat", 10000, 25, 0.0001);
-	fann_save(ann, "nn.net");
-	
+	fann_train_on_file(ann, "learn2.dat", 1000, 25, 0.00001);
+	fann_save(ann, "nn2.net");
 	
 	fann_destroy(ann);
 }
@@ -290,8 +274,6 @@ void Demo_2::test()
 	std::vector<int> input_v(28*28);
 	
 	fann* ann = fann_create_from_file("nn.net");
-	
-	LOGI("Starting index at " << imageindex*28*28);
 	
 	for(size_t i = 0; i < 28*28; i++)
 	{
