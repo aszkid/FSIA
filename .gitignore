@@ -44,3 +44,4 @@ test*
 conv*
 *.bcf
 *.run.xml
+/programa/bin/nn2.net
