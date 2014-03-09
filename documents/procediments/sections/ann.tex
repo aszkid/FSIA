@@ -29,6 +29,11 @@ la xarxa s'ha entrenat amb dades històriques, i l'historia es repeteix. El movi
 l'imatge d'un caràcter com a entrades, i el número que representen els píxels com a sortida. És un exemple fàcil d'aplicar i enriquidor.
 \end{itemize}
 
+El camí que segueix una \ac{ann} per a produir resultats és ben simple: els valors d'entrada passen per cada neurona a través d'una funció d'activació, regulada
+pel valor anomenat pes, o \emph{weight} de la mateixa (literalment, és la importància que una determinada neurona
+té en la xarxa completa. Les neurones amb pesos majors, realitzaran una aportació major al resultat de la xarxa neuronal). Tots els valors resultants d'un
+layer es sumen de forma recursiva a cada neurona del layer següent, fins a arribar al final.
+
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=80mm]{data/func_approx.jpg}

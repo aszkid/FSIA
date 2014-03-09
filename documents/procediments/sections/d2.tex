@@ -1,6 +1,40 @@
 \begin{figure}[ht!]
 \centering
-\includegraphics[width=80mm]{data/confusing.png}
-\caption{4 o 9? La nostra \ac{ann} creu amb un 100\% de certesa que és un 4, i amb un 47\% de certesa que és un 9. I sí, és un 4!}
+\includegraphics[width=35mm]{data/confusing_2.png}
+\caption{4 o 9? La nostra \ac{ann} creu amb un 100\% de certesa que és un 4, i amb un 47\% de certesa que és un 9.}
 \label{simple_ann}
 \end{figure}
+
+Podem visualitzar perfectament el model neuronal que representa un problema de reconeixement de caràcters: la nostra
+base de dades, o \emph{dataset}, consisteix de 1000 formes d'escriure cada número, del 0 al 9. És a dir, la xarxa neuronal
+no aprendrà com en Xavi dibuixa el 5, sinó que aprendrà també com el dibuixen 999 persones diferents, exposició suficient per
+a poder realitzar una extracció de característiques, o \emph{feature extraction}.
+
+Això és vital, extreure característiques, i per aconseguir-ho necessitem utilitzar un layer addicional, el \emph{hidden}. 
+Si realitzéssim l'entrenament amb un layer d'inputs i un layer d'outputs, la interpolació que es produiria seria lineal,
+es a dir, es realitzaria un motlle amb el qual es compararia qualsevol imatge, i la major part d'elles no entrarien dins
+els paràmetres del motlle (la \emph{dimensionalitat} és única). El que volem es que la xarxa neuronal descobreixi que el número
+vuit hauria de tenir dos cercles, que el set és com un 1, però amb un vèrtex desplaçat, que el quatre pot ser un triangle o un
+quadrat obert per amunt, ... imagines haver de programar totes aquestes condicions de forma manual? Si no t'ho pots imaginar, 
+et deixem la resposta: és un suïcidi.
+
+La xarxa neuronal utilitza el layer hidden per a fabricar un \emph{motlle flexible} i sofisticat, que reconeix certes característiques
+en comptes de forçar un model universal. Aquí és quan les \ac{ann}s brillen per complet; són capaces de crear una \emph{caixa negra}
+extremadament interconnectada i intel·ligent, que sembla utilitzar raonament, evidentment, intel·ligent. En realitat no hi ha màgia, 
+és tot producte d'un magnífic i complex model matemàtic.
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=45mm]{data/extraction-0.png}
+\caption{Exemple d'extracció de característiques. Gràcies a \href{http://clopinet.com/isabelle/Projects/ETH/}{Isabelle Guyon}.}
+\label{simple_ann}
+\end{figure}
+
+Nosaltres hem extret un dataset \href{http://cis.jhu.edu/~sachin/digit/digit.html}{derivat} del majestuós \href{http://yann.lecun.com/exdb/mnist/}{MINST} (derivat al seu torn del NIST)
+que ofereix deu arxius binaris amb 28x28 píxels per imatge, 1 byte per píxel. El procés que hem seguit per a produir una demostració efectiva de les 
+xarxes neuronals en reconeixement de caràcters ha sigut el següent:
+
+\begin{enumerate}
+\item Establint un índex d'arxiu (del 0 al 9) i un índex d'imatge (del 0 al 999), carreguem l'arxiu adient a l'índex i l'emmagatzemem en un gran vector. A través del teclat, podem
+navegar les diferents imatges de cada nombre. 
+\end{enumerate}

@@ -28,11 +28,11 @@ bool Demo_2::prepare()
 	win.create(sf::VideoMode(1280, 720), "DEMO 2");
 	win.setFramerateLimit(60);
 	
-	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff)));
-	surround.append(sf::Vertex(sf::Vector2f(xoff + 28*boxsize, yoff)));
-	surround.append(sf::Vertex(sf::Vector2f(xoff + 28*boxsize, yoff + 28*boxsize)));
-	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff + 28*boxsize)));
-	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff)));
+	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff), sf::Color::Black));
+	surround.append(sf::Vertex(sf::Vector2f(xoff + 28*boxsize, yoff), sf::Color::Black));
+	surround.append(sf::Vertex(sf::Vector2f(xoff + 28*boxsize, yoff + 28*boxsize), sf::Color::Black));
+	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff + 28*boxsize), sf::Color::Black));
+	surround.append(sf::Vertex(sf::Vector2f(xoff, yoff), sf::Color::Black));
 	surround.setPrimitiveType(sf::LinesStrip);
 	
 	return true;
@@ -115,7 +115,7 @@ void Demo_2::run()
 		
 		frameTime = frameClock.restart().asSeconds();
 		
-		win.clear(sf::Color(20, 20, 20));
+		win.clear(/*sf::Color(20, 20, 20)*/ sf::Color::White);
 		
 		for(auto& box : board)
 			win.draw(box);
@@ -143,7 +143,7 @@ void Demo_2::setImage(int n)
 		auto& box = board[i];
 		int pixelcolor = result[i];
 		
-		box.setFillColor(sf::Color(pixelcolor, pixelcolor, pixelcolor));
+		box.setFillColor(sf::Color(255 - pixelcolor, 255 - pixelcolor, 255 - pixelcolor));
 		box.setSize(sf::Vector2f(boxsize, boxsize));
 		
 		int row = i / 28;
@@ -161,7 +161,7 @@ void Demo_2::setImage(std::vector<int> img)
 		auto& box = board[i];
 		int pixelcolor = img[i];
 		
-		box.setFillColor(sf::Color(pixelcolor, pixelcolor, pixelcolor));
+		box.setFillColor(sf::Color(255 - pixelcolor, 255 - pixelcolor, 255 - pixelcolor));
 		box.setSize(sf::Vector2f(boxsize, boxsize));
 		
 		int row = i / 28;
