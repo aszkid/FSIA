@@ -223,7 +223,7 @@ void Demo_2::convert()
 	
 		size_t perfile = 750;
 	
-		std::ofstream out("learn2.dat");
+		std::ofstream out("database.dat");
 		out << perfile*10 << space << width*width << space << 10 << std::endl << std::endl;
 		
 		while(fileCheckIndex(file))
@@ -261,8 +261,8 @@ void Demo_2::learn()
 {
 	fann* ann = fann_create_standard(3, 28*28, int((28*28)/2.0), 10);
 	
-	fann_train_on_file(ann, "learn2.dat", 1000, 25, 0.009);
-	fann_save(ann, "nn2.net");
+	fann_train_on_file(ann, "database.dat", 1000, 25, 0.0025);
+	fann_save(ann, "final.net");
 	
 	fann_destroy(ann);
 }
@@ -273,7 +273,7 @@ void Demo_2::test()
 	fann_type input[28*28];
 	std::vector<int> input_v(28*28);
 	
-	fann* ann = fann_create_from_file("nn2.net");
+	fann* ann = fann_create_from_file("final.net");
 	
 	LOGI("Testing image #" << imageindex-1 << " of set #" << fileindex);
 	
