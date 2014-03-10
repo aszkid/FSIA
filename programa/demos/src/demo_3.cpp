@@ -90,7 +90,7 @@ void Demo_3::run()
 		
 		sf::Vector2f posicio = car.shape.getPosition();
 		sf::Color color = image.getPixel(posicio.x,posicio.y);
-		if (sf::Color::White == color)
+		if (color == sf::Color::White)
 		{
 		car.shape.setPosition(10.f,10.f);
 		}
