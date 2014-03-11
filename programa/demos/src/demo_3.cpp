@@ -30,7 +30,6 @@ void Demo_3::run()
 	if(!background.loadFromFile("circuit.png"))
 		std::cout << "Error could not load circuit image" << std::endl;
 	circuit.setTexture(background);
-	
 	sf::Image image = background.copyToImage();
 	
 	auto old = car_t.getSize();
@@ -94,8 +93,6 @@ void Demo_3::run()
 		{
 		car.shape.setPosition(10.f,10.f);
 		}
-		
-
 		
 		win.draw(circuit);
 		win.draw(car.shape);
