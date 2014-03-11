@@ -21,13 +21,13 @@ void Demo_3::run()
 	sf::Texture background;
 	sf::Sprite circuit;
 	
-	circuit.setScale(float(win.getSize().x / 640.f) , float(win.getSize().y / 400.f));
+	//circuit.setScale(float(win.getSize().x / 640.f) , float(win.getSize().y / 400.f));
 	
 	if(!car_t.loadFromFile("car2.png"))
 		std::cout << "Error could not load car image" << std::endl;
 	
 
-	if(!background.loadFromFile("circuit.png"))
+	if(!background.loadFromFile("2.png"))
 		std::cout << "Error could not load circuit image" << std::endl;
 	circuit.setTexture(background);
 	sf::Image image = background.copyToImage();
@@ -85,17 +85,18 @@ void Demo_3::run()
 			car.shape.move(final2);
 		}
 				win.clear(sf::Color(20, 20, 20));
-		}
 		
 		sf::Vector2f posicio = car.shape.getPosition();
 		sf::Color color = image.getPixel(posicio.x,posicio.y);
 		if (color == sf::Color::White)
 		{
-		car.shape.setPosition(10.f,10.f);
+			car.shape.setPosition(10.f,10.f);
 		}
 		
 		win.draw(circuit);
 		win.draw(car.shape);
 		win.display();
+	
+	}
 }
 
