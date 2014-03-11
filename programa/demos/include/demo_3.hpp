@@ -11,7 +11,7 @@
 
 struct Car {
 	Car()
-		: shape(sf::Vector2f(120, 50))
+		: shape(sf::Vector2f(96, 65))
 	{}
 	
 	sf::RectangleShape shape;
@@ -24,6 +24,7 @@ public:
 private:
 	sf::RenderWindow win;
 	sf::Event eve;
+	sf::FloatRect scoreRect;
 	
 	sf::Clock frameClock;
 	float frameTime;
