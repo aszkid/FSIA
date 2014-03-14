@@ -31,10 +31,7 @@ void Demo_3::run()
 		std::cout << "Error could not load circuit image" << std::endl;
 	circuit.setTexture(background);
 	sf::Image image = background.copyToImage();
-	
-	auto old = car_t.getSize();
-	
-	//car.shape.setScale((old.x / 5.f) / old.x, (old.y /5.f) / (old.y));
+
 	car.shape.setTexture(&car_t);
 	
 	while(win.isOpen())
@@ -87,6 +84,8 @@ void Demo_3::run()
 				win.clear(sf::Color(20, 20, 20));
 		
 		sf::Vector2f posicio = car.shape.getPosition();
+		sf::Vector2f posicio_baix(posicio.x + 45.f, posicio.y + 33.f);
+		
 		sf::Color color = image.getPixel(posicio.x,posicio.y);
 		if (color == sf::Color::White)
 		{
