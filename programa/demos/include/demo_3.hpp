@@ -6,6 +6,7 @@
 #include <SFML/Audio.hpp>
 #include <ctime>
 #include <random>
+#include <array>
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
@@ -15,6 +16,9 @@ struct Car {
 	{}
 	
 	sf::RectangleShape shape;
+	
+	sf::Vector2f punt(double h, double w, double ang);
+	std::array<sf::Vector2f, 4> punts();
 };
 
 class Demo_3 : public Demo {
