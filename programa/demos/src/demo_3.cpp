@@ -1,5 +1,30 @@
 #include "demo_3.hpp"
 
+
+sf::Vector2f punt(double h, double w, double ang)
+{
+	double b = (sqrt(pow((w/2),2)*(pow(h/2),2));
+
+	return sf::Vector2f(
+		cos(ang)*b,
+		sin(ang)*b
+	);
+}
+
+std::array<sf::Vector2f, 4> punt() Car::punts()
+{
+	std::array<sf::Vector2f, 4> arr;
+	
+	double angle = car.shape.getRotation()*3.1415/180;	
+	sf::Vector2f tamany = car.shape.getsize();
+	
+	arr[0] = punt(tamany.x / 2, tamany.y /2, angle);
+	arr[1] = punt(tamany.x / -2, tamany.y / 2, angle);
+	arr[2] = punt(tamany.x / 2, tamany.y / -2, angle);
+	arr[2] = punt(tamany.x / -2, tamany.y / -2, angle);
+}
+
+
 bool Demo_3::prepare()
 {
 
@@ -10,10 +35,9 @@ bool Demo_3::prepare()
 	win.setVerticalSyncEnabled(true);
 	scoreRect = car.shape.getLocalBounds();
 	car.shape.setOrigin(scoreRect.left + scoreRect.width / 2.f, scoreRect.top + 		scoreRect.height / 2.f);
-
+	
     	return true;
 }
-
 void Demo_3::run()
 {
 	//Cargar imatge
