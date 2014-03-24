@@ -1,9 +1,11 @@
 #include "demo_3.hpp"
 
 
-sf::Vector2f punt(double h, double w, double ang)
+sf::Vector2f Car::punt(double h, double w, double ang)
 {
-	double b = (sqrt(pow((w/2),2)*(pow(h/2),2));
+	double b = sqrt(
+	pow(w/2,2)*pow (h/2 , 2)
+	);
 
 	return sf::Vector2f(
 		cos(ang)*b,
@@ -11,17 +13,19 @@ sf::Vector2f punt(double h, double w, double ang)
 	);
 }
 
-std::array<sf::Vector2f, 4> punt() Car::punts()
+std::array<sf::Vector2f, 4> Car::punts()
 {
 	std::array<sf::Vector2f, 4> arr;
 	
-	double angle = car.shape.getRotation()*3.1415/180;	
-	sf::Vector2f tamany = car.shape.getsize();
+	double angle = shape.getRotation()*3.1415/180;
 	
-	arr[0] = punt(tamany.x / 2, tamany.y /2, angle);
-	arr[1] = punt(tamany.x / -2, tamany.y / 2, angle);
-	arr[2] = punt(tamany.x / 2, tamany.y / -2, angle);
-	arr[2] = punt(tamany.x / -2, tamany.y / -2, angle);
+	sf::Vector2f size = shape.getSize();
+	arr[0] = punt(size.x / 2, size.y /2 , angle);
+	arr[1] = punt(size.x / -2, size.y / 2, angle);
+	arr[2] = punt(size.x / 2, size.y / -2, angle);
+	arr[3] = punt(size.x / -2, size.y / -2, angle);
+	
+	return arr;
 }
 
 
@@ -105,17 +109,15 @@ void Demo_3::run()
 			sf::Vector2f final2(-cos(angle2) * 2.f, -sin(angle2) * 2.f);
 			car.shape.move(final2);
 		}
-				win.clear(sf::Color(20, 20, 20));
+		sf::Vector2f pos = car.shape.getPosition();
+		sf::Color color = image.getPixel(pos.x, pos.y);
 		
-		sf::Vector2f posicio = car.shape.getPosition();
-		sf::Vector2f posicio_baix(posicio.x + 45.f, posicio.y + 33.f);
-		
-		sf::Color color = image.getPixel(posicio.x,posicio.y);
 		if (color == sf::Color::White)
 		{
 			car.shape.setPosition(10.f,10.f);
 		}
 		
+		win.clear(sf::Color(20, 20, 20));
 		win.draw(circuit);
 		win.draw(car.shape);
 		win.display();
