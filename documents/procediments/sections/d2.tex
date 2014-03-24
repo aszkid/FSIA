@@ -7,7 +7,7 @@
 
 Podem visualitzar perfectament el model neuronal que representa un problema de reconeixement de caràcters: la nostra
 base de dades, o \emph{dataset}, consisteix de 1000 formes d'escriure cada número, del 0 al 9. És a dir, la xarxa neuronal
-no aprendrà com en Xavi dibuixa el 5, sinó que aprendrà també com el dibuixen 999 persones diferents, exposició suficient per
+no aprendrà només com en Xavi dibuixa el 5, sinó que aprendrà també com el dibuixen 999 persones diferents, exposició suficient per
 a poder realitzar una extracció de característiques, o \emph{feature extraction}.
 
 Això és vital, extreure característiques, i per aconseguir-ho necessitem utilitzar un layer addicional, el \emph{hidden}. 
@@ -26,13 +26,13 @@ extremadament interconnectada i intel·ligent, que sembla utilitzar raonament, e
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=45mm]{data/extraction-0.png}
-\caption{Exemple d'extracció de característiques. Gràcies a \href{http://clopinet.com/isabelle/Projects/ETH/}{Isabelle Guyon}.}
+\caption{Exemple d'extracció de característiques. Gràcies a \href{http://clopinet.com/isabelle/Projects/ETH/}{Isabelle Guyon} \autocite{guyonfe}.}
 \label{extracció}
 \end{figure}
 
 Nosaltres hem extret un dataset \href{http://cis.jhu.edu/~sachin/digit/digit.html}{derivat} del majestuós \href{http://yann.lecun.com/exdb/mnist/}{MINST} (derivat al seu torn del NIST)
 que ofereix deu arxius binaris amb 28x28 píxels per imatge, 1 byte per píxel. El procés que hem seguit per a produir una demostració efectiva de les 
-xarxes neuronals en reconeixement de caràcters ha sigut el següent:
+xarxes neuronals en reconeixement de caràcters ha estat el següent:
 
 \begin{enumerate}
 \item Establint un índex d'arxiu (del 0 al 9) i un índex d'imatge (del 0 al 999), carreguem l'arxiu adient a l'índex i l'emmagatzemem en un gran vector. A través del teclat, podem
@@ -53,7 +53,7 @@ la certesa per cada número de l'1 al 9.
 \begin{figure}[ht!]
 \centering
 \includegraphics[width=65mm]{data/test.png}
-\caption{Sortida de la nostra xarxa neuronal, per a un estrany número 8.}
+\caption{Sortida de la nostra xarxa neuronal, per a un estrany número 8. En molts casos, els números 5, 6 i 8 comparteixen característiques. La xarxa neuronal les descobreix.}
 \label{output}
 \end{figure}
 
