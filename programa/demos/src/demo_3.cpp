@@ -16,7 +16,7 @@ sf::Vector2f Car::punt(double h, double w, double ang)
 std::array<sf::Vector2f, 4> Car::punts()
 {
 	std::array<sf::Vector2f, 4> arr;
-	
+	sf::Vector2f pos = shape.getPosition();
 	double angle = shape.getRotation()*3.1415/180;
 	
 	sf::Vector2f size = shape.getSize();
@@ -24,6 +24,11 @@ std::array<sf::Vector2f, 4> Car::punts()
 	arr[1] = punt(size.x / -2, size.y / 2, angle);
 	arr[2] = punt(size.x / 2, size.y / -2, angle);
 	arr[3] = punt(size.x / -2, size.y / -2, angle);
+	for(int i = 0; i < 4; i++)
+	{
+		arr[i].x = arr[i].x + pos.x;
+		arr[i].y = arr[i].y + pos.y;	
+	}
 	
 	return arr;
 }
@@ -110,7 +115,8 @@ void Demo_3::run()
 			car.shape.move(final2);
 		}
 		sf::Vector2f pos = car.shape.getPosition();
-		sf::Color color = image.getPixel(pos.x, pos.y);
+		std::array<sf::Vector2f, 4> punts = car.punts();
+		sf::Color color = image.getPixel(punts[0].x, punts[0].y);
 		
 		if (color == sf::Color::White)
 		{
