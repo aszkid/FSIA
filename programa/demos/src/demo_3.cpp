@@ -4,7 +4,7 @@
 sf::Vector2f Car::punt(double h, double w, double ang)
 {
 	double b = sqrt(
-	pow(w/2,2)*pow (h/2 , 2)
+	pow(w,2)*pow (h, 2)
 	);
 
 	return sf::Vector2f(
@@ -20,11 +20,17 @@ std::array<sf::Vector2f, 4> Car::punts()
 	double angle = shape.getRotation()*3.1415/180;
 	
 	sf::Vector2f size = shape.getSize();
-	arr[0] = punt(size.x / 2, size.y /2 , angle);
-	arr[1] = punt(size.x / -2, size.y / 2, angle);
-	arr[2] = punt(size.x / 2, size.y / -2, angle);
-	arr[3] = punt(size.x / -2, size.y / -2, angle);
-	for(int i = 0; i < 4; i++)
+	for(int i = 0 ; i < 4 ; i++)
+	{
+		arr[i] = punt(size.x / 2, size.y / 2 , angle);
+	}
+		
+		arr[0].x = arr[0].x * -1;	arr[0].y = arr[0].y * -1;
+		arr[1].x = arr[1].x * -1;	arr[1].y = arr[1].y * 1;
+		arr[2].x = arr[2].x * 1;	arr[2].y = arr[2].y * -1;
+		arr[3].x = arr[3].x * 1;	arr[2].y = arr[2].y * 1;
+		
+	for(int i = 0 ; i < 4 ; i++)
 	{
 		arr[i].x = arr[i].x + pos.x;
 		arr[i].y = arr[i].y + pos.y;	
@@ -114,18 +120,35 @@ void Demo_3::run()
 			sf::Vector2f final2(-cos(angle2) * 2.f, -sin(angle2) * 2.f);
 			car.shape.move(final2);
 		}
+		
 		sf::Vector2f pos = car.shape.getPosition();
 		std::array<sf::Vector2f, 4> punts = car.punts();
-		sf::Color color = image.getPixel(punts[0].x, punts[0].y);
+		for(int i = 0; i < 4; i++)
+		{
+		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << std::endl);
+		}
+		/*sf::Color color = image.getPixel(punts[0].x, punts[0].y);
+		std::array <sf::RectangleShape, 4> draw;
+		for(int i = 0; i < 4; i++)
+		{
+			draw[i].setSize(sf::Vector2f(10.f,10.f));
+			draw[i].setPosition(punts[i].x, punts[i].y);
+			draw[i].setFillColor(sf::Color::Red);		
+		}
 		
-		if (color == sf::Color::White)
+		/*if (color == sf::Color::White)
 		{
 			car.shape.setPosition(10.f,10.f);
 		}
-		
+		*/
 		win.clear(sf::Color(20, 20, 20));
 		win.draw(circuit);
 		win.draw(car.shape);
+		/*for(int i = 0 ; i < 4 ; i++)
+		{
+		win.draw(draw[i]);
+		}
+		*/
 		win.display();
 	
 	}
