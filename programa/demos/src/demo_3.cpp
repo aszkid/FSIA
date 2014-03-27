@@ -4,7 +4,7 @@
 sf::Vector2f Car::punt(double h, double w, double ang)
 {
 	double b = sqrt(
-	pow(w,2)*pow (h, 2)
+	pow(w,2.0)*pow (h, 2.0)
 	);
 
 	return sf::Vector2f(
@@ -42,7 +42,7 @@ std::array<sf::Vector2f, 4> Car::punts()
 
 bool Demo_3::prepare()
 {
-
+	
 	
 	frameTime = 0;
 	win.create(sf::VideoMode::getDesktopMode(), "DEMO 3", sf::Style::Fullscreen);
@@ -55,12 +55,17 @@ bool Demo_3::prepare()
 }
 void Demo_3::run()
 {
+	double w = 50.0;
+	double h = 30.0;
+	double a = (15 * 3,14 / 180);
+	sf::Vector2f prova = car.punt(w,h,a);
+	LOGI("w = " << prova.x << ' ' << "h = " << prova.y << std::endl); 
 	//Cargar imatge
-	sf::Texture car_t;
+	/*sf::Texture car_t;
 	sf::Texture background;
 	sf::Sprite circuit;
 	
-	//circuit.setScale(float(win.getSize().x / 640.f) , float(win.getSize().y / 400.f));
+	//circuit.setScale(float(win.getSize().x / 640.f) , float(win.getSize().y / 		400.f));
 	
 	if(!car_t.loadFromFile("car2.png"))
 		std::cout << "Error could not load car image" << std::endl;
@@ -125,9 +130,9 @@ void Demo_3::run()
 		std::array<sf::Vector2f, 4> punts = car.punts();
 		for(int i = 0; i < 4; i++)
 		{
-		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << std::endl);
+		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << 			std::endl);
 		}
-		/*sf::Color color = image.getPixel(punts[0].x, punts[0].y);
+		sf::Color color = image.getPixel(punts[0].x, punts[0].y);
 		std::array <sf::RectangleShape, 4> draw;
 		for(int i = 0; i < 4; i++)
 		{
@@ -136,21 +141,21 @@ void Demo_3::run()
 			draw[i].setFillColor(sf::Color::Red);		
 		}
 		
-		/*if (color == sf::Color::White)
+		if (color == sf::Color::White)
 		{
 			car.shape.setPosition(10.f,10.f);
 		}
 		*/
-		win.clear(sf::Color(20, 20, 20));
+		/*win.clear(sf::Color(20, 20, 20));
 		win.draw(circuit);
 		win.draw(car.shape);
-		/*for(int i = 0 ; i < 4 ; i++)
+		for(int i = 0 ; i < 4 ; i++)
 		{
 		win.draw(draw[i]);
 		}
 		*/
-		win.display();
+		/*win.display();*/
 	
-	}
+
 }
 
