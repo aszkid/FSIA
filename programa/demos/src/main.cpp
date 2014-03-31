@@ -2,6 +2,7 @@
 #include "demo_1.hpp"
 #include "demo_2.hpp"
 #include "demo_3.hpp"
+#include "demo_4.hpp"
 
 #include <vector>
 #include <memory>
@@ -12,6 +13,7 @@ int main(int argc, char** argv)
 	demos.push_back(std::unique_ptr<Demo>(new Demo_1()));
 	demos.push_back(std::unique_ptr<Demo>(new Demo_2()));
 	demos.push_back(std::unique_ptr<Demo>(new Demo_3()));
+	demos.push_back(std::unique_ptr<Demo>(new Demo_4()));
 	
 
 	if(argc < 2)
