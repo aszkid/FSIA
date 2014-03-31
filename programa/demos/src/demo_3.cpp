@@ -1,19 +1,22 @@
 #include "demo_3.hpp"
 
 
-sf::Vector2f Car::punt(double h, double w, double ang)
+sf::Vector2f Car::punt()
 {
-	double b = sqrt(
-	pow(w,2.0)*pow (h, 2.0)
-	);
+	double ang = shape.getRotation()*M_PI/180;
+
+	double sina = sin(ang);
+	double cosa = cos(ang);
+
+	double w = 50;
+	double h = 100;
 
 	return sf::Vector2f(
-		cos(ang)*b,
-		sin(ang)*b
+		(cosa*h - sina*w)/(2), (cosa*w + sina*h)/(2)
 	);
 }
 
-std::array<sf::Vector2f, 4> Car::punts()
+/*std::array<sf::Vector2f, 4> Car::punts()
 {
 	std::array<sf::Vector2f, 4> arr;
 	sf::Vector2f pos = shape.getPosition();
@@ -29,7 +32,7 @@ std::array<sf::Vector2f, 4> Car::punts()
 		arr[1].x = arr[1].x * -1;	arr[1].y = arr[1].y * 1;
 		arr[2].x = arr[2].x * 1;	arr[2].y = arr[2].y * -1;
 		arr[3].x = arr[3].x * 1;	arr[2].y = arr[2].y * 1;
-		
+
 	for(int i = 0 ; i < 4 ; i++)
 	{
 		arr[i].x = arr[i].x + pos.x;
@@ -38,7 +41,7 @@ std::array<sf::Vector2f, 4> Car::punts()
 	
 	return arr;
 }
-
+*/
 
 bool Demo_3::prepare()
 {
@@ -51,21 +54,19 @@ bool Demo_3::prepare()
 	scoreRect = car.shape.getLocalBounds();
 	car.shape.setOrigin(scoreRect.left + scoreRect.width / 2.f, scoreRect.top + 		scoreRect.height / 2.f);
 	
+	int size = 1;
+	
+	p1.setSize(sf::Vector2f(size, size));
+	p2.setSize(sf::Vector2f(size, size));
+	p3.setSize(sf::Vector2f(size, size));
+	
     	return true;
 }
 void Demo_3::run()
-{
-	double w = 50.0;
-	double h = 30.0;
-	double a = (15 * 3,14 / 180);
-	sf::Vector2f prova = car.punt(w,h,a);
-	LOGI("w = " << prova.x << ' ' << "h = " << prova.y << std::endl); 
-	//Cargar imatge
-	/*sf::Texture car_t;
+{	
+	sf::Texture car_t;
 	sf::Texture background;
 	sf::Sprite circuit;
-	
-	//circuit.setScale(float(win.getSize().x / 640.f) , float(win.getSize().y / 		400.f));
 	
 	if(!car_t.loadFromFile("car2.png"))
 		std::cout << "Error could not load car image" << std::endl;
@@ -104,7 +105,7 @@ void Demo_3::run()
 		}
 		
 	
-		float angle2 = car.shape.getRotation()*3.14/180;
+		float angle2 = car.shape.getRotation()*M_PI/180;
 		
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
@@ -126,36 +127,34 @@ void Demo_3::run()
 			car.shape.move(final2);
 		}
 		
-		sf::Vector2f pos = car.shape.getPosition();
+		sf::Vector2f p2_d = car.punt();
+		
+		p1.setPosition(car.shape.getPosition());
+		p2.setPosition(p1.getPosition() + p2_d);
+		p3.setPosition(p2.getPosition().x, -p2.getPosition().y);
+		
+		/*
 		std::array<sf::Vector2f, 4> punts = car.punts();
 		for(int i = 0; i < 4; i++)
 		{
 		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << 			std::endl);
 		}
 		sf::Color color = image.getPixel(punts[0].x, punts[0].y);
-		std::array <sf::RectangleShape, 4> draw;
-		for(int i = 0; i < 4; i++)
-		{
-			draw[i].setSize(sf::Vector2f(10.f,10.f));
-			draw[i].setPosition(punts[i].x, punts[i].y);
-			draw[i].setFillColor(sf::Color::Red);		
-		}
-		
+				
 		if (color == sf::Color::White)
 		{
-			car.shape.setPosition(10.f,10.f);
-		}
-		*/
-		/*win.clear(sf::Color(20, 20, 20));
-		win.draw(circuit);
-		win.draw(car.shape);
-		for(int i = 0 ; i < 4 ; i++)
-		{
-		win.draw(draw[i]);
-		}
-		*/
-		/*win.display();*/
-	
+			car.shape.setPosition(100.f,100.f);
+		}*/
+		
+		win.clear(sf::Color(20, 20, 20));
+		//win.draw(circuit);
+		//win.draw(car.shape);
+		win.draw(p1);
+		win.draw(p2);
+		win.draw(p3);
+		win.display();
+	}
 
+	
 }
 
