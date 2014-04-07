@@ -22,4 +22,13 @@ private:
 	float frameTime;
 	
 	std::array<sf::RectangleShape, 16> grid;
+	
+	
+	sf::Text ndos;
+	sf::Font font;
+	
+	sf::Vector2u size;
+	static const int w = 100;
+
 };
+
