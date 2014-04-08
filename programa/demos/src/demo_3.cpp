@@ -1,23 +1,40 @@
 #include "demo_3.hpp"
-
-
-sf::Vector2f Car::punt()
+	
+float transform_rot(float ang)
 {
-	double ang = shape.getRotation()*M_PI/180;
-
-	double sina = sin(ang);
-	double cosa = cos(ang);
-
-	double w = 50;
-	double h = 100;
-
-	return sf::Vector2f(
-		(cosa*h - sina*w)/(2), (cosa*w + sina*h)/(2)
-	);
+	if(ang < 90 && ang > 0){ang = ang + 270;}
+	else if(ang == 90){ang = ang + 180;}
+	else if(ang < 180 && ang > 90){ang = ang + 90;}
+	else if(ang < 270 && ang > 180){ang = ang -90;}
+	else if(ang == 270){ang = ang -180;}
+	else if(ang > 270) {ang = ang - 270;}
+	
+	if(ang < 90 && ang > 0){ang = 90 - ang;}
+	else if(ang > 90 && ang < 180){ang = 270 - ang;}
+	else if(ang > 180 && ang < 270){ang = 450 - ang;}
+	else if(ang > 270 && ang < 360){ang = 630 - ang;}	
+	return ang;
 }
 
+	
+sf::Vector2f Car::punt()
+{	
+	double ang = shape.getRotation();	
+	ang = ang*M_PI/180;
+	ang = transform_rot(ang);
+	
+	double sina = sin(ang);
+	double cosa = cos(ang);
+	
+	sf::Vector2f size = shape.getSize();
+	
+	return sf::Vector2f(
+		(cosa*size.x + sina*size.y)/(2), (cosa*size.y - sina*size.x)/(2)
+	);
+}	
+	
 /*std::array<sf::Vector2f, 4> Car::punts()
-{
+{	
 	std::array<sf::Vector2f, 4> arr;
 	sf::Vector2f pos = shape.getPosition();
 	double angle = shape.getRotation()*3.1415/180;
@@ -58,12 +75,15 @@ bool Demo_3::prepare()
 	
 	p1.setSize(sf::Vector2f(size, size));
 	p2.setSize(sf::Vector2f(size, size));
-	p3.setSize(sf::Vector2f(size, size));
+	//p3.setSize(sf::Vector2f(size, size));
 	
     	return true;
-}
+}	
 void Demo_3::run()
 {	
+	double rot= car.shape.getRotation();
+	rot = transform_rot(rot);
+	LOGI("rotació: " << rot);
 	sf::Texture car_t;
 	sf::Texture background;
 	sf::Sprite circuit;
@@ -71,7 +91,7 @@ void Demo_3::run()
 	if(!car_t.loadFromFile("car2.png"))
 		std::cout << "Error could not load car image" << std::endl;
 	
-
+	
 	if(!background.loadFromFile("2.png"))
 		std::cout << "Error could not load circuit image" << std::endl;
 	circuit.setTexture(background);
@@ -106,7 +126,9 @@ void Demo_3::run()
 		
 	
 		float angle2 = car.shape.getRotation()*M_PI/180;
-		
+		LOGI("rotació: " << transform_rot(car.shape.getRotation()));
+				
+		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
@@ -131,24 +153,26 @@ void Demo_3::run()
 		
 		p1.setPosition(car.shape.getPosition());
 		p2.setPosition(p1.getPosition() + p2_d);
-		p3.setPosition(p2.getPosition().x, -p2.getPosition().y);
+		//p3.setPosition(p2.getPosition().x, -p2.getPosition().y);
 		
+		sf::Vector2f posp2 = p2.getPosition();
 		/*
 		std::array<sf::Vector2f, 4> punts = car.punts();
 		for(int i = 0; i < 4; i++)
 		{
 		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << 			std::endl);
 		}
-		sf::Color color = image.getPixel(punts[0].x, punts[0].y);
+		*/
+		sf::Color color = image.getPixel(posp2.x, posp2.y);
 				
 		if (color == sf::Color::White)
 		{
 			car.shape.setPosition(100.f,100.f);
-		}*/
+		}
 		
 		win.clear(sf::Color(20, 20, 20));
-		//win.draw(circuit);
-		//win.draw(car.shape);
+		win.draw(circuit);
+		win.draw(car.shape);
 		win.draw(p1);
 		win.draw(p2);
 		win.draw(p3);

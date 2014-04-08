@@ -9,12 +9,16 @@
 #include <ctime>
 #include <random>
 #include <array>
+#include <thread>
+#include <chrono>
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
+float transform_rot(float ang);
+
 struct Car {
 	Car()
-		: shape(sf::Vector2f(120, 20))
+		: shape(sf::Vector2f(96, 65))
 	{}
 	
 	sf::RectangleShape shape;
