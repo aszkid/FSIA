@@ -1,5 +1,7 @@
 #pragma once
 
+#define _USE_MATH_DEFINES
+
 #include "base.hpp"
 #include <cmath>
 #include <SFML/Graphics.hpp>
@@ -7,8 +9,12 @@
 #include <ctime>
 #include <random>
 #include <array>
+#include <thread>
+#include <chrono>
 /*#include <fann.h>
 #include <fann_cpp.h>*/
+
+float transform_rot(float ang);
 
 struct Car {
 	Car()
@@ -17,7 +23,7 @@ struct Car {
 	
 	sf::RectangleShape shape;
 	
-	sf::Vector2f punt(double h, double w, double ang);
+	sf::Vector2f punt();
 	std::array<sf::Vector2f, 4> punts();
 };
 
@@ -32,6 +38,8 @@ private:
 	
 	sf::Clock frameClock;
 	float frameTime;
+	
+	sf::RectangleShape p1, p2, p3;
 
 	Car car;
 	
