@@ -81,9 +81,9 @@ bool Demo_3::prepare()
 }	
 void Demo_3::run()
 {	
-	double rot= car.shape.getRotation();
+	/*double rot= car.shape.getRotation();
 	rot = transform_rot(rot);
-	LOGI("rotació: " << rot);
+	LOGI("rotació: " << rot);*/
 	sf::Texture car_t;
 	sf::Texture background;
 	sf::Sprite circuit;
@@ -126,7 +126,7 @@ void Demo_3::run()
 		
 	
 		float angle2 = car.shape.getRotation()*M_PI/180;
-		LOGI("rotació: " << transform_rot(car.shape.getRotation()));
+		//LOGI("rotació: " << transform_rot(car.shape.getRotation()));
 				
 		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		
@@ -149,20 +149,50 @@ void Demo_3::run()
 			car.shape.move(final2);
 		}
 		
+		win.clear(sf::Color(20, 20, 20));
+		
+		auto p = car.shape.getPosition();
+		double a = transform_rot(car.shape.getRotation());
+		
+		auto s = car.shape.getSize();
+		
+		double sx = (s.x/2.0);
+		double sy = (s.y/2.0);
+		
+		sf::Vector2f p2(
+			p.x + cos(a) * sx, p.y + sin(a) * sx
+		);
+		sf::Vector2f p3(
+			p2.x - sin(a) * sy, p2.y + cos(a) * sy
+		);
+		
+		LOGI(a << ':' << p2.x << ':' << p2.y);
+		
+		sf::RectangleShape r(sf::Vector2f(1, 1));
+		sf::RectangleShape r2(sf::Vector2f(1, 1));
+		sf::RectangleShape r3(sf::Vector2f(1, 1));
+		r.setPosition(p);
+		r2.setPosition(p2);
+		r3.setPosition(p3);
+		win.draw(r);
+		win.draw(r2);
+		win.draw(r3);
+		
+		/*
 		sf::Vector2f p2_d = car.punt();
 		
 		p1.setPosition(car.shape.getPosition());
 		p2.setPosition(p1.getPosition() + p2_d);
-		//p3.setPosition(p2.getPosition().x, -p2.getPosition().y);
+		p3.setPosition(p2.getPosition().x, -p2.getPosition().y);
 		
 		sf::Vector2f posp2 = p2.getPosition();
-		/*
+		
 		std::array<sf::Vector2f, 4> punts = car.punts();
 		for(int i = 0; i < 4; i++)
 		{
 		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << 			std::endl);
 		}
-		*/
+		
 		sf::Color color = image.getPixel(posp2.x, posp2.y);
 				
 		if (color == sf::Color::White)
@@ -176,6 +206,8 @@ void Demo_3::run()
 		win.draw(p1);
 		win.draw(p2);
 		win.draw(p3);
+		*/
+		
 		win.display();
 	}
 
