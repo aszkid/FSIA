@@ -1,20 +1,5 @@
 #include "demo_3.hpp"
-	
-float transform_rot(float ang)
-{
-	if(ang < 90 && ang > 0){ang = ang + 270;}
-	else if(ang == 90){ang = ang + 180;}
-	else if(ang < 180 && ang > 90){ang = ang + 90;}
-	else if(ang < 270 && ang > 180){ang = ang -90;}
-	else if(ang == 270){ang = ang -180;}
-	else if(ang > 270) {ang = ang - 270;}
-	
-	if(ang < 90 && ang > 0){ang = 90 - ang;}
-	else if(ang > 90 && ang < 180){ang = 270 - ang;}
-	else if(ang > 180 && ang < 270){ang = 450 - ang;}
-	else if(ang > 270 && ang < 360){ang = 630 - ang;}	
-	return ang;
-}
+
 double dec2rad(double dec)
 {
 	return (dec*M_PI/180.0);
@@ -24,8 +9,7 @@ double dec2rad(double dec)
 sf::Vector2f Car::punt()
 {	
 	double ang = shape.getRotation();	
-	ang = ang*M_PI/180;
-	ang = transform_rot(ang);
+	ang = dec2rad(ang);
 	
 	double sina = sin(ang);
 	double cosa = cos(ang);
@@ -157,22 +141,43 @@ void Demo_3::run()
 		double sx = (s.x/2.0);
 		double sy = (s.y/2.0);
 		
-		sf::Vector2f p2(
+		std::array<sf::Vector2f, 5> ps;
+		ps[0] = sf::Vector2f(
 			p.x + cos(angle2) * sx, p.y + sin(angle2) * sx
 		);
-		sf::Vector2f p3(
-			p2.x - sin(angle2) * sy, p2.y + cos(angle2) * sy
+		ps[1] = sf::Vector2f(
+			ps[0].x - sin(angle2) * sy, ps[0].y + cos(angle2) * sy
+		);
+		ps[2] = sf::Vector2f(
+			ps[0].x + sin(angle2) * sy, ps[0].y - cos(angle2) * sy
+		);
+		ps[3] = sf::Vector2f(
+			ps[0].x - sin(angle2) * sy, ps[0].y - cos(angle2) * sy
 		);
 		
-		sf::RectangleShape r(sf::Vector2f(1, 1));
-		sf::RectangleShape r2(sf::Vector2f(1, 1));
-		sf::RectangleShape r3(sf::Vector2f(1, 1));
-		r.setPosition(p);
-		r2.setPosition(p2);
-		r3.setPosition(p3);
-		win.draw(r);
-		win.draw(r2);
-		win.draw(r3);
+		
+		//sf::Vector2f p4()
+		
+		std::array<sf::RectangleShape, 6> rs;
+		
+		for(auto& rsi : rs)
+		{
+			rsi = sf::RectangleShape(sf::Vector2f(1, 1));
+		}
+		
+		rs[0].setPosition(p);
+		rs[1].setPosition(ps[0]);
+		rs[2].setPosition(ps[1]);
+		rs[3].setPosition(ps[2]);
+		rs[4].setPosition(ps[2]);
+		rs[5].setPosition(ps[3]);
+		
+		//win.draw(car.shape);
+		
+		for(auto& rsi : rs)
+		{
+			win.draw(rsi);
+		}
 		
 		win.display();
 	}
