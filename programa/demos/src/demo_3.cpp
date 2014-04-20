@@ -15,6 +15,10 @@ float transform_rot(float ang)
 	else if(ang > 270 && ang < 360){ang = 630 - ang;}	
 	return ang;
 }
+double dec2rad(double dec)
+{
+	return (dec*M_PI/180.0);
+}
 
 	
 sf::Vector2f Car::punt()
@@ -84,6 +88,7 @@ void Demo_3::run()
 	/*double rot= car.shape.getRotation();
 	rot = transform_rot(rot);
 	LOGI("rotació: " << rot);*/
+	
 	sf::Texture car_t;
 	sf::Texture background;
 	sf::Sprite circuit;
@@ -124,11 +129,7 @@ void Demo_3::run()
 			}
 		}
 		
-	
-		float angle2 = car.shape.getRotation()*M_PI/180;
-		//LOGI("rotació: " << transform_rot(car.shape.getRotation()));
-				
-		//std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		double angle2 = dec2rad(car.shape.getRotation());
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
@@ -152,21 +153,16 @@ void Demo_3::run()
 		win.clear(sf::Color(20, 20, 20));
 		
 		auto p = car.shape.getPosition();
-		double a = transform_rot(car.shape.getRotation());
-		
 		auto s = car.shape.getSize();
-		
 		double sx = (s.x/2.0);
 		double sy = (s.y/2.0);
 		
 		sf::Vector2f p2(
-			p.x + cos(a) * sx, p.y + sin(a) * sx
+			p.x + cos(angle2) * sx, p.y + sin(angle2) * sx
 		);
 		sf::Vector2f p3(
-			p2.x - sin(a) * sy, p2.y + cos(a) * sy
+			p2.x - sin(angle2) * sy, p2.y + cos(angle2) * sy
 		);
-		
-		LOGI(a << ':' << p2.x << ':' << p2.y);
 		
 		sf::RectangleShape r(sf::Vector2f(1, 1));
 		sf::RectangleShape r2(sf::Vector2f(1, 1));
@@ -177,36 +173,6 @@ void Demo_3::run()
 		win.draw(r);
 		win.draw(r2);
 		win.draw(r3);
-		
-		/*
-		sf::Vector2f p2_d = car.punt();
-		
-		p1.setPosition(car.shape.getPosition());
-		p2.setPosition(p1.getPosition() + p2_d);
-		p3.setPosition(p2.getPosition().x, -p2.getPosition().y);
-		
-		sf::Vector2f posp2 = p2.getPosition();
-		
-		std::array<sf::Vector2f, 4> punts = car.punts();
-		for(int i = 0; i < 4; i++)
-		{
-		LOGI("Punt " << i << ":" << punts[i].x << "," << punts[i].y << 			std::endl);
-		}
-		
-		sf::Color color = image.getPixel(posp2.x, posp2.y);
-				
-		if (color == sf::Color::White)
-		{
-			car.shape.setPosition(100.f,100.f);
-		}
-		
-		win.clear(sf::Color(20, 20, 20));
-		win.draw(circuit);
-		win.draw(car.shape);
-		win.draw(p1);
-		win.draw(p2);
-		win.draw(p3);
-		*/
 		
 		win.display();
 	}

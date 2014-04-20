@@ -15,6 +15,7 @@
 #include <fann_cpp.h>*/
 
 float transform_rot(float ang);
+double dec2rad(double dec);
 
 struct Car {
 	Car()
