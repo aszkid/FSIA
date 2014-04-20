@@ -114,6 +114,7 @@ void Demo_3::run()
 		}
 		
 		double angle2 = dec2rad(car.shape.getRotation());
+		double angle3 = dec2rad(car.shape.getRotation() + 180);
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
@@ -141,7 +142,7 @@ void Demo_3::run()
 		double sx = (s.x/2.0);
 		double sy = (s.y/2.0);
 		
-		std::array<sf::Vector2f, 5> ps;
+		std::array<sf::Vector2f, 6> ps;
 		ps[0] = sf::Vector2f(
 			p.x + cos(angle2) * sx, p.y + sin(angle2) * sx
 		);
@@ -152,13 +153,19 @@ void Demo_3::run()
 			ps[0].x + sin(angle2) * sy, ps[0].y - cos(angle2) * sy
 		);
 		ps[3] = sf::Vector2f(
-			ps[0].x - sin(angle2) * sy, ps[0].y - cos(angle2) * sy
+			p.x + cos(angle3) * sx, p.y + sin(angle3) * sx
+		);
+		ps[4] = sf::Vector2f(
+			ps[3].x - sin(angle3) * sy, ps[3].y + cos(angle3) * sy
+		);
+		ps[5] = sf::Vector2f(
+			ps[3].x + sin(angle3) * sy, ps[3].y - cos(angle3) * sy
 		);
 		
 		
 		//sf::Vector2f p4()
 		
-		std::array<sf::RectangleShape, 6> rs;
+		std::array<sf::RectangleShape, 8> rs;
 		
 		for(auto& rsi : rs)
 		{
@@ -171,6 +178,8 @@ void Demo_3::run()
 		rs[3].setPosition(ps[2]);
 		rs[4].setPosition(ps[2]);
 		rs[5].setPosition(ps[3]);
+		rs[6].setPosition(ps[4]);
+		rs[7].setPosition(ps[5]);
 		
 		//win.draw(car.shape);
 		
