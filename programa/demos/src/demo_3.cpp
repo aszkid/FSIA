@@ -19,34 +19,7 @@ sf::Vector2f Car::punt()
 	return sf::Vector2f(
 		(cosa*size.x + sina*size.y)/(2), (cosa*size.y - sina*size.x)/(2)
 	);
-}	
-	
-/*std::array<sf::Vector2f, 4> Car::punts()
-{	
-	std::array<sf::Vector2f, 4> arr;
-	sf::Vector2f pos = shape.getPosition();
-	double angle = shape.getRotation()*3.1415/180;
-	
-	sf::Vector2f size = shape.getSize();
-	for(int i = 0 ; i < 4 ; i++)
-	{
-		arr[i] = punt(size.x / 2, size.y / 2 , angle);
-	}
-		
-		arr[0].x = arr[0].x * -1;	arr[0].y = arr[0].y * -1;
-		arr[1].x = arr[1].x * -1;	arr[1].y = arr[1].y * 1;
-		arr[2].x = arr[2].x * 1;	arr[2].y = arr[2].y * -1;
-		arr[3].x = arr[3].x * 1;	arr[2].y = arr[2].y * 1;
-
-	for(int i = 0 ; i < 4 ; i++)
-	{
-		arr[i].x = arr[i].x + pos.x;
-		arr[i].y = arr[i].y + pos.y;	
-	}
-	
-	return arr;
 }
-*/
 
 bool Demo_3::prepare()
 {
@@ -58,8 +31,10 @@ bool Demo_3::prepare()
 	win.setVerticalSyncEnabled(true);
 	scoreRect = car.shape.getLocalBounds();
 	car.shape.setOrigin(scoreRect.left + scoreRect.width / 2.f, scoreRect.top + 		scoreRect.height / 2.f);
+	car.shape.scale(0.8f, 0.8f);
 	
 	int size = 1;
+	car.shape.setPosition(100.f,100.f);
 	
 	p1.setSize(sf::Vector2f(size, size));
 	p2.setSize(sf::Vector2f(size, size));
@@ -135,12 +110,10 @@ void Demo_3::run()
 			car.shape.move(final2);
 		}
 		
-		win.clear(sf::Color(20, 20, 20));
-		
 		auto p = car.shape.getPosition();
 		auto s = car.shape.getSize();
-		double sx = (s.x/2.0);
-		double sy = (s.y/2.0);
+		double sx = (s.x/2.0) * 60 / 100;
+		double sy = (s.y/2.0) * 60 / 100;
 		
 		std::array<sf::Vector2f, 6> ps;
 		ps[0] = sf::Vector2f(
@@ -165,22 +138,26 @@ void Demo_3::run()
 		
 		//sf::Vector2f p4()
 		
-		std::array<sf::RectangleShape, 8> rs;
+		std::array<sf::RectangleShape, 7> rs;
 		
-		for(auto& rsi : rs)
+		for(size_t i = 0; i < rs.size(); i++)
 		{
+			auto& rsi = rs[i];
+			
 			rsi = sf::RectangleShape(sf::Vector2f(1, 1));
+			rsi.setPosition(ps[i]);
 		}
+		sf::Color color;
 		
-		rs[0].setPosition(p);
-		rs[1].setPosition(ps[0]);
-		rs[2].setPosition(ps[1]);
-		rs[3].setPosition(ps[2]);
-		rs[4].setPosition(ps[2]);
-		rs[5].setPosition(ps[3]);
-		rs[6].setPosition(ps[4]);
-		rs[7].setPosition(ps[5]);
+		for(size_t i = 0; i < rs.size(); i++)
+		{
+			color = image.getPixel(ps[i].x, ps[i].y);
+			if (color == sf::Color::White)
+			{
+				car.shape.setPosition(100.f,100.f);
+			}
 		
+		}
 		//win.draw(car.shape);
 		
 		for(auto& rsi : rs)
@@ -188,6 +165,9 @@ void Demo_3::run()
 			win.draw(rsi);
 		}
 		
+		win.clear(sf::Color(20, 20, 20));
+		win.draw(circuit);
+		win.draw(car.shape);
 		win.display();
 	}
 
