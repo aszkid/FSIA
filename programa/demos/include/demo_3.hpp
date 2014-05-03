@@ -14,6 +14,8 @@
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
+static const auto spawnpos = sf::Vector2f(525.f, 84.f);
+
 double dec2rad(double dec);
 
 struct Car {
@@ -23,8 +25,7 @@ struct Car {
 	
 	sf::RectangleShape shape;
 	
-	sf::Vector2f punt();
-	std::array<sf::Vector2f, 4> punts();
+	std::array<sf::Vector2f, 6> punts();
 };
 
 class Demo_3 : public Demo {

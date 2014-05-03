@@ -6,25 +6,41 @@ double dec2rad(double dec)
 }
 
 	
-sf::Vector2f Car::punt()
+std::array<sf::Vector2f, 6> Car::punts()
 {	
-	double ang = shape.getRotation();	
-	ang = dec2rad(ang);
-	
-	double sina = sin(ang);
-	double cosa = cos(ang);
-	
-	sf::Vector2f size = shape.getSize();
-	
-	return sf::Vector2f(
-		(cosa*size.x + sina*size.y)/(2), (cosa*size.y - sina*size.x)/(2)
+	const auto p = shape.getPosition();
+	const auto s = shape.getSize();
+	const double prop = 60.0;
+	const double sx = (s.x/2.0)*prop/100.0;
+	const double sy = (s.y/2.0)*prop/100.0;
+	const double angle2 = dec2rad(shape.getRotation());
+	const double angle3 = dec2rad(shape.getRotation() + 180);
+
+	std::array<sf::Vector2f, 6> ps;
+	ps[0] = sf::Vector2f(
+		p.x + cos(angle2) * sx, p.y + sin(angle2) * sx
 	);
+	ps[1] = sf::Vector2f(
+		ps[0].x - sin(angle2) * sy, ps[0].y + cos(angle2) * sy
+	);
+	ps[2] = sf::Vector2f(
+		ps[0].x + sin(angle2) * sy, ps[0].y - cos(angle2) * sy
+	);
+	ps[3] = sf::Vector2f(
+		p.x + cos(angle3) * sx, p.y + sin(angle3) * sx
+	);
+	ps[4] = sf::Vector2f(
+		ps[3].x - sin(angle3) * sy, ps[3].y + cos(angle3) * sy
+	);
+	ps[5] = sf::Vector2f(
+		ps[3].x + sin(angle3) * sy, ps[3].y - cos(angle3) * sy
+	);
+	
+	return ps;
 }
 
 bool Demo_3::prepare()
-{
-	
-	
+{	
 	frameTime = 0;
 	win.create(sf::VideoMode::getDesktopMode(), "DEMO 3", sf::Style::Fullscreen);
 	win.setFramerateLimit(60);
@@ -34,8 +50,7 @@ bool Demo_3::prepare()
 	car.shape.scale(0.8f, 0.8f);
 	
 	int size = 1;
-	car.shape.setPosition(100.f,100.f);
-	
+	car.shape.setPosition(spawnpos);
 	p1.setSize(sf::Vector2f(size, size));
 	p2.setSize(sf::Vector2f(size, size));
 	//p3.setSize(sf::Vector2f(size, size));
@@ -43,10 +58,7 @@ bool Demo_3::prepare()
     	return true;
 }	
 void Demo_3::run()
-{	
-	/*double rot= car.shape.getRotation();
-	rot = transform_rot(rot);
-	LOGI("rotació: " << rot);*/
+{
 	
 	sf::Texture car_t;
 	sf::Texture background;
@@ -56,7 +68,7 @@ void Demo_3::run()
 		std::cout << "Error could not load car image" << std::endl;
 	
 	
-	if(!background.loadFromFile("2.png"))
+	if(!background.loadFromFile("path2.png"))
 		std::cout << "Error could not load circuit image" << std::endl;
 	circuit.setTexture(background);
 	sf::Image image = background.copyToImage();
@@ -110,35 +122,18 @@ void Demo_3::run()
 			car.shape.move(final2);
 		}
 		
-		auto p = car.shape.getPosition();
-		auto s = car.shape.getSize();
-		double sx = (s.x/2.0) * 60 / 100;
-		double sy = (s.y/2.0) * 60 / 100;
+		std::array<sf::Vector2f, 6> ps(car.punts());
+		std::array<sf::RectangleShape, 8> rs;
 		
-		std::array<sf::Vector2f, 6> ps;
-		ps[0] = sf::Vector2f(
-			p.x + cos(angle2) * sx, p.y + sin(angle2) * sx
-		);
-		ps[1] = sf::Vector2f(
-			ps[0].x - sin(angle2) * sy, ps[0].y + cos(angle2) * sy
-		);
-		ps[2] = sf::Vector2f(
-			ps[0].x + sin(angle2) * sy, ps[0].y - cos(angle2) * sy
-		);
-		ps[3] = sf::Vector2f(
-			p.x + cos(angle3) * sx, p.y + sin(angle3) * sx
-		);
-		ps[4] = sf::Vector2f(
-			ps[3].x - sin(angle3) * sy, ps[3].y + cos(angle3) * sy
-		);
-		ps[5] = sf::Vector2f(
-			ps[3].x + sin(angle3) * sy, ps[3].y - cos(angle3) * sy
-		);
+		const auto cp = car.shape.getPosition();
+		const auto cs = car.shape.getSize();
+		static const double L = 100;
 		
-		
-		//sf::Vector2f p4()
-		
-		std::array<sf::RectangleShape, 7> rs;
+		sf::Vertex line[] = {
+			sf::Vertex(sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2))),
+			//sf::Vertex(sf::Vector2f(cp.x + cs.x * cos(angle2), cp.y + cs.y * sin(angle2)))
+			sf::Vertex(sf::Vector2f(10, 10))
+		};
 		
 		for(size_t i = 0; i < rs.size(); i++)
 		{
@@ -154,23 +149,25 @@ void Demo_3::run()
 			color = image.getPixel(ps[i].x, ps[i].y);
 			if (color == sf::Color::White)
 			{
-				car.shape.setPosition(100.f,100.f);
+				car.shape.setPosition(spawnpos);
 			}
-		
 		}
-		//win.draw(car.shape);
+		
+		win.clear(sf::Color(20, 20, 20));
 		
 		for(auto& rsi : rs)
 		{
 			win.draw(rsi);
 		}
 		
-		win.clear(sf::Color(20, 20, 20));
 		win.draw(circuit);
 		win.draw(car.shape);
+		win.draw(line, 2, sf::Lines);
+		
 		win.display();
 	}
 
 	
 }
+
 
