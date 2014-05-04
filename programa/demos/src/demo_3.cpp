@@ -143,28 +143,36 @@ void Demo_3::run()
 		static const double L = 1;
 		static const double sa_ang = dec2rad(25);
 		
-		//srs[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
-		//srs[0][1].position = ps[0];
 		srs[0][1].position = ps[0];
+		srs[1][1].position = ps[1];
 		
-		auto srp = srs[0][0].position;
-		
-		int inc = 1;
+		int inc1 = 1;
+		int inc2 = 1;
 		
 		if(moved)
 		{
 			while(true)
 			{
-				srs[0][0].position.x = cp.x + (L+inc) * cos(angle2);
-				srs[0][0].position.y = cp.y + (L+inc) * sin(angle2);
-				srp = srs[0][0].position;
+				srs[0][0].position = sf::Vector2f(cp.x + (L+inc1) * cos(angle2), cp.y + (L+inc1) * sin(angle2));
 			
-				if(image.getPixel(srp.x, srp.y) == sf::Color::White)
+				if(image.getPixel(srs[0][0].position.x, srs[0][0].position.y) == sf::Color::White)
 				{
 					break;
 				}
 			
-				inc += 10;
+				inc1 += 10;
+			}
+			
+			while(true)
+			{
+				srs[1][0].position = sf::Vector2f(cp.x + (L+inc2) * cos(angle2) - sin(angle2) * (cs.y / 2.0), cp.y + (L+inc2) * sin(angle2) + cos(angle2) * (cs.y / 2.0));
+				
+				if(image.getPixel(srs[1][0].position.x, srs[1][0].position.y) == sf::Color::White)
+				{
+					break;
+				}
+			
+				inc2 += 10;
 			}
 		}
 		
