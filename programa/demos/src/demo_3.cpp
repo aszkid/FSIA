@@ -101,7 +101,7 @@ void Demo_3::run()
 		}
 		
 		double angle2 = dec2rad(car.shape.getRotation());
-		double angle3 = dec2rad(car.shape.getRotation() + 180);
+		//double angle3 = dec2rad(car.shape.getRotation() + 180);
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
@@ -123,10 +123,9 @@ void Demo_3::run()
 		}
 		
 		std::array<sf::Vector2f, 6> ps(car.punts());
-		std::array<sf::RectangleShape, 8> rs;
 		
 		const auto cp = car.shape.getPosition();
-		const auto cs = car.shape.getSize();
+		//const auto cs = car.shape.getSize();
 		static const double L = 100;
 		
 		sf::Vertex line[] = {
@@ -135,16 +134,9 @@ void Demo_3::run()
 			sf::Vertex(sf::Vector2f(10, 10))
 		};
 		
-		for(size_t i = 0; i < rs.size(); i++)
-		{
-			auto& rsi = rs[i];
-			
-			rsi = sf::RectangleShape(sf::Vector2f(1, 1));
-			rsi.setPosition(ps[i]);
-		}
 		sf::Color color;
 		
-		for(size_t i = 0; i < rs.size(); i++)
+		for(size_t i = 0; i < ps.size(); i++)
 		{
 			color = image.getPixel(ps[i].x, ps[i].y);
 			if (color == sf::Color::White)
@@ -154,11 +146,6 @@ void Demo_3::run()
 		}
 		
 		win.clear(sf::Color(20, 20, 20));
-		
-		for(auto& rsi : rs)
-		{
-			win.draw(rsi);
-		}
 		
 		win.draw(circuit);
 		win.draw(car.shape);
