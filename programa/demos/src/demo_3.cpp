@@ -51,6 +51,8 @@ bool Demo_3::prepare()
 	
 	//int size = 1;
 	car.shape.setPosition(spawnpos);	
+	
+	moved = false;
 
 	for(auto& s : srs)
 	{
@@ -109,20 +111,28 @@ void Demo_3::run()
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			car.shape.setRotation(car.shape.getRotation()+2);
+			moved = true;
 		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			car.shape.setRotation(car.shape.getRotation()-2);
+			moved = true;
 		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
 			car.shape.move(final2);
+			moved = true;
 		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			sf::Vector2f final2(-cos(angle2) * 2.f, -sin(angle2) * 2.f);
 			car.shape.move(final2);
+			moved = true;
+		}
+		else
+		{
+			moved = false;
 		}
 		
 		std::array<sf::Vector2f, 6> ps(car.punts());
@@ -133,36 +143,29 @@ void Demo_3::run()
 		static const double L = 1;
 		static const double sa_ang = dec2rad(25);
 		
-		srs[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
+		//srs[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
+		//srs[0][1].position = ps[0];
 		srs[0][1].position = ps[0];
 		
 		auto srp = srs[0][0].position;
 		
-		if(srp.x < 0)
-			srp.x = 0;
-		if(srp.y < 0)
-			srp.y = 0;
-		
 		int inc = 1;
 		
-		while(true)
+		if(moved)
 		{
-			if(image.getPixel(srp.x, srp.y) == sf::Color::White)
+			while(true)
 			{
-				LOGI("WALL!");
-				break;
+				srs[0][0].position.x = cp.x + (L+inc) * cos(angle2);
+				srs[0][0].position.y = cp.y + (L+inc) * sin(angle2);
+				srp = srs[0][0].position;
+			
+				if(image.getPixel(srp.x, srp.y) == sf::Color::White)
+				{
+					break;
+				}
+			
+				inc += 10;
 			}
-			/*if(inc > 200)
-				break;*/
-		
-			srs[0][0].position.x = cp.x + (L+inc) * cos(angle2);
-			srs[0][0].position.y = cp.y + (L+inc) * sin(angle2);
-			srp = srs[0][0].position;
-			
-			LOGI("checking (" << srs[0][0].position.x << ", " << srs[0][0].position.y << ")");
-			
-			
-			inc += 10;
 		}
 		
 		sf::Color color;
@@ -177,36 +180,15 @@ void Demo_3::run()
 			}
 		}
 		
-		/*for(auto& sr : srs)
-		{			
-			auto ap = sr[0].position;
-			auto a = sr[1].position;
-			if(ap.x < 0)
-				ap.x = 0;
-			if(ap.y < 0)
-				ap.y = 0;
-				
-			sf::Color c(image.getPixel(ap.x, ap.y));
-			
-			if (c == sf::Color::White)
-			{
-				sr[0].color = sf::Color::Red;
-				sr[1].color = sf::Color::Red;
-			}
-			else
-			{
-				sr[0].color = sf::Color::White;
-				sr[1].color = sf::Color::White;
-			}
-		}*/
-		
 		win.clear(sf::Color(20, 20, 20));
 		
 		win.draw(circuit);
 		win.draw(car.shape);
 		
 		for(auto& sr : srs)
+		{
 			win.draw(sr);
+		}
 		
 		win.display();
 	}

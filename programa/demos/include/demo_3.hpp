@@ -39,6 +39,8 @@ private:
 	
 	sf::Clock frameClock;
 	float frameTime;
+	
+	bool moved;
 
 	Car car;
 	
