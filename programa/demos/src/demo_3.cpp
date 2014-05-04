@@ -166,17 +166,20 @@ void Demo_3::run()
 				inc1 += 10;
 			}
 			
-			//while(true)
-			//{
-				srs[1][0].position = sf::Vector2f(ps[0].x - sin(angle2) * cs.y, ps[0].y + cos(angle2) * cs.y);
+			while(true)
+			{
+			
+				double offang = angle2 + dec2rad(15);
+			
+				srs[1][0].position = sf::Vector2f(cp.x + inc2 * cos(offang) - sin(offang) * cs.y, cp.y + inc2 * sin(offang) + cos(offang) * cs.y);
 				
 				if(image.getPixel(srs[1][0].position.x, srs[1][0].position.y) == sf::Color::White)
 				{
-					//break;
+					break;
 				}
 			
 				inc2 += 10;
-			//}
+			}
 		}
 		
 		sf::Color color;
