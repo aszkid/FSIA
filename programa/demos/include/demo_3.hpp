@@ -27,20 +27,21 @@ struct State {
 		FAR
 	};
 
-	std::array<double, 3> sensors;
-	bool dead;
+	std::array<uint, 3> _sensor;
+	bool _dead;
 };
 
-class Experience {
+struct Experience {
 
-	enum action {
+	enum Action {
 		RIGHT,
 		LEFT,
 		NOTHING
 	};
 
-	std::array<double, 3> _state;
+	State _state;
 	uint _action;
+	int _reward;
 };
 
 static const auto spawnpos = sf::Vector2f(525.f, 84.f);
@@ -77,5 +78,9 @@ private:
 	Car car;
 	
 	std::array<sf::VertexArray, 3> srs;
+	
+	std::array<std::array<std::array<std::array<double, 3>, 4>, 4>, 4> Q;
+	
+	double alphaQL;
 	
 };

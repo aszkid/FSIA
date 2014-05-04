@@ -13,6 +13,8 @@ std::string translatesensortostr(uint s)
 	case State::Sensor::FAR:
 		return "FAR";
 	}
+	
+	return "CLOSE";
 }
 uint translatesensor(int s)
 {
@@ -24,6 +26,8 @@ uint translatesensor(int s)
 		return State::Sensor::MIDFAR;
 	else if(s > 200)
 		return State::Sensor::FAR;
+	
+	return State::Sensor::CLOSE;
 }
 
 
@@ -94,7 +98,15 @@ bool Demo_3::prepare()
 			s[i].color = sf::Color::Red;
 	}
 	
-    	return true;
+	
+	
+	for(auto& s1 : Q)
+		for(auto& s2 : s1)
+			for(auto& s3 : s2)
+				for(auto& a : s3)
+					a = 0;
+		
+   return true;
 }	
 void Demo_3::run()
 {
@@ -250,7 +262,7 @@ void Demo_3::run()
 			inc3 += 10;
 		}
 		
-		LOGI(translatesensortostr(translatesensor(veclen(srs[0][0].position, srs[0][1].position))));
+		//LOGI(translatesensortostr(translatesensor(veclen(srs[0][0].position, srs[0][1].position))));
 		
 		sf::Color color;
 		
