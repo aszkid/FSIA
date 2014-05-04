@@ -152,13 +152,17 @@ void Demo_3::run()
 		
 		for(auto& sr : srs)
 		{			
-			auto srspos = sr[0].position;
-			if(srspos.x < 0)
-				srspos.x = 0;
-			if(srspos.y < 0)
-				srspos.y = 0;
+			auto ap = sr[0].position;
+			auto a = sr[1].position;
+			if(ap.x < 0)
+				ap.x = 0;
+			if(ap.y < 0)
+				ap.y = 0;
 				
-			sf::Color c(image.getPixel(srspos.x, srspos.y));
+			const double D = sqrt(pow(ap.x - a.x, 2) + pow(ap.y - a.y, 2));
+			LOGI(D << " points to check: m = " << ap.y / ap.x);
+				
+			sf::Color c(image.getPixel(ap.x, ap.y));
 			
 			if (c == sf::Color::White)
 			{
