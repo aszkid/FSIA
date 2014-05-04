@@ -148,9 +148,11 @@ void Demo_3::run()
 		
 		srs[0][1].position = ps[0];
 		srs[1][1].position = ps[1];
+		srs[2][1].position = ps[2];
 		
 		int inc1 = 1;
 		int inc2 = 1;
+		int inc3 = 1;
 		
 		if(moved)
 		{
@@ -179,6 +181,21 @@ void Demo_3::run()
 				}
 			
 				inc2 += 10;
+			}
+			
+			while(true)
+			{
+			
+				double offang = angle2 - dec2rad(15);
+			
+				srs[2][0].position = sf::Vector2f(cp.x + inc3 * cos(offang) + sin(offang) * cs.y, cp.y + inc3 * sin(offang) - cos(offang) * cs.y);
+				
+				if(image.getPixel(srs[2][0].position.x, srs[2][0].position.y) == sf::Color::White)
+				{
+					break;
+				}
+			
+				inc3 += 10;
 			}
 		}
 		
