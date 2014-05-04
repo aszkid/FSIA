@@ -14,7 +14,19 @@
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
+double veclen(sf::Vector2f a, sf::Vector2f ap);
+
+std::string translatesensortostr(uint s);
+uint translatesensor(int s);
+
 struct State {
+	enum Sensor {
+		CLOSE,
+		MIDCLOSE,
+		MIDFAR,
+		FAR
+	};
+
 	std::array<double, 3> sensors;
 	bool dead;
 };
@@ -56,6 +68,8 @@ private:
 	
 	sf::Clock frameClock;
 	float frameTime;
+	
+	bool selfdrive;
 	
 	std::default_random_engine gen;
 	std::uniform_int_distribution<int> dist;

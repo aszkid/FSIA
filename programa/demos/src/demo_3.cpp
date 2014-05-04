@@ -1,5 +1,38 @@
 #include "demo_3.hpp"
 
+std::string translatesensortostr(uint s)
+{
+	switch(s)
+	{
+	case State::Sensor::CLOSE:
+		return "CLOSE";
+	case State::Sensor::MIDCLOSE:
+		return "MIDCLOSE";
+	case State::Sensor::MIDFAR:
+		return "MIDFAR";
+	case State::Sensor::FAR:
+		return "FAR";
+	}
+}
+uint translatesensor(int s)
+{
+	if(s < 80)
+		return State::Sensor::CLOSE;
+	else if(s < 150)
+		return State::Sensor::MIDCLOSE;
+	else if(s < 200)
+		return State::Sensor::MIDFAR;
+	else if(s > 200)
+		return State::Sensor::FAR;
+}
+
+
+double veclen(sf::Vector2f a, sf::Vector2f ap)
+{
+	return sqrt(pow(ap.x - a.x, 2) + pow(ap.y - a.y, 2));
+}
+
+
 double dec2rad(double dec)
 {
 	return (dec*M_PI/180.0);
@@ -40,12 +73,11 @@ std::array<sf::Vector2f, 6> Car::punts()
 }
 
 Demo_3::Demo_3()
-	: dist(1,3)
+	: dist(1,3), frameTime(0), selfdrive(false)
 {}
 
 bool Demo_3::prepare()
-{	
-	frameTime = 0;
+{
 	win.create(sf::VideoMode(1280, 720), "DEMO 3");
 	win.setFramerateLimit(60);
 	win.setVerticalSyncEnabled(true);
@@ -97,6 +129,12 @@ void Demo_3::run()
 						case sf::Keyboard::Escape:
 							win.close();
 							break;
+						case sf::Keyboard::D:
+							selfdrive = false;
+							break;
+						case sf::Keyboard::A:
+							selfdrive = true;
+							break;
 						default:
 							break;
 					}
@@ -109,48 +147,53 @@ void Demo_3::run()
 		
 		double angle2 = dec2rad(car.shape.getRotation());
 		
-		/*if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-		{
-			car.shape.setRotation(car.shape.getRotation()+2);
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-		{
-			car.shape.setRotation(car.shape.getRotation()-2);
-		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if(selfdrive)
 		{
 			sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
 			car.shape.move(final2);
+		
+			int movement = dist(gen);
+			switch(movement)
+			{
+			case 1:
+				// move right
+			
+				car.shape.setRotation(car.shape.getRotation()+2);
+			
+				break;
+			case 2:
+				// move left
+			
+				car.shape.setRotation(car.shape.getRotation()-2);
+			
+				break;
+			default:
+				// keep straight
+			
+		
+				break;
+			}
 		}
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		else
 		{
-			sf::Vector2f final2(-cos(angle2) * 2.f, -sin(angle2) * 2.f);
-			car.shape.move(final2);
-		}*/
-		
-		sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
-		car.shape.move(final2);
-		
-		int movement = dist(gen);
-		switch(movement)
-		{
-		case 1:
-			// move right
-			
-			car.shape.setRotation(car.shape.getRotation()+2);
-			
-			break;
-		case 2:
-			// move left
-			
-			car.shape.setRotation(car.shape.getRotation()-2);
-			
-			break;
-		default:
-			// keep straight
-			
-		
-			break;
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+			{
+				car.shape.setRotation(car.shape.getRotation()+2);
+			}
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+			{
+				car.shape.setRotation(car.shape.getRotation()-2);
+			}
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+			{
+				sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
+				car.shape.move(final2);
+			}
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+			{
+				sf::Vector2f final2(-cos(angle2) * 2.f, -sin(angle2) * 2.f);
+				car.shape.move(final2);
+			}
 		}
 		
 		std::array<sf::Vector2f, 6> ps(car.punts());
@@ -206,6 +249,8 @@ void Demo_3::run()
 		
 			inc3 += 10;
 		}
+		
+		LOGI(translatesensortostr(translatesensor(veclen(srs[0][0].position, srs[0][1].position))));
 		
 		sf::Color color;
 		
