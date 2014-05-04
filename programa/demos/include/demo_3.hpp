@@ -39,9 +39,9 @@ private:
 	
 	sf::Clock frameClock;
 	float frameTime;
-	
-	sf::RectangleShape p1, p2, p3;
 
 	Car car;
+	
+	std::array<sf::VertexArray, 2> srs;
 	
 };

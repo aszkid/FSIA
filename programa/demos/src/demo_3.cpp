@@ -50,10 +50,10 @@ bool Demo_3::prepare()
 	car.shape.scale(0.8f, 0.8f);
 	
 	int size = 1;
-	car.shape.setPosition(spawnpos);
-	p1.setSize(sf::Vector2f(size, size));
-	p2.setSize(sf::Vector2f(size, size));
-	//p3.setSize(sf::Vector2f(size, size));
+	car.shape.setPosition(spawnpos);	
+
+	for(auto& s : srs)
+		s = sf::VertexArray(sf::Lines, 2);
 	
     	return true;
 }	
@@ -101,7 +101,6 @@ void Demo_3::run()
 		}
 		
 		double angle2 = dec2rad(car.shape.getRotation());
-		//double angle3 = dec2rad(car.shape.getRotation() + 180);
 		
 		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
@@ -125,21 +124,15 @@ void Demo_3::run()
 		std::array<sf::Vector2f, 6> ps(car.punts());
 		
 		const auto cp = car.shape.getPosition();
-		//const auto cs = car.shape.getSize();
+		
 		static const double L = 100;
-		
-		std::array<sf::VertexArray, 2> sensors;
-		
-		for(auto& s : sensors)
-			s = sf::VertexArray(sf::Lines, 2);
-		
 		static const double sa_ang = dec2rad(25);
 		
-		sensors[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
-		sensors[0][1].position = ps[0];
+		srs[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
+		srs[0][1].position = ps[0];
 		
-		sensors[1][0].position = sf::Vector2f(cp.x + L * cos(angle2 - sa_ang), ps[1].y);
-		sensors[1][1].position = ps[1];
+		srs[1][0].position = sf::Vector2f(srs[0][0].position.x, srs[0][0].position.y);
+		srs[1][1].position = ps[1];
 		
 		sf::Color color;
 		
@@ -157,8 +150,9 @@ void Demo_3::run()
 		
 		win.draw(circuit);
 		win.draw(car.shape);
-		win.draw(sensors[0]);
-		win.draw(sensors[1]);
+		
+		for(auto& sr : srs)
+			win.draw(sr);
 		
 		win.display();
 	}
