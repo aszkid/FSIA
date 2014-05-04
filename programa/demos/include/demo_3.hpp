@@ -14,8 +14,26 @@
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
-static const auto spawnpos = sf::Vector2f(525.f, 84.f);
+int random_range(int d, int u);
 
+struct State {
+	std::array<double, 3> sensors;
+	bool dead;
+};
+
+class Experience {
+
+	enum action {
+		RIGHT,
+		LEFT,
+		NOTHING
+	};
+
+	std::array<double, 3> _state;
+	uint _action;
+};
+
+static const auto spawnpos = sf::Vector2f(525.f, 84.f);
 double dec2rad(double dec);
 
 struct Car {

@@ -1,5 +1,13 @@
 #include "demo_3.hpp"
 
+
+int random_range(int d, int u)
+{
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> distribution(d, u);
+	return distribution(generator);
+}
+
 double dec2rad(double dec)
 {
 	return (dec*M_PI/180.0);
@@ -140,11 +148,6 @@ void Demo_3::run()
 		const auto cp = car.shape.getPosition();
 		const auto cso = car.shape.getSize();
 		const auto cs = sf::Vector2f((cso.x/2.0)*60.0/100.0, (cso.y/2.0)*60.0/100.0);
-		
-		static const double sa_ang = dec2rad(25);
-		
-		
-		static const int p = 100;
 		
 		srs[0][1].position = ps[0];
 		srs[1][1].position = ps[1];
