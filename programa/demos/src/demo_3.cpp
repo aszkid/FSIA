@@ -159,9 +159,6 @@ void Demo_3::run()
 			if(ap.y < 0)
 				ap.y = 0;
 				
-			const double D = sqrt(pow(ap.x - a.x, 2) + pow(ap.y - a.y, 2));
-			LOGI(D << " points to check: m = " << ap.y / ap.x);
-				
 			sf::Color c(image.getPixel(ap.x, ap.y));
 			
 			if (c == sf::Color::White)
