@@ -42,7 +42,7 @@ std::array<sf::Vector2f, 6> Car::punts()
 bool Demo_3::prepare()
 {	
 	frameTime = 0;
-	win.create(sf::VideoMode::getDesktopMode(), "DEMO 3", sf::Style::Fullscreen);
+	win.create(sf::VideoMode(1280, 720), "DEMO 3");
 	win.setFramerateLimit(60);
 	win.setVerticalSyncEnabled(true);
 	scoreRect = car.shape.getLocalBounds();
@@ -53,7 +53,11 @@ bool Demo_3::prepare()
 	car.shape.setPosition(spawnpos);	
 
 	for(auto& s : srs)
+	{
 		s = sf::VertexArray(sf::Lines, 2);
+		for(size_t i = 0; i < 2; i++)
+			s[i].color = sf::Color::Red;
+	}
 	
     	return true;
 }	
@@ -126,17 +130,40 @@ void Demo_3::run()
 		const auto cp = car.shape.getPosition();
 		const auto cs = car.shape.getSize();
 		
-		static const double L = 100;
+		static const double L = 1;
 		static const double sa_ang = dec2rad(25);
 		
 		srs[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
 		srs[0][1].position = ps[0];
 		
-		srs[1][0].position = sf::Vector2f(srs[0][0].position.x - sin(angle2) * (cs.y / 2.0), srs[0][0].position.y + cos(angle2) * (cs.y / 2.0));
-		srs[1][1].position = ps[1];
+		auto srp = srs[0][0].position;
 		
-		srs[2][0].position = sf::Vector2f(srs[0][0].position.x + sin(angle2) * (cs.y / 2.0), srs[0][0].position.y - cos(angle2) * (cs.y / 2.0));
-		srs[2][1].position = ps[2];
+		if(srp.x < 0)
+			srp.x = 0;
+		if(srp.y < 0)
+			srp.y = 0;
+		
+		int inc = 1;
+		
+		while(true)
+		{
+			if(image.getPixel(srp.x, srp.y) == sf::Color::White)
+			{
+				LOGI("WALL!");
+				break;
+			}
+			/*if(inc > 200)
+				break;*/
+		
+			srs[0][0].position.x = cp.x + (L+inc) * cos(angle2);
+			srs[0][0].position.y = cp.y + (L+inc) * sin(angle2);
+			srp = srs[0][0].position;
+			
+			LOGI("checking (" << srs[0][0].position.x << ", " << srs[0][0].position.y << ")");
+			
+			
+			inc += 10;
+		}
 		
 		sf::Color color;
 		
@@ -150,7 +177,7 @@ void Demo_3::run()
 			}
 		}
 		
-		for(auto& sr : srs)
+		/*for(auto& sr : srs)
 		{			
 			auto ap = sr[0].position;
 			auto a = sr[1].position;
@@ -171,7 +198,7 @@ void Demo_3::run()
 				sr[0].color = sf::Color::White;
 				sr[1].color = sf::Color::White;
 			}
-		}
+		}*/
 		
 		win.clear(sf::Color(20, 20, 20));
 		
