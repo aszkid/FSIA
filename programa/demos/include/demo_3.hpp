@@ -14,8 +14,6 @@
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
-int random_range(int d, int u);
-
 struct State {
 	std::array<double, 3> sensors;
 	bool dead;
@@ -50,6 +48,7 @@ class Demo_3 : public Demo {
 public:
 	bool prepare();
 	void run();
+	Demo_3();
 private:
 	sf::RenderWindow win;
 	sf::Event eve;
@@ -58,7 +57,8 @@ private:
 	sf::Clock frameClock;
 	float frameTime;
 	
-	bool moved;
+	std::default_random_engine gen;
+	std::uniform_int_distribution<int> dist;
 
 	Car car;
 	

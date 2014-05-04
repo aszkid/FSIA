@@ -1,13 +1,5 @@
 #include "demo_3.hpp"
 
-
-int random_range(int d, int u)
-{
-	std::default_random_engine generator;
-	std::uniform_int_distribution<int> distribution(d, u);
-	return distribution(generator);
-}
-
 double dec2rad(double dec)
 {
 	return (dec*M_PI/180.0);
@@ -47,6 +39,10 @@ std::array<sf::Vector2f, 6> Car::punts()
 	return ps;
 }
 
+Demo_3::Demo_3()
+	: dist(1,3)
+{}
+
 bool Demo_3::prepare()
 {	
 	frameTime = 0;
@@ -57,10 +53,7 @@ bool Demo_3::prepare()
 	car.shape.setOrigin(scoreRect.left + scoreRect.width / 2.f, scoreRect.top + 		scoreRect.height / 2.f);
 	car.shape.scale(0.8f, 0.8f);
 	
-	//int size = 1;
 	car.shape.setPosition(spawnpos);	
-	
-	moved = false;
 
 	for(auto& s : srs)
 	{
@@ -116,31 +109,48 @@ void Demo_3::run()
 		
 		double angle2 = dec2rad(car.shape.getRotation());
 		
-		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+		/*if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 		{
 			car.shape.setRotation(car.shape.getRotation()+2);
-			moved = true;
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 		{
 			car.shape.setRotation(car.shape.getRotation()-2);
-			moved = true;
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
 			car.shape.move(final2);
-			moved = true;
 		}
-		else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+		if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 		{
 			sf::Vector2f final2(-cos(angle2) * 2.f, -sin(angle2) * 2.f);
 			car.shape.move(final2);
-			moved = true;
-		}
-		else
+		}*/
+		
+		sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
+		car.shape.move(final2);
+		
+		int movement = dist(gen);
+		switch(movement)
 		{
-			moved = false;
+		case 1:
+			// move right
+			
+			car.shape.setRotation(car.shape.getRotation()+2);
+			
+			break;
+		case 2:
+			// move left
+			
+			car.shape.setRotation(car.shape.getRotation()-2);
+			
+			break;
+		default:
+			// keep straight
+			
+		
+			break;
 		}
 		
 		std::array<sf::Vector2f, 6> ps(car.punts());
@@ -157,49 +167,44 @@ void Demo_3::run()
 		int inc2 = 1;
 		int inc3 = 1;
 		
-		if(moved)
+		while(true)
 		{
-			while(true)
+			srs[0][0].position = sf::Vector2f(cp.x + (inc1) * cos(angle2), cp.y + (inc1) * sin(angle2));
+		
+			if(image.getPixel(srs[0][0].position.x, srs[0][0].position.y) == sf::Color::White)
 			{
-				srs[0][0].position = sf::Vector2f(cp.x + (inc1) * cos(angle2), cp.y + (inc1) * sin(angle2));
-			
-				if(image.getPixel(srs[0][0].position.x, srs[0][0].position.y) == sf::Color::White)
-				{
-					break;
-				}
-			
-				inc1 += 10;
+				break;
 			}
+		
+			inc1 += 10;
+		}
+		while(true)
+		{
+		
+			double offang = angle2 + dec2rad(15);
+		
+			srs[1][0].position = sf::Vector2f(cp.x + inc2 * cos(offang) - sin(offang) * cs.y, cp.y + inc2 * sin(offang) + cos(offang) * cs.y);
 			
-			while(true)
+			if(image.getPixel(srs[1][0].position.x, srs[1][0].position.y) == sf::Color::White)
 			{
-			
-				double offang = angle2 + dec2rad(15);
-			
-				srs[1][0].position = sf::Vector2f(cp.x + inc2 * cos(offang) - sin(offang) * cs.y, cp.y + inc2 * sin(offang) + cos(offang) * cs.y);
-				
-				if(image.getPixel(srs[1][0].position.x, srs[1][0].position.y) == sf::Color::White)
-				{
-					break;
-				}
-			
-				inc2 += 10;
+				break;
 			}
+		
+			inc2 += 10;
+		}
+		while(true)
+		{
+		
+			double offang = angle2 - dec2rad(15);
+		
+			srs[2][0].position = sf::Vector2f(cp.x + inc3 * cos(offang) + sin(offang) * cs.y, cp.y + inc3 * sin(offang) - cos(offang) * cs.y);
 			
-			while(true)
+			if(image.getPixel(srs[2][0].position.x, srs[2][0].position.y) == sf::Color::White)
 			{
-			
-				double offang = angle2 - dec2rad(15);
-			
-				srs[2][0].position = sf::Vector2f(cp.x + inc3 * cos(offang) + sin(offang) * cs.y, cp.y + inc3 * sin(offang) - cos(offang) * cs.y);
-				
-				if(image.getPixel(srs[2][0].position.x, srs[2][0].position.y) == sf::Color::White)
-				{
-					break;
-				}
-			
-				inc3 += 10;
+				break;
 			}
+		
+			inc3 += 10;
 		}
 		
 		sf::Color color;
