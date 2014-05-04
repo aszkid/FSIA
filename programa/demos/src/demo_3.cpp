@@ -128,11 +128,18 @@ void Demo_3::run()
 		//const auto cs = car.shape.getSize();
 		static const double L = 100;
 		
-		sf::Vertex line[] = {
-			sf::Vertex(sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2))),
-			//sf::Vertex(sf::Vector2f(cp.x + cs.x * cos(angle2), cp.y + cs.y * sin(angle2)))
-			sf::Vertex(sf::Vector2f(10, 10))
-		};
+		std::array<sf::VertexArray, 2> sensors;
+		
+		for(auto& s : sensors)
+			s = sf::VertexArray(sf::Lines, 2);
+		
+		static const double sa_ang = dec2rad(25);
+		
+		sensors[0][0].position = sf::Vector2f(cp.x + L * cos(angle2), cp.y + L * sin(angle2));
+		sensors[0][1].position = ps[0];
+		
+		sensors[1][0].position = sf::Vector2f(cp.x + L * cos(angle2 - sa_ang), ps[1].y);
+		sensors[1][1].position = ps[1];
 		
 		sf::Color color;
 		
@@ -142,6 +149,7 @@ void Demo_3::run()
 			if (color == sf::Color::White)
 			{
 				car.shape.setPosition(spawnpos);
+				car.shape.setRotation(0);
 			}
 		}
 		
@@ -149,7 +157,8 @@ void Demo_3::run()
 		
 		win.draw(circuit);
 		win.draw(car.shape);
-		win.draw(line, 2, sf::Lines);
+		win.draw(sensors[0]);
+		win.draw(sensors[1]);
 		
 		win.display();
 	}
