@@ -138,10 +138,13 @@ void Demo_3::run()
 		std::array<sf::Vector2f, 6> ps(car.punts());
 		
 		const auto cp = car.shape.getPosition();
-		const auto cs = car.shape.getSize();
+		const auto cso = car.shape.getSize();
+		const auto cs = sf::Vector2f((cso.x/2.0)*60.0/100.0, (cso.y/2.0)*60.0/100.0);
 		
-		static const double L = 1;
 		static const double sa_ang = dec2rad(25);
+		
+		
+		static const int p = 100;
 		
 		srs[0][1].position = ps[0];
 		srs[1][1].position = ps[1];
@@ -153,7 +156,7 @@ void Demo_3::run()
 		{
 			while(true)
 			{
-				srs[0][0].position = sf::Vector2f(cp.x + (L+inc1) * cos(angle2), cp.y + (L+inc1) * sin(angle2));
+				srs[0][0].position = sf::Vector2f(cp.x + (inc1) * cos(angle2), cp.y + (inc1) * sin(angle2));
 			
 				if(image.getPixel(srs[0][0].position.x, srs[0][0].position.y) == sf::Color::White)
 				{
@@ -163,17 +166,17 @@ void Demo_3::run()
 				inc1 += 10;
 			}
 			
-			while(true)
-			{
-				srs[1][0].position = sf::Vector2f(cp.x + (L+inc2) * cos(angle2) - sin(angle2) * (cs.y / 2.0), cp.y + (L+inc2) * sin(angle2) + cos(angle2) * (cs.y / 2.0));
+			//while(true)
+			//{
+				srs[1][0].position = sf::Vector2f(ps[0].x - sin(angle2) * cs.y, ps[0].y + cos(angle2) * cs.y);
 				
 				if(image.getPixel(srs[1][0].position.x, srs[1][0].position.y) == sf::Color::White)
 				{
-					break;
+					//break;
 				}
 			
 				inc2 += 10;
-			}
+			//}
 		}
 		
 		sf::Color color;
