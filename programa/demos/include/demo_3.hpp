@@ -42,6 +42,6 @@ private:
 
 	Car car;
 	
-	std::array<sf::VertexArray, 2> srs;
+	std::array<sf::VertexArray, 3> srs;
 	
 };
