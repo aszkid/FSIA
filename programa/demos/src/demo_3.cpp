@@ -49,7 +49,7 @@ bool Demo_3::prepare()
 	car.shape.setOrigin(scoreRect.left + scoreRect.width / 2.f, scoreRect.top + 		scoreRect.height / 2.f);
 	car.shape.scale(0.8f, 0.8f);
 	
-	int size = 1;
+	//int size = 1;
 	car.shape.setPosition(spawnpos);	
 
 	for(auto& s : srs)
@@ -138,7 +138,7 @@ void Demo_3::run()
 		srs[2][0].position = sf::Vector2f(srs[0][0].position.x + sin(angle2) * (cs.y / 2.0), srs[0][0].position.y - cos(angle2) * (cs.y / 2.0));
 		srs[2][1].position = ps[2];
 		
-		sf::Color color, c2;
+		sf::Color color;
 		
 		for(size_t i = 0; i < ps.size(); i++)
 		{
@@ -148,20 +148,28 @@ void Demo_3::run()
 				car.shape.setPosition(spawnpos);
 				car.shape.setRotation(0);
 			}
-			
-			auto srspos = srs[2][0].position;
+		}
+		
+		for(auto& sr : srs)
+		{			
+			auto srspos = sr[0].position;
 			if(srspos.x < 0)
 				srspos.x = 0;
 			if(srspos.y < 0)
 				srspos.y = 0;
+				
+			sf::Color c(image.getPixel(srspos.x, srspos.y));
 			
-			c2 = image.getPixel(srspos.x, srspos.y);
-			if (c2 == sf::Color::White)
+			if (c == sf::Color::White)
 			{
-				srs[2][0].color = sf::Color::Red;
+				sr[0].color = sf::Color::Red;
+				sr[1].color = sf::Color::Red;
 			}
 			else
-				srs[2][0].color = sf::Color::White;
+			{
+				sr[0].color = sf::Color::White;
+				sr[1].color = sf::Color::White;
+			}
 		}
 		
 		win.clear(sf::Color(20, 20, 20));
