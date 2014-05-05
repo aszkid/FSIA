@@ -18,13 +18,13 @@ std::string translatesensortostr(uint s)
 }
 uint translatesensor(int s)
 {
-	if(s < 80)
+	if(s < 25)
 		return State::Sensor::CLOSE;
-	else if(s < 150)
+	else if(s < 100)
 		return State::Sensor::MIDCLOSE;
-	else if(s < 200)
+	else if(s < 150)
 		return State::Sensor::MIDFAR;
-	else if(s > 200)
+	else if(s > 150)
 		return State::Sensor::FAR;
 	
 	return State::Sensor::CLOSE;
@@ -156,6 +156,10 @@ void Demo_3::run()
 				
 			}
 		}
+
+
+		steerang = 360.0 * frameClock.getElapsedTime().asSeconds();
+		frameClock.restart();
 		
 		double angle2 = dec2rad(car.shape.getRotation());
 		
@@ -170,13 +174,13 @@ void Demo_3::run()
 			case 1:
 				// move right
 			
-				car.shape.setRotation(car.shape.getRotation()+2);
+				car.shape.setRotation(car.shape.getRotation()+steerang);
 			
 				break;
 			case 2:
 				// move left
 			
-				car.shape.setRotation(car.shape.getRotation()-2);
+				car.shape.setRotation(car.shape.getRotation()-steerang);
 			
 				break;
 			default:
@@ -190,11 +194,11 @@ void Demo_3::run()
 		{
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 			{
-				car.shape.setRotation(car.shape.getRotation()+2);
+				car.shape.setRotation(car.shape.getRotation()+steerang);
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 			{
-				car.shape.setRotation(car.shape.getRotation()-2);
+				car.shape.setRotation(car.shape.getRotation()-steerang);
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
@@ -287,6 +291,7 @@ void Demo_3::run()
 		}
 		
 		win.display();
+
 	}
 
 	

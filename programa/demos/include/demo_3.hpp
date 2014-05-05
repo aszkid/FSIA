@@ -71,6 +71,8 @@ private:
 	float frameTime;
 	
 	bool selfdrive;
+
+	double steerang;
 	
 	std::default_random_engine gen;
 	std::uniform_int_distribution<int> dist;
