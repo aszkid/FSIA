@@ -87,6 +87,8 @@ private:
 	sf::Clock tickClock;
 	sf::Color color;
 	
+	bool collided;
+	
 	State s;
 	State sp;
 	

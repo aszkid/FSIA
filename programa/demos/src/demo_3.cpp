@@ -76,7 +76,7 @@ std::array<sf::Vector2f, 6> Car::punts()
 }
 
 Demo_3::Demo_3()
-	: dist(1,3), frameTime(0), selfdrive(false)
+	: dist(1,3), frameTime(0), selfdrive(false), collided(false)
 {}
 
 bool Demo_3::prepare()
@@ -267,7 +267,6 @@ void Demo_3::run()
 		
 			inc3 += 10;
 		}
-		
 
 		for(size_t i = 0; i < ps.size(); i++)
 		{
@@ -276,8 +275,9 @@ void Demo_3::run()
 			{
 				if(selfdrive)
 				{
+					collided = true;
+				
 					LOGI("Handling tick (collision)");
-					
 					handle_tick();
 				}
 			
@@ -285,6 +285,19 @@ void Demo_3::run()
 				car.shape.setRotation(0);
 			}
 		}
+		
+		if(!collided)
+		{
+			if(tickClock.getElapsedTime().asSeconds() >= 1.0)
+			{
+				LOGI("Handling tick (timestep)");
+				handle_tick();
+				
+				tickClock.restart();
+			}
+		}
+		else
+			collided = false;
 		
 		win.clear(sf::Color(20, 20, 20));
 		
