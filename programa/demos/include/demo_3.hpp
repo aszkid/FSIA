@@ -11,38 +11,32 @@
 #include <array>
 #include <thread>
 #include <chrono>
+#include <algorithm>
+
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
+enum Action {
+	LEFT = 0,
+	RIGHT = 1,
+	NONE = 2
+};
+
+#define VECLEN(i) veclen(srs.at(i)[0].position, srs.at(i)[1].position)
+#define TRANS(i) translatesensor(VECLEN(i))
+
+#define QELE(s, a) Q.at(s[0]).at(s[1]).at(s[2]).at(a)
+
+#define STATEUP(s) s[0] = TRANS(0); \
+	s[1] = TRANS(1); \
+	s[2] = TRANS(2); \
+
+typedef std::array<uint, 3> State;
+
+
 double veclen(sf::Vector2f a, sf::Vector2f ap);
 
-std::string translatesensortostr(uint s);
 uint translatesensor(int s);
-
-struct State {
-	enum Sensor {
-		CLOSE,
-		MIDCLOSE,
-		MIDFAR,
-		FAR
-	};
-
-	std::array<uint, 3> _sensor;
-	bool _dead;
-};
-
-struct Experience {
-
-	enum Action {
-		RIGHT,
-		LEFT,
-		NOTHING
-	};
-
-	State _state;
-	uint _action;
-	int _reward;
-};
 
 static const auto spawnpos = sf::Vector2f(525.f, 84.f);
 double dec2rad(double dec);
@@ -73,6 +67,7 @@ private:
 	bool selfdrive;
 
 	double steerang;
+	double accelspd;
 	
 	std::default_random_engine gen;
 	std::uniform_int_distribution<int> dist;
@@ -81,8 +76,20 @@ private:
 	
 	std::array<sf::VertexArray, 3> srs;
 	
-	std::array<std::array<std::array<std::array<double, 3>, 4>, 4>, 4> Q;
+	std::array<std::array<std::array<std::array<double, 3>, 10>, 10>, 10> Q;
 	
 	double alphaQL;
+	
+	uint action;
+	
+	void handle_tick();
+	
+	sf::Clock tickClock;
+	sf::Color color;
+	
+	bool collided;
+	
+	State s;
+	State sp;
 	
 };

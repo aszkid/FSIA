@@ -1,33 +1,32 @@
 #include "demo_3.hpp"
 
-std::string translatesensortostr(uint s)
-{
-	switch(s)
-	{
-	case State::Sensor::CLOSE:
-		return "CLOSE";
-	case State::Sensor::MIDCLOSE:
-		return "MIDCLOSE";
-	case State::Sensor::MIDFAR:
-		return "MIDFAR";
-	case State::Sensor::FAR:
-		return "FAR";
-	}
-	
-	return "CLOSE";
-}
 uint translatesensor(int s)
 {
-	if(s < 25)
-		return State::Sensor::CLOSE;
-	else if(s < 100)
-		return State::Sensor::MIDCLOSE;
+	// if this doesnt work, try this:
+	// (log(x) / max(log(x))) * 9
+
+	if(s < 20)
+		return 0;
+	else if(s < 30)
+		return 1;
+	else if(s < 40)
+		return 2;
+	else if(s < 50)
+		return 3;
+	else if(s < 75)
+		return 4;
+	else if(s < 90)
+		return 5;
+	else if(s < 115)
+		return 6;
 	else if(s < 150)
-		return State::Sensor::MIDFAR;
-	else if(s > 150)
-		return State::Sensor::FAR;
-	
-	return State::Sensor::CLOSE;
+		return 7;
+	else if(s < 200)
+		return 8;
+	else if(s > 200)
+		return 9;
+	else
+		return 0;
 }
 
 
@@ -77,7 +76,7 @@ std::array<sf::Vector2f, 6> Car::punts()
 }
 
 Demo_3::Demo_3()
-	: dist(1,3), frameTime(0), selfdrive(false)
+	: dist(1,3), frameTime(0), selfdrive(false), collided(false)
 {}
 
 bool Demo_3::prepare()
@@ -106,6 +105,8 @@ bool Demo_3::prepare()
 				for(auto& a : s3)
 					a = 0;
 		
+	action = Action::RIGHT;
+	
    return true;
 }	
 void Demo_3::run()
@@ -158,14 +159,15 @@ void Demo_3::run()
 		}
 
 
-		steerang = 360.0 * frameClock.getElapsedTime().asSeconds();
+		steerang = 180.0 * frameClock.getElapsedTime().asSeconds();
+		accelspd = 250.0 * frameClock.getElapsedTime().asSeconds();
 		frameClock.restart();
 		
 		double angle2 = dec2rad(car.shape.getRotation());
 		
 		if(selfdrive)
 		{
-			sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
+			sf::Vector2f final2(cos(angle2) * accelspd, sin(angle2) * accelspd);
 			car.shape.move(final2);
 		
 			int movement = dist(gen);
@@ -202,7 +204,7 @@ void Demo_3::run()
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 			{
-				sf::Vector2f final2(cos(angle2) * 4.f, sin(angle2) * 4.f);
+				sf::Vector2f final2(cos(angle2) * accelspd, sin(angle2) * accelspd);
 				car.shape.move(final2);
 			}
 			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
@@ -265,20 +267,37 @@ void Demo_3::run()
 		
 			inc3 += 10;
 		}
-		
-		//LOGI(translatesensortostr(translatesensor(veclen(srs[0][0].position, srs[0][1].position))));
-		
-		sf::Color color;
-		
+
 		for(size_t i = 0; i < ps.size(); i++)
 		{
 			color = image.getPixel(ps[i].x, ps[i].y);
 			if (color == sf::Color::White)
 			{
+				if(selfdrive)
+				{
+					collided = true;
+				
+					LOGI("Handling tick (collision)");
+					handle_tick();
+				}
+			
 				car.shape.setPosition(spawnpos);
 				car.shape.setRotation(0);
 			}
 		}
+		
+		if(!collided)
+		{
+			if(tickClock.getElapsedTime().asSeconds() >= 1.0)
+			{
+				LOGI("Handling tick (timestep)");
+				handle_tick();
+				
+				tickClock.restart();
+			}
+		}
+		else
+			collided = false;
 		
 		win.clear(sf::Color(20, 20, 20));
 		
@@ -297,4 +316,13 @@ void Demo_3::run()
 	
 }
 
+void Demo_3::handle_tick()
+{
+	STATEUP(sp)
+
+	//LOGI("s  = (" << s1 << ", " << s2 << ", " << s3 << ")");
+	LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
+	
+	LOGI(" Q[s', a] = " << QELE(sp, action));
+}
 
