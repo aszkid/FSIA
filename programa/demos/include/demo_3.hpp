@@ -11,11 +11,28 @@
 #include <array>
 #include <thread>
 #include <chrono>
+#include <algorithm>
+
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
-#define VECLEN(i) veclen(srs[i][0].position, srs[i][1].position)
+enum Action {
+	LEFT = 0,
+	RIGHT = 1,
+	NONE = 2
+};
+
+#define VECLEN(i) veclen(srs.at(i)[0].position, srs.at(i)[1].position)
 #define TRANS(i) translatesensor(VECLEN(i))
+
+#define QELE(s, a) Q.at(s[0]).at(s[1]).at(s[2]).at(a)
+
+#define STATEUP(s) s[0] = TRANS(0); \
+	s[1] = TRANS(1); \
+	s[2] = TRANS(2); \
+
+typedef std::array<uint, 3> State;
+
 
 double veclen(sf::Vector2f a, sf::Vector2f ap);
 
@@ -59,8 +76,15 @@ private:
 	
 	std::array<sf::VertexArray, 3> srs;
 	
-	std::array<std::array<std::array<std::array<double, 3>, 4>, 4>, 4> Q;
+	std::array<std::array<std::array<std::array<double, 3>, 10>, 10>, 10> Q;
 	
 	double alphaQL;
+	
+	uint action;
+	
+	void handle_tick();
+	
+	State s;
+	State sp;
 	
 };

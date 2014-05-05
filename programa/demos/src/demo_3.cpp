@@ -105,6 +105,8 @@ bool Demo_3::prepare()
 				for(auto& a : s3)
 					a = 0;
 		
+	action = Action::RIGHT;
+	
    return true;
 }	
 void Demo_3::run()
@@ -273,11 +275,11 @@ void Demo_3::run()
 			color = image.getPixel(ps[i].x, ps[i].y);
 			if (color == sf::Color::White)
 			{
-				// collide!
-				
 				if(selfdrive)
 				{
-					LOGI("(" << TRANS(0) << ", " << TRANS(1) << ", " << TRANS(2) << ")");
+					LOGI("Handling tick (collision)");
+					
+					handle_tick();
 				}
 			
 				car.shape.setPosition(spawnpos);
@@ -302,4 +304,13 @@ void Demo_3::run()
 	
 }
 
+void Demo_3::handle_tick()
+{
+	STATEUP(sp)
+
+	//LOGI("s  = (" << s1 << ", " << s2 << ", " << s3 << ")");
+	LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
+	
+	LOGI(" Q[s', a] = " << QELE(sp, action));
+}
 
