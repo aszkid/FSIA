@@ -84,6 +84,9 @@ private:
 	
 	void handle_tick();
 	
+	sf::Clock tickClock;
+	sf::Color color;
+	
 	State s;
 	State sp;
 	

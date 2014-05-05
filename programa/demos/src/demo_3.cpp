@@ -268,8 +268,7 @@ void Demo_3::run()
 			inc3 += 10;
 		}
 		
-		sf::Color color;
-		
+
 		for(size_t i = 0; i < ps.size(); i++)
 		{
 			color = image.getPixel(ps[i].x, ps[i].y);
