@@ -14,35 +14,12 @@
 /*#include <fann.h>
 #include <fann_cpp.h>*/
 
+#define VECLEN(i) veclen(srs[i][0].position, srs[i][1].position)
+#define TRANS(i) translatesensor(VECLEN(i))
+
 double veclen(sf::Vector2f a, sf::Vector2f ap);
 
-std::string translatesensortostr(uint s);
 uint translatesensor(int s);
-
-struct State {
-	enum Sensor {
-		CLOSE,
-		MIDCLOSE,
-		MIDFAR,
-		FAR
-	};
-
-	std::array<uint, 3> _sensor;
-	bool _dead;
-};
-
-struct Experience {
-
-	enum Action {
-		RIGHT,
-		LEFT,
-		NOTHING
-	};
-
-	State _state;
-	uint _action;
-	int _reward;
-};
 
 static const auto spawnpos = sf::Vector2f(525.f, 84.f);
 double dec2rad(double dec);
@@ -73,6 +50,7 @@ private:
 	bool selfdrive;
 
 	double steerang;
+	double accelspd;
 	
 	std::default_random_engine gen;
 	std::uniform_int_distribution<int> dist;
