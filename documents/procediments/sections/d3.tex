@@ -7,7 +7,7 @@
 
 La nostra segona demostració és radicalment diferent a la primera:
 l'objectiu és programar un automòbil el qual, a partir de tres sensors frontals,
-sigui capaç de evitar xocar amb les parets de \emph{qualsevol circuit}.
+sigui capaç d'evitar xocar amb les parets de \emph{qualsevol circuit}.
 És a dir; el seu entrenament ha de ser general i adaptable a qualsevol situació.
 
 Per a solucionar un problema com aquest, no disposem d'un \emph{dataset},
@@ -18,5 +18,17 @@ una tàctica adequada.
 
 Hem d'atacar el problema des d'un altre punt de vista: ara ja no es tracta
 d'una situació en la qual l'entrenament de l'agent es pugui supervisar
-(\emph{supervised learning}), ara ha d'ésser l'agent qui explori l'entorn
-en el qual es troba.
+(\emph{supervised learning}), ara ha d'ésser ell mateix qui explori l'entorn
+en el qual es troba. Utilitzarem el segon mètode més popular d'aprenentatge
+de màquina: l'aprenentatge sense supervisió (\emph{unsupervised learning}, o \emph{reinforcement learning}).
+\\
+
+\section{Reinforcement Learning}
+L'\emph{aprenentatge per reforç} es basa en la presa de decisions de l'agent en base
+a una prèvia exploració de l'entorn, la qual ha sigut controlada a través d'un sistema
+de recompenses \cite{reinflnbk}.
+
+Ho podem il·lustrar de forma senzilla: un ratolí representa el nostre agent. Aquest divaga
+de forma aleatòria a través d'un entorn desconegut. Quan cau a una trampa, se li dona una
+recompensa negativa; quan es troba amb un tros de formatge, una de positiva. Poc a poc,
+el ratolí aprendrà a evitar trampes i buscar el formatge.
