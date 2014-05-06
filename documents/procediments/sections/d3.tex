@@ -24,6 +24,14 @@ de màquina: l'aprenentatge sense supervisió (\emph{unsupervised learning}, o \
 \\
 
 \section{Reinforcement Learning}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=52mm]{data/reinforce.png}
+\caption{Diagrama que representa l'aprenentatge per reforç.}
+\label{reinforcegraph}
+\end{figure}
+
 L'\emph{aprenentatge per reforç} es basa en la presa de decisions de l'agent en base
 a una prèvia exploració de l'entorn, la qual ha sigut controlada a través d'un sistema
 de recompenses \cite{reinflnbk}.
@@ -32,3 +40,29 @@ Ho podem il·lustrar de forma senzilla: un ratolí representa el nostre agent. A
 de forma aleatòria a través d'un entorn desconegut. Quan cau a una trampa, se li dona una
 recompensa negativa; quan es troba amb un tros de formatge, una de positiva. Poc a poc,
 el ratolí aprendrà a evitar trampes i buscar el formatge.
+
+Expressat amb termes més tècnics: el ratolí es troba en un estat \(s\) (que
+emmagatzema la quantitat de peces de formatge que té, i si està viu o no), i
+realitza una acció \(a\). Això el porta a trobar-se en un estat \(s'\).
+Es fa llavors una comparació entre els dos estats, \(s\) i \(s'\), i se
+li dona una recompensa \(r\) en base a uns criteris (per cada tros de formatge
+que hagi guanyat, \(+5\); si segueix viu, \(+1\); si ha caigut en una trampa,
+\(-100\)).
+
+Aquesta és l'essència
+de l'aprenentatge per reforç.
+
+\section{Preparació}
+
+Abans d'entrenar el cotxe, hem hagut de solventar una quantitat de problemes.
+
+Primer, la \emph{projecció dels sensors} ha sigut un interessant problema
+de trigonometria. 
+
+\section{Q-Learning}
+
+\emph{Q-learning} és un algoritme d'aprenentatge per esforç. S'emmagatzema
+
+\[
+Q[s, a] = Q[s, a] + \alpha(r + \lambda V(s') - Q[s, a])
+\]
