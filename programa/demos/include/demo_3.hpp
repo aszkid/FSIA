@@ -22,6 +22,8 @@ enum Action {
 	NONE = 2
 };
 
+extern const int Reward[];
+
 #define VECLEN(i) veclen(srs.at(i)[0].position, srs.at(i)[1].position)
 #define TRANS(i) translatesensor(VECLEN(i))
 
@@ -30,6 +32,8 @@ enum Action {
 #define STATEUP(s) s[0] = TRANS(0); \
 	s[1] = TRANS(1); \
 	s[2] = TRANS(2); \
+	
+#define REWARD(s) Reward[s[0]] + Reward[s[1]] + Reward[s[2]]
 
 typedef std::array<uint, 3> State;
 

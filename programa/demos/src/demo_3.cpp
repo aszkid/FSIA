@@ -1,5 +1,18 @@
 #include "demo_3.hpp"
 
+const int Reward[] = {
+	-100,
+	-50,
+	-10,
+	-5,
+	0,
+	1,
+	2,
+	3,
+	4,
+	5
+};
+
 uint translatesensor(int s)
 {
 	// if this doesnt work, try this:
@@ -324,5 +337,7 @@ void Demo_3::handle_tick()
 	LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
 	
 	LOGI(" Q[s', a] = " << QELE(sp, action));
+	
+	LOGI("r = " << REWARD(sp));
 }
 
