@@ -75,19 +75,26 @@ una visió panoràmica de la posició del vehicle \ref{sensors}. Dibuixar les l�
 representen els sensors ha sigut tot un repte en quant a programació i matemàtiques.
 
 Ara ja podem calcular la llargada dels làsers; és això tot el que necessitem per mesurar l'estat
-en que es troba el vehicle. Però, l'algoritme \emph{Q-learning} té una limitació: la seva aplicació
+en que es troba el vehicle, i donar-li una recompensa. Però, l'algoritme \emph{Q-learning} té una limitació: la seva aplicació
 comporta la creació d'un \emph{array} \footnote{També conegut com a \emph{vector}: llista de valors}
 que tindrà una quantitat d'entrades igual a \emph{totes les possibles combinacions d'estat}. És a dir,
 en el cas dels sensors del cotxe, que poden arribar a tenir un valor de 1,000 (píxels), l'array
-tindrà \num{1000000000} valors!
+tindrà \num{1000000000} entrades (1000 valors possibles per sensor, multiplicat per sí mateix tres vegades, la quantitat
+de sensors que tenim). No és viable; hem de \emph{discretitzar} una magnitud que, a efectes pràctics, és contínua.
 
+Per tant, volem convertir el valor del sensor a una categoria del 0 al 9, on 0 significa ``molt a prop'', i 9 ``molt lluny'',
+per a poder crear un array de dimensions viables (en aquest cas, tenim 10 estats per sensor, per tant, 1000 estats en total).
+Com que ens interessa entrenar amb més precisió els casos en que els sensors tenen distàncies molt curtes (el cotxe està a 
+prop de la paret), ens agradaria transformar de forma no simètrica els valors dels sensors, és a dir, que un valor real de
+250px es transformi a 5, per exemple, i no a 2.5
+Primer vam intentar realitzar aquest procés de discretització a partir d'una transformació logarítmica:
+\[
+s_i(D) = \left\lfloor 9 \frac{ln(D)}{ln(1000)} \right\rfloor
+\]
+però els valors resultants estaven massa desproporcionats. Vam decidir fer-ho a la força bruta, establint condicions
+simples. 
 
-
-
-
-
-
-
+Solucionat el problema dels estats.
 
 
 
