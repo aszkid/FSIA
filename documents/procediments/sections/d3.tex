@@ -52,17 +52,53 @@ que hagi guanyat, \(+5\); si segueix viu, \(+1\); si ha caigut en una trampa,
 Aquesta és l'essència
 de l'aprenentatge per reforç.
 
-\section{Preparació}
-
-Abans d'entrenar el cotxe, hem hagut de solventar una quantitat de problemes.
-
-Primer, la \emph{projecció dels sensors} ha sigut un interessant problema
-de trigonometria. 
-
 \section{Q-Learning}
 
-\emph{Q-learning} és un algoritme d'aprenentatge per esforç. S'emmagatzema
+\emph{Q-learning} és un algoritme d'aprenentatge per esforç. Expressat de forma
+matemàtica:
 
 \[
 Q[s, a] = Q[s, a] + \alpha(r + \lambda V(s') - Q[s, a])
 \]
+
+Però que no espanti massa. En realitat, és extremadament fàcil d'implementar (en 
+comparació a l'ús d'una \ac{ann}; no hem ni escrit les fórmules adients, degut a la seva
+complexitat). Anem pas per pas, seguint el camí que hem fet per a arribar a 
+un programa funcional.
+
+Primer de tot, hem de mesurar l'estat en que es troba el nostre agent. Aquesta mesura ha de tenir les dades
+que siguin necessàries per a corregir l'agent. Ens interessa, principalment, la distància
+a les parets del circuit. Per a fer-ho efectivament, hem projectat tres \emph{làsers} o
+sensors, que s'allarguen fins que el color sobre el qual es troben no és el color del circuit.
+Un làser va en direcció igual a la del cotxe, i els altres dos es desvien 15 graus per a obtenir
+una visió panoràmica de la posició del vehicle \ref{sensors}. Dibuixar les línies que
+representen els sensors ha sigut tot un repte en quant a programació i matemàtiques.
+
+Ara ja podem calcular la llargada dels làsers; és això tot el que necessitem per mesurar l'estat
+en que es troba el vehicle. Però, l'algoritme \emph{Q-learning} té una limitació: la seva aplicació
+comporta la creació d'un \emph{array} \footnote{També conegut com a \emph{vector}: llista de valors}
+que tindrà una quantitat d'entrades igual a \emph{totes les possibles combinacions d'estat}. És a dir,
+en el cas dels sensors del cotxe, que poden arribar a tenir un valor de 1,000 (píxels), l'array
+tindrà \num{1000000000} valors!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
