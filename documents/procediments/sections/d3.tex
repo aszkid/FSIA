@@ -92,9 +92,27 @@ Primer vam intentar realitzar aquest procés de discretització a partir d'una t
 s_i(D) = \left\lfloor 9 \frac{ln(D)}{ln(1000)} \right\rfloor
 \]
 però els valors resultants estaven massa desproporcionats. Vam decidir fer-ho a la força bruta, establint condicions
-simples. 
+simples. No és la solució més elegant, però no podem perdre temps amb qüestions trivials.
 
-Saltem a la recompensa.
+L'altra qüestió important és la \emph{taula de recompenses}:
+
+\begin{center}
+    \begin{tabular}{| l | l | l | l |}
+    \hline
+    Estat del Sensor & Recompensa \\ \hline
+    0 & -100 \\ \hline
+    1 & -50 \\ \hline
+    2 & -10 \\ \hline
+    3 & -5 \\ \hline
+    4 & 0 \\ \hline
+    5 & 1 \\ \hline
+    6 & 2 \\ \hline
+    7 & 3 \\ \hline
+    8 & 4 \\ \hline
+    9 & 5 \\ \hline
+    \end{tabular}
+\end{center}
+
 
 
 
