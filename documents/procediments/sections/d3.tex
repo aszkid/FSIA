@@ -57,9 +57,9 @@ de l'aprenentatge per reforç.
 \emph{Q-learning} és un algoritme d'aprenentatge per esforç. Expressat de forma
 matemàtica:
 
-\[
+\begin{equation} \label{eq:qlearning}
 Q[s, a] = Q[s, a] + \alpha(r + \lambda V(s') - Q[s, a])
-\]
+\end{equation}
 
 Però que no espanti massa. En realitat, és extremadament fàcil d'implementar (en 
 comparació a l'ús d'una \ac{ann}; no hem ni escrit les fórmules adients, degut a la seva
@@ -88,32 +88,53 @@ Com que ens interessa entrenar amb més precisió els casos en que els sensors t
 prop de la paret), ens agradaria transformar de forma no simètrica els valors dels sensors, és a dir, que un valor real de
 250px es transformi a 5, per exemple, i no a 2.5
 Primer vam intentar realitzar aquest procés de discretització a partir d'una transformació logarítmica:
-\[
+\begin{equation}
 s_i(D) = \left\lfloor 9 \frac{ln(D)}{ln(1000)} \right\rfloor
-\]
+\end{equation}
 però els valors resultants estaven massa desproporcionats. Vam decidir fer-ho a la força bruta, establint condicions
 simples. No és la solució més elegant, però no podem perdre temps amb qüestions trivials.
 
-L'altra qüestió important és la \emph{taula de recompenses}:
+L'altra qüestió important és la \emph{taula de recompenses}, que defineix com serà recompensat l'agent. En base a què
+hauríem d'establir els valors de la taula? L'impuls primitiu és ben simple: recompensa positiva si l'agent segueix viu,
+i recompensa negativa si l'agent ha mort. Però això presenta un problema: encara que l'agent s'aproximi perillosament 
+a una paret, la recompensa seguirà essent positiva. Doncs, veiem que hem de basar la recompensa en la distància dels sensors:
+com més curta sigui, recompensa més negativa tindrà. Tot i això, introduïm un altre problema: a mesura que l'agent s'aproximi a una
+corba, la recompensa es començarà a reduir, i arribarà un moment que es veurà forçat a girar cua. Finalment, hem arribat a una conclusió
+no massa intuïtiva: l'agent haurà de rebre recompenses positives (decreixents, però positives) encara que s'apropi a una paret, per a
+afavorir l'exploració de l'entorn. Per tant, la \(r\) de l'equació \ref{eq:qlearning} queda definida
+com a la ``suma de les recompenses que reben tots els sensors (3)''. Aquí la taula:
 
-\begin{center}
+\begin{center} \label{tb:rewards}
     \begin{tabular}{| l | l |}
     \hline
     \(S_i\) & \(r\) \\ \hline
-    0 & -100 \\ \hline
-    1 & -50 \\ \hline
-    2 & -10 \\ \hline
-    3 & -5 \\ \hline
-    4 & 0 \\ \hline
-    5 & 1 \\ \hline
-    6 & 2 \\ \hline
-    7 & 3 \\ \hline
-    8 & 4 \\ \hline
-    9 & 5 \\ \hline
+    0 & -10 \\ \hline
+    1 & -5 \\ \hline
+    2 & -1 \\ \hline
+    3 & 0 \\ \hline
+    4 & 1 \\ \hline
+    5 & 2 \\ \hline
+    6 & 3 \\ \hline
+    7 & 4 \\ \hline
+    8 & 5 \\ \hline
+    9 & 6 \\ \hline
     \end{tabular}
 \end{center}
 
+Ja només queda establir els valors de les constants \(\alpha\) (proporció d'aprenentatge) i \(\lambda\) (factor de descompte), que equivaldran
+a \(0.7\) i \(1\) respectivament.
 
+El nostre agent realitza un \emph{tick} \footnote{Cicle} d'aprenentatge cada \(0.5\) segons, i tarda al voltant de tres hores a ajustar els
+valors de l'array Q per a funcionar amb desimboltura.
+
+Com podríem millorar el funcionament d'aquesta demo? Principalment, de dos formes:
+
+\begin{enumerate}
+\item \emph{Selecció genètica}: fer funcionar a un set de \(n\) agents alhora, i guardar els arrays Q que millor hagin progressat durant
+una sessió d'entrenament.
+\item \emph{Accelerar el temps}: si ajustem l'escala temporal de forma completa (és a dir; si es mou 2 vegades més ràpid, el tick d'aprenentatge
+ha d'ésser 2 vegades més ràpid) podrem accelerar el procés d'aprenentatge.
+\end{enumerate}
 
 
 
