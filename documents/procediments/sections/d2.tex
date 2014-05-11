@@ -36,13 +36,13 @@ xarxes neuronals en reconeixement de caràcters ha estat el següent:
 
 \begin{enumerate}
 \item Establint un índex d'arxiu (del 0 al 9) i un índex d'imatge (del 0 al 999), carreguem l'arxiu adient a l'índex i l'emmagatzemem en un gran vector. A través del teclat, podem
-navegar les diferents imatges de cada nombre. Es carrega llavors l'imatge en un panell, per a poder-ho visualitzar.
+navegar les diferents imatges de cada nombre. Es carrega llavors la imatge en un panell, per a poder-ho visualitzar.
 \item Prement la tecla \emph{C} (de \emph{convert}), el programa crea un arxiu adequat al format que utilitza la llibreria de \ac{ann}s. Importa i normalitza una certa quantitat 
 de mostres en un sol arxiu, perfecte per a entrenar la \ac{ann}.
 \item Prement la tecla \emph{L} (de \emph{learn}, aprendre), el programa crea una \ac{ann} amb 784 neurones d'entrada, 392 neurones hidden, i 10 neurones de sortida: 3 milions de connexions. Utilitza la 
 llibreria per a llegir l'arxiu convertit anteriorment, i entrena la \ac{ann} amb un mètode popular anomenat \emph{backpropagation}. Consisteix en establir uns pesos aleatoris 
 en totes les neurones, a l'inici del programa. Llavors, donat un set d'entrenament, prova a calcular el resultat de la xarxa amb unes certes entrades del set, i el compara amb el resultat
-que hauria d'obtindre. A través de l'error obtingut, realitza una marxa enredera recursiva, i ajusta els pesos de les neurones de forma que produeixin outputs similars a la que
+que hauria d'obtindre. A través de l'error obtingut, realitza una marxa enrera recursiva, i ajusta els pesos de les neurones de forma que produeixin outputs similars a la que
 estableix el set d'entrenament. Realitza tot aquest procés per cada imatge de les 7500 que li deixem per a entrenar.
 \item Prement la tecla \emph{T} (de \emph{test}, comprovar), el programa utilitza l'índex corresponent a l'imatge que l'usuari està veient en pantalla, i estableix els seus píxels
 com a entrades d'una \ac{ann} creada a partir de l'entrenament anterior. Produeix llavors, la desitjada sortida que estàvem esperant, imprimint a la consola (l'objectiu és dibuixar un gràfic)
