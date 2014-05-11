@@ -37,7 +37,7 @@ a una prèvia exploració de l'entorn, la qual ha sigut controlada a través d'u
 de recompenses \cite{reinflnbk}.
 
 Ho podem il·lustrar de forma senzilla: un ratolí representa el nostre agent. Aquest divaga
-de forma aleatòria a través d'un entorn desconegut. Quan cau a una trampa, se li dona una
+de forma aleatòria a través d'un entorn desconegut. Quan cau en una trampa, se li dona una
 recompensa negativa; quan es troba amb un tros de formatge, una de positiva. Poc a poc,
 el ratolí aprendrà a evitar trampes i buscar el formatge.
 
@@ -75,11 +75,11 @@ una visió panoràmica de la posició del vehicle \ref{sensors}. Dibuixar les l�
 representen els sensors ha sigut tot un repte en quant a programació i matemàtiques.
 
 Ara ja podem calcular la llargada dels làsers; és això tot el que necessitem per mesurar l'estat
-en que es troba el vehicle, i donar-li una recompensa. Però, l'algoritme \emph{Q-learning} té una limitació: la seva aplicació
+en que es troba el vehicle i donar-li una recompensa. Però, l'algoritme \emph{Q-learning} té una limitació: la seva aplicació
 comporta la creació d'un \emph{array} \footnote{També conegut com a \emph{vector}: llista de valors}
 que tindrà una quantitat d'entrades igual a \emph{totes les possibles combinacions d'estat}. És a dir,
 en el cas dels sensors del cotxe, que poden arribar a tenir un valor de 1,000 (píxels), l'array
-tindrà \num{1000000000} entrades (1000 valors possibles per sensor, multiplicat per sí mateix tres vegades, la quantitat
+tindrà \num{1000000000} entrades (1000 valors possibles per sensor, multiplicat per si mateix tres vegades, la quantitat
 de sensors que tenim). No és viable; hem de \emph{discretitzar} una magnitud que, a efectes pràctics, és contínua.
 
 Per tant, volem convertir el valor del sensor a una categoria del 0 al 9, on 0 significa ``molt a prop'', i 9 ``molt lluny'',
@@ -97,7 +97,7 @@ simples. No és la solució més elegant, però no podem perdre temps amb qüest
 L'altra qüestió important és la \emph{taula de recompenses}, que defineix com serà recompensat l'agent. En base a què
 hauríem d'establir els valors de la taula? L'impuls primitiu és ben simple: recompensa positiva si l'agent segueix viu,
 i recompensa negativa si l'agent ha mort. Però això presenta un problema: encara que l'agent s'aproximi perillosament 
-a una paret, la recompensa seguirà essent positiva. Doncs, veiem que hem de basar la recompensa en la distància dels sensors:
+a una paret, la recompensa seguirà essent positiva. Així doncs, veiem que hem de basar la recompensa en la distància dels sensors:
 com més curta sigui, recompensa més negativa tindrà. Tot i això, introduïm un altre problema: a mesura que l'agent s'aproximi a una
 corba, la recompensa es començarà a reduir, i arribarà un moment que es veurà forçat a girar cua. Finalment, hem arribat a una conclusió
 no massa intuïtiva: l'agent haurà de rebre recompenses positives (decreixents, però positives) encara que s'apropi a una paret, per a
@@ -124,7 +124,7 @@ com a la ``suma de les recompenses que reben tots els sensors (3)''. Aquí la ta
 Ja només queda establir els valors de les constants \(\alpha\) (proporció d'aprenentatge) i \(\lambda\) (factor de descompte), que equivaldran
 a \(0.7\) i \(1\) respectivament.
 
-El nostre agent realitza un \emph{tick} \footnote{Cicle} d'aprenentatge cada \(0.5\) segons, i tarda al voltant de tres hores a ajustar els
+El nostre agent realitza un \emph{tick} \footnote{Cicle} d'aprenentatge cada \(0.5\) segons, i triga al voltant de tres hores a ajustar els
 valors de l'array Q per a funcionar amb desimboltura.
 
 Com podríem millorar el funcionament d'aquesta demo? Principalment, de dos formes:
