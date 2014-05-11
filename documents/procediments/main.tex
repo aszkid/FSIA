@@ -12,6 +12,11 @@
 \usepackage[backend=biber]{biblatex}
 \usepackage[auth-sc]{authblk}
 \usepackage{siunitx}
+\usepackage{appendix}
+
+\renewcommand{\appendixname}{Annexos}
+\renewcommand{\appendixtocname}{Annexos}
+\renewcommand{\appendixpagename}{Annexos}
 
 \sisetup{round-precision=2,round-mode=figures,scientific-notation=true}
 
@@ -83,6 +88,9 @@
 
 \chapter{Conclusió}
 \input{sections/conclusio}
+
+\appendix
+\input{sections/app}
 
 \printbibliography
 
