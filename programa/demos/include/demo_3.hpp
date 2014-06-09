@@ -38,6 +38,10 @@ extern const int Reward[];
 typedef std::array<uint, 3> State;
 
 
+#define ALPHAQL 0.7
+#define LAMBDAQL 1.0
+
+
 double veclen(sf::Vector2f a, sf::Vector2f ap);
 
 uint translatesensor(int s);
@@ -81,8 +85,6 @@ private:
 	std::array<sf::VertexArray, 3> srs;
 	
 	std::array<std::array<std::array<std::array<double, 3>, 10>, 10>, 10> Q;
-	
-	double alphaQL;
 	
 	uint action;
 	

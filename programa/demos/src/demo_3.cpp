@@ -94,7 +94,7 @@ Demo_3::Demo_3()
 
 bool Demo_3::prepare()
 {
-	win.create(sf::VideoMode(1280, 720), "DEMO 3");
+	win.create(sf::VideoMode(1920, 1080), "DEMO 3");
 	win.setFramerateLimit(60);
 	win.setVerticalSyncEnabled(true);
 	scoreRect = car.shape.getLocalBounds();
@@ -333,11 +333,17 @@ void Demo_3::handle_tick()
 {
 	STATEUP(sp)
 
-	//LOGI("s  = (" << s1 << ", " << s2 << ", " << s3 << ")");
 	LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
-	
 	LOGI(" Q[s', a] = " << QELE(sp, action));
 	
 	LOGI("r = " << REWARD(sp));
+	
+	LOGI("(discretized) s = (" << s[0] << ", " << s[1] << ", " << s[2] << ")");
+	LOGI(" Q[s, a] = " << QELE(s, action));
+	
+	QELE(s, action) += ALPHAQL * (REWARD(sp) + *std::max_element(sp.begin(), sp.end()) - QELE(s, action));
+	
+	// update S
+	STATEUP(s)
 }
 
