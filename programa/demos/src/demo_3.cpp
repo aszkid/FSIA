@@ -41,7 +41,18 @@ uint translatesensor(int s)
 	else
 		return 0;
 }
-
+const char* translateaction(uint a)
+{
+	switch(a)
+	{
+	case 0:
+		return "LEFT";
+	case 1:
+		return "RIGHT";
+	case 2:
+		return "STRAIGHT";
+	}
+}
 
 double veclen(sf::Vector2f a, sf::Vector2f ap)
 {
@@ -91,6 +102,19 @@ std::array<sf::Vector2f, 6> Car::punts()
 Demo_3::Demo_3()
 	: dist(1,3), frameTime(0), selfdrive(false), collided(false)
 {}
+Demo_3::~Demo_3()
+{
+	for(auto it1 : Q)
+	{
+		for(auto it2 : it1)
+		{
+			for(auto it3 : it2)
+			{
+				//LOGI("[" << it3[0] << " , " << it3[1] << ", " << it3[2] << "]");
+			}
+		}
+	}
+}
 
 bool Demo_3::prepare()
 {
@@ -118,7 +142,7 @@ bool Demo_3::prepare()
 				for(auto& a : s3)
 					a = 0;
 		
-	action = Action::RIGHT;
+	action = Action::NONE;
 	
    return true;
 }	
@@ -172,16 +196,18 @@ void Demo_3::run()
 		}
 
 
-		steerang = 180.0 * frameClock.getElapsedTime().asSeconds();
-		accelspd = 250.0 * frameClock.getElapsedTime().asSeconds();
+		steerang = TIMESCALE * 90.0 * frameClock.getElapsedTime().asSeconds();
+		accelspd = TIMESCALE * 125.0 * frameClock.getElapsedTime().asSeconds();
 		frameClock.restart();
 		
 		double angle2 = dec2rad(car.shape.getRotation());
 		
 		if(selfdrive)
 		{
-			sf::Vector2f final2(cos(angle2) * accelspd, sin(angle2) * accelspd);
+			/*sf::Vector2f final2(cos(angle2) * accelspd, sin(angle2) * accelspd);
 			car.shape.move(final2);
+		
+			*std::max_element(sp.begin(), sp.end())
 		
 			int movement = dist(gen);
 			switch(movement)
@@ -203,7 +229,35 @@ void Demo_3::run()
 			
 		
 				break;
-			}
+			}*/
+			
+			
+			sf::Vector2f final2(cos(angle2) * accelspd, sin(angle2) * accelspd);
+					car.shape.move(final2);
+		
+					
+					//LOGI("Decision: " << decision);
+		
+					switch(action)
+					{
+					case 1:
+						// move right
+			
+						car.shape.setRotation(car.shape.getRotation()+steerang);
+			
+						break;
+					case 0:
+						// move left
+			
+						car.shape.setRotation(car.shape.getRotation()-steerang);
+			
+						break;
+					default:
+						// keep straight
+			
+		
+						break;
+					}
 		}
 		else
 		{
@@ -290,8 +344,9 @@ void Demo_3::run()
 				{
 					collided = true;
 				
-					LOGI("Handling tick (collision)");
-					handle_tick();
+					LOGI("I DIED.");
+					
+					handle_tick(-1000);
 				}
 			
 				car.shape.setPosition(spawnpos);
@@ -301,9 +356,12 @@ void Demo_3::run()
 		
 		if(!collided)
 		{
-			if(tickClock.getElapsedTime().asSeconds() >= 1.0)
+			if(tickClock.getElapsedTime().asSeconds() >= (0.25 / TIMESCALE))
 			{
-				LOGI("Handling tick (timestep)");
+				//LOGI("Handling tick (timestep)");
+				action = std::max_element(s.begin(), s.end()) - s.begin();
+				//LOGI("I choose to go " << translateaction(action));
+				
 				handle_tick();
 				
 				tickClock.restart();
@@ -329,19 +387,30 @@ void Demo_3::run()
 	
 }
 
-void Demo_3::handle_tick()
+void Demo_3::handle_tick(int rew)
 {
 	STATEUP(sp)
 
-	LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
-	LOGI(" Q[s', a] = " << QELE(sp, action));
+	LOGI("Q[s]  = (" << QAT(s)[0] << ", " << QAT(s)[1] << ", " << QAT(s)[2] << ")");
+	LOGI("Q[s'] = (" << QAT(sp)[0] << ", " << QAT(sp)[1] << ", " << QAT(sp)[2] << ")");
+
+	//LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
+	//LOGI(" Q[s', a] = " << QELE(sp, action));
 	
-	LOGI("r = " << REWARD(sp));
+	//LOGI("r = " << REWARD(sp));
 	
-	LOGI("(discretized) s = (" << s[0] << ", " << s[1] << ", " << s[2] << ")");
-	LOGI(" Q[s, a] = " << QELE(s, action));
+	//LOGI("(discretized) s = (" << s[0] << ", " << s[1] << ", " << s[2] << ")");
+	//LOGI(" Q[s, a] = " << QELE(s, action));
 	
-	QELE(s, action) += ALPHAQL * (REWARD(sp) + *std::max_element(sp.begin(), sp.end()) - QELE(s, action));
+	int realrew;
+	if(rew == 9999)
+		realrew = REWARD(sp);
+	else
+		realrew = rew;
+	
+	QELE(s, action) += ALPHAQL * (realrew + *std::max_element(sp.begin(), sp.end()) - QELE(s, action));
+	
+	//LOGI("(r = " << REWARD(sp) << ") From (" << s[0] << ", " << s[1] << ", " << s[2] << ") to (" << s[0] << ", " << s[1] << ", " << s[2] << ") by doing " << action);
 	
 	// update S
 	STATEUP(s)

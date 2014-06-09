@@ -6,6 +6,7 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <SFML/System.hpp>
 #include <ctime>
 #include <random>
 #include <array>
@@ -27,6 +28,7 @@ extern const int Reward[];
 #define VECLEN(i) veclen(srs.at(i)[0].position, srs.at(i)[1].position)
 #define TRANS(i) translatesensor(VECLEN(i))
 
+#define QAT(s) Q.at(s[0]).at(s[1]).at(s[2])
 #define QELE(s, a) Q.at(s[0]).at(s[1]).at(s[2]).at(a)
 
 #define STATEUP(s) s[0] = TRANS(0); \
@@ -41,10 +43,13 @@ typedef std::array<uint, 3> State;
 #define ALPHAQL 0.7
 #define LAMBDAQL 1.0
 
+#define TIMESCALE 1
+
 
 double veclen(sf::Vector2f a, sf::Vector2f ap);
 
 uint translatesensor(int s);
+const char* translateaction(uint a);
 
 static const auto spawnpos = sf::Vector2f(525.f, 84.f);
 double dec2rad(double dec);
@@ -64,6 +69,7 @@ public:
 	bool prepare();
 	void run();
 	Demo_3();
+	~Demo_3();
 private:
 	sf::RenderWindow win;
 	sf::Event eve;
@@ -88,7 +94,7 @@ private:
 	
 	uint action;
 	
-	void handle_tick();
+	void handle_tick(int rew = 9999);
 	
 	sf::Clock tickClock;
 	sf::Color color;
