@@ -140,9 +140,10 @@ bool Demo_3::prepare()
 		for(auto& s2 : s1)
 			for(auto& s3 : s2)
 				for(auto& a : s3)
-					a = 0;
+					a = 0.0;
 		
 	action = Action::NONE;
+	STATEUP(s)
 	
    return true;
 }	
@@ -359,7 +360,7 @@ void Demo_3::run()
 			if(tickClock.getElapsedTime().asSeconds() >= (0.25 / TIMESCALE))
 			{
 				//LOGI("Handling tick (timestep)");
-				action = std::max_element(s.begin(), s.end()) - s.begin();
+				
 				//LOGI("I choose to go " << translateaction(action));
 				
 				handle_tick();
@@ -391,24 +392,25 @@ void Demo_3::handle_tick(int rew)
 {
 	STATEUP(sp)
 
-	LOGI("Q[s]  = (" << QAT(s)[0] << ", " << QAT(s)[1] << ", " << QAT(s)[2] << ")");
-	LOGI("Q[s'] = (" << QAT(sp)[0] << ", " << QAT(sp)[1] << ", " << QAT(sp)[2] << ")");
-
-	//LOGI("(discretized) s' = (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
-	//LOGI(" Q[s', a] = " << QELE(sp, action));
-	
-	//LOGI("r = " << REWARD(sp));
-	
-	//LOGI("(discretized) s = (" << s[0] << ", " << s[1] << ", " << s[2] << ")");
-	//LOGI(" Q[s, a] = " << QELE(s, action));
-	
 	int realrew;
 	if(rew == 9999)
 		realrew = REWARD(sp);
 	else
 		realrew = rew;
 	
-	QELE(s, action) += ALPHAQL * (realrew + *std::max_element(sp.begin(), sp.end()) - QELE(s, action));
+	
+	LOGI("(" << s[0] << ", " << s[1] << ", " << s[2] << ") -> (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
+	LOGI("R = " << realrew);
+
+	double p = QELE(s, action) + ALPHAQL * (realrew + *std::max_element(sp.begin(), sp.end()) - QELE(s, action));
+	LOGI("Q(" << s[0] << ", " << s[1] << ", " << s[2] << " | " << action << ") = " << p);
+	
+	LOGI("Q = " << realrew << " + " << *std::max_element(sp.begin(), sp.end()) << " - " << QELE(s, action) << " = " << ALPHAQL * (double(realrew) + double(*std::max_element(sp.begin(), sp.end())) - QELE(s, action)));
+	LOGI("----------------------");
+	
+	QELE(s, action) = p;
+
+	action = std::max_element(sp.begin(), sp.end()) - sp.begin();
 	
 	//LOGI("(r = " << REWARD(sp) << ") From (" << s[0] << ", " << s[1] << ", " << s[2] << ") to (" << s[0] << ", " << s[1] << ", " << s[2] << ") by doing " << action);
 	

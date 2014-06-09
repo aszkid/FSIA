@@ -31,9 +31,9 @@ extern const int Reward[];
 #define QAT(s) Q.at(s[0]).at(s[1]).at(s[2])
 #define QELE(s, a) Q.at(s[0]).at(s[1]).at(s[2]).at(a)
 
-#define STATEUP(s) s[0] = TRANS(0); \
-	s[1] = TRANS(1); \
-	s[2] = TRANS(2); \
+#define STATEUP(sta) sta[0] = TRANS(0); \
+	sta[1] = TRANS(1); \
+	sta[2] = TRANS(2); \
 	
 #define REWARD(s) Reward[s[0]] + Reward[s[1]] + Reward[s[2]]
 
@@ -43,7 +43,7 @@ typedef std::array<uint, 3> State;
 #define ALPHAQL 0.7
 #define LAMBDAQL 1.0
 
-#define TIMESCALE 1
+#define TIMESCALE 0.25
 
 
 double veclen(sf::Vector2f a, sf::Vector2f ap);
