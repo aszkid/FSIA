@@ -161,7 +161,7 @@ void Demo_3::run()
 		std::cout << "Error could not load car image" << std::endl;
 	
 	
-	if(!background.loadFromFile("path2.png"))
+	if(!background.loadFromFile("path4.png"))
 		std::cout << "Error could not load circuit image" << std::endl;
 	circuit.setTexture(background);
 	sf::Image image = background.copyToImage();

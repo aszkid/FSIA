@@ -45,7 +45,7 @@ typedef std::array<uint, 3> State;
 #define ALPHAQL 0.7
 #define LAMBDAQL 1.0
 
-#define TIMESCALE 5
+#define TIMESCALE 7
 
 
 double veclen(sf::Vector2f a, sf::Vector2f ap);
@@ -53,7 +53,7 @@ double veclen(sf::Vector2f a, sf::Vector2f ap);
 uint translatesensor(int s);
 const char* translateaction(uint a);
 
-static const auto spawnpos = sf::Vector2f(525.f, 84.f);
+static const auto spawnpos = sf::Vector2f(373.f, 247.f);
 double dec2rad(double dec);
 
 struct Car {
