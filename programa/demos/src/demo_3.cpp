@@ -200,7 +200,7 @@ void Demo_3::run()
 		}
 
 
-		steerang = TIMESCALE * 90.0 * frameClock.getElapsedTime().asSeconds();
+		steerang = TIMESCALE * 70.0 * frameClock.getElapsedTime().asSeconds();
 		accelspd = TIMESCALE * 125.0 * frameClock.getElapsedTime().asSeconds();
 		frameClock.restart();
 		
@@ -360,7 +360,7 @@ void Demo_3::run()
 		
 		if(!collided)
 		{
-			if(tickClock.getElapsedTime().asSeconds() >= (0.25 / TIMESCALE))
+			if(tickClock.getElapsedTime().asSeconds() >= (0.15 / TIMESCALE))
 			{
 				//LOGI("Handling tick (timestep)");
 				

@@ -45,7 +45,7 @@ typedef std::array<uint, 3> State;
 #define ALPHAQL 0.7
 #define LAMBDAQL 1.0
 
-#define TIMESCALE 1
+#define TIMESCALE 5
 
 
 double veclen(sf::Vector2f a, sf::Vector2f ap);
