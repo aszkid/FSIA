@@ -13,6 +13,8 @@
 #include <thread>
 #include <chrono>
 #include <algorithm>
+#include <fstream>
+#include <typeinfo>
 
 /*#include <fann.h>
 #include <fann_cpp.h>*/
@@ -43,7 +45,7 @@ typedef std::array<uint, 3> State;
 #define ALPHAQL 0.7
 #define LAMBDAQL 1.0
 
-#define TIMESCALE 0.25
+#define TIMESCALE 1
 
 
 double veclen(sf::Vector2f a, sf::Vector2f ap);

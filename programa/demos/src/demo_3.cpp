@@ -104,16 +104,19 @@ Demo_3::Demo_3()
 {}
 Demo_3::~Demo_3()
 {
+	std::ofstream file("qarr.txt");
+
 	for(auto it1 : Q)
 	{
 		for(auto it2 : it1)
 		{
 			for(auto it3 : it2)
 			{
-				//LOGI("[" << it3[0] << " , " << it3[1] << ", " << it3[2] << "]");
+				file << "[" << it3[0] << " , " << it3[1] << ", " << it3[2] << "]" << std::endl;
 			}
 		}
 	}
+	
 }
 
 bool Demo_3::prepare()
@@ -396,25 +399,26 @@ void Demo_3::handle_tick(int rew)
 	if(rew == 9999)
 		realrew = REWARD(sp);
 	else
+	{
 		realrew = rew;
-	
-	
-	LOGI("(" << s[0] << ", " << s[1] << ", " << s[2] << ") -> (" << sp[0] << ", " << sp[1] << ", " << sp[2] << ")");
-	LOGI("R = " << realrew);
+	}
 
-	double p = QELE(s, action) + ALPHAQL * (realrew + *std::max_element(sp.begin(), sp.end()) - QELE(s, action));
-	LOGI("Q(" << s[0] << ", " << s[1] << ", " << s[2] << " | " << action << ") = " << p);
+
+	double p = QELE(s, action) + ALPHAQL * (realrew + *std::max_element(QAT(sp).begin(), QAT(sp).end()) - QELE(s, action));
 	
-	LOGI("Q = " << realrew << " + " << *std::max_element(sp.begin(), sp.end()) << " - " << QELE(s, action) << " = " << ALPHAQL * (double(realrew) + double(*std::max_element(sp.begin(), sp.end())) - QELE(s, action)));
-	LOGI("----------------------");
+	if(rew != 9999)
+	{
+		//LOGI(QELE(s, action) << " + " << ALPHAQL << " * " << "(" << realrew << " + " << *std::max_element(QAT(sp).begin(), QAT(sp).end()) << " - " << QELE(s, action) << ") = " << p);
+		//LOGI("(" << QAT(s)[0] << ", " << QAT(s)[1] << ", " << QAT(s)[2] << ") chose " << action << " (" << translateaction(action) << ")");
+	}
+	
+	//LOGI("I was at (" << s[0] << ", " << s[1] << ", " << s[2] << ") and chose to go " << translateaction(action) << " (L: " << QELE(s) << ", R: , S: )");
 	
 	QELE(s, action) = p;
+	action = std::max_element(QAT(sp).begin(), QAT(sp).end()) - QAT(sp).begin();
+	
+	//LOGI("Action i will do: " <<  << " = " << *std::max_element(QAT(sp).begin(), QAT(sp).end()));
 
-	action = std::max_element(sp.begin(), sp.end()) - sp.begin();
-	
-	//LOGI("(r = " << REWARD(sp) << ") From (" << s[0] << ", " << s[1] << ", " << s[2] << ") to (" << s[0] << ", " << s[1] << ", " << s[2] << ") by doing " << action);
-	
-	// update S
 	STATEUP(s)
 }
 
